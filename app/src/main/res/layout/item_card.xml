@@ -5,59 +5,101 @@
     android:id="@+id/cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardBackgroundColor="@color/colorPrimary"
+    android:layout_marginBottom="4dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp">
+    card_view:cardBackgroundColor="@color/colorPrimary"
+    card_view:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/item_photo"
-            android:scaleType="centerCrop"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="16dp"/>
+            android:scaleType="centerCrop"/>
 
         <com.denovo.denovo.BoldTextView
             android:id="@+id/item_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/item_photo"
-            android:textSize="24sp"/>
-
-        <com.denovo.denovo.CustomTextView
-            android:id="@+id/user_name"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_name"
-            android:layout_toRightOf="@+id/item_photo"/>
+            android:layout_below="@id/item_photo"
+            android:paddingBottom="4dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:textSize="28sp"/>
 
         <com.denovo.denovo.CustomTextView
             android:id="@+id/item_price"
-            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/user_name"
-            android:layout_toRightOf="@+id/item_photo"/>
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/item_name"
+            android:paddingLeft="16dp"
+            android:textSize="24sp"/>
 
         <RatingBar
             android:id="@+id/item_rating"
-            android:isIndicator="true"
-            android:numStars="5"
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item_price"
-            android:layout_toRightOf="@+id/item_photo"/>
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/item_name"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:isIndicator="true"
+            android:numStars="5"/>
+
+        <com.denovo.denovo.CustomTextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/item_price"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            android:textSize="18sp"/>
+
+        <com.denovo.denovo.CustomButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/description"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/mybuttonsmall"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Want it! | 32"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"/>
+
+        <com.denovo.denovo.CustomButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/description"
+            android:layout_marginBottom="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/mybuttonsmall"
+            android:elevation="2dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="Bargain"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"/>
 
 
     </RelativeLayout>

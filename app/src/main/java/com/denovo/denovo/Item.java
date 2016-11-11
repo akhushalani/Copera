@@ -9,16 +9,19 @@ import java.text.NumberFormat;
 public class Item {
     private String mName;
     private int mImageResourceId;
-    private String mUser;
+    private String mDonor;
     private double mPrice;
     private int mRating;
+    private String mDescription;
 
-    public Item(String name, int imageResourceId, String user, double price, int rating) {
+    public Item(String name, int imageResourceId, String donor, double price, int rating, String
+            description) {
         mImageResourceId = imageResourceId;
         mName = name;
-        mUser = user;
+        mDonor = donor;
         mPrice = price;
         mRating = rating;
+        mDescription = description;
     }
 
     public int getImageResourceId() {
@@ -29,10 +32,6 @@ public class Item {
         return mName;
     }
 
-    public String getUser() {
-        return mUser;
-    }
-
     public String getPrice() {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         return format.format(mPrice);
@@ -40,5 +39,9 @@ public class Item {
 
     public int getRating() {
         return mRating;
+    }
+
+    public String getDescription() {
+        return mDescription;
     }
 }

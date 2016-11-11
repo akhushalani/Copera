@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 
-
 public class FeedFragment extends Fragment {
 
     public FeedFragment() {
@@ -24,16 +23,25 @@ public class FeedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView =  inflater.inflate(R.layout.fragment_feed, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
         ArrayList<Item> feed = new ArrayList<>();
-        feed.add(new Item("Book", R.drawable.book, "Abhinav Khushalani", 1.5, 4));
-        feed.add(new Item("Shoes", R.drawable.shoes, "Nick Owens", 3.0, 5));
-        feed.add(new Item("Shirt", R.drawable.shirt, "Kevin Zorbach", 0.25, 3));
+        feed.add(new Item("Book", R.drawable.book, "Abhinav Khushalani", 1.5, 4, "What did Harry" +
+                " Potter know about magic? He was stuck with the decidedly un-magical Dursleys, " +
+                "who hated him. He slept in a closet and ate their leftovers. But an owl " +
+                "messenger changes all that, with an invitation to attend the Hogwarts School for" +
+                " Wizards and Witches, where it turns out Harry is already famous."));
+        feed.add(new Item("Shoes", R.drawable.shoes, "Nick Owens", 3.0, 5, "Worn once, soles are" +
+                " a bit stepped on, mid soles are a bit dirty."));
+        feed.add(new Item("Shirt", R.drawable.shirt, "Kevin Zorbach", 0.25, 3, "Printed on " +
+                "Gildan shirts just like the original. We also matched the ink for an almost " +
+                "identical match. If you're not happy with your purchase for any reason, simply " +
+                "let us know and we'll be sure to do whatever it takes to make sure the issue is " +
+                "taken care of!"));
 
         RVAdapter adapter = new RVAdapter(feed);
         rv.setAdapter(adapter);
