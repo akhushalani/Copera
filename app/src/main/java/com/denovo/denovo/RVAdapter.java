@@ -71,9 +71,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         TextView itemPrice;
         RatingBar itemRating;
         TextView description;
-        TextView yardSale;
-        Button wantItBtn;
-        Button bargainBtn;
+        CustomButton wantItBtn;
+        CustomButton bargainBtn;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -83,11 +82,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
             itemPrice = (TextView) itemView.findViewById(R.id.item_price);
             itemRating = (RatingBar) itemView.findViewById(R.id.item_rating);
             description = (TextView) itemView.findViewById(R.id.description);
-            yardSale = (TextView) itemView.findViewById(R.id.item_yard_sale);
-            wantItBtn = (Button) itemView.findViewById(R.id.btn_item_want);
-            bargainBtn = (Button) itemView.findViewById(R.id.btn_item_bargain);
+            wantItBtn = (CustomButton) itemView.findViewById(R.id.btn_item_want);
+            bargainBtn = (CustomButton) itemView.findViewById(R.id.btn_item_bargain);
 
             cv.setOnClickListener(this);
+            wantItBtn.setOnClickListener(this);
+            bargainBtn.setOnClickListener(this);
         }
 
         @Override
