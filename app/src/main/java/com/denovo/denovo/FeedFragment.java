@@ -1,7 +1,7 @@
 package com.denovo.denovo;
 
-import android.content.Context;
-import android.net.Uri;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,11 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 
 
-public class FeedFragment extends Fragment {
+
+public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallback {
+
+    private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
+    private static final String EXTRA_NAME = "EXTRA_NAME";
+    private static final String EXTRA_DESC = "EXTRA_DESC";
+    private ArrayList<Item> feed;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -29,7 +34,7 @@ public class FeedFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
-        ArrayList<Item> feed = new ArrayList<>();
+        feed = new ArrayList<>();
         feed.add(new Item("Book", R.drawable.book, "Abhinav Khushalani", 1.5, 4, "What did Harry" +
                 " Potter know about magic? He was stuck with the decidedly un-magical Dursleys, " +
                 "who hated him. He slept in a closet and ate their leftovers. But an owl " +
@@ -45,9 +50,33 @@ public class FeedFragment extends Fragment {
 
         RVAdapter adapter = new RVAdapter(feed);
         rv.setAdapter(adapter);
+        adapter.setItemClickCallback(this);
 
         return rootView;
     }
 
 
+    @Override
+    public void onItemClick(int p) {
+        Item item = (Item) feed.get(p);
+
+        Intent i = new Intent(getActivity(), ItemActivity.class);
+
+        Bundle extras = new Bundle();
+        extras.putString(EXTRA_NAME, item.getName());
+        extras.putString(EXTRA_DESC, item.getDescription());
+
+        i.putExtra(BUNDLE_EXTRAS, extras);
+        startActivity(i);
+    }
+
+    @Override
+    public void onWantItBtnClick(int p) {
+
+    }
+
+    @Override
+    public void onBargainBtnClick(int p) {
+
+    }
 }
