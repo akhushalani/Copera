@@ -24,7 +24,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
-        <activity android:name=".ItemActivity">
+        <activity android:name=".ItemActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

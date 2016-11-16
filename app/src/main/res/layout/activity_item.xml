@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="center_horizontal"
+            app:collapsedTitleGravity="center_horizontal"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            android:fitsSystemWindows="true">
+
+            <com.denovo.denovo.SquareImageView
+                android:id="@+id/item_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"/>
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:layout_gravity="fill_vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:id="@+id/cont_item_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.denovo.denovo.BoldTextView
+                android:id="@+id/item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:textSize="28sp"/>
+
+            <com.denovo.denovo.CustomTextView
+                android:id="@+id/item_yard_sale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/item_name"
+                android:paddingLeft="16dp"
+                android:text="Dulaney FBLA"
+                android:textSize="24sp"/>
+
+            <com.denovo.denovo.CustomTextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/item_yard_sale"
+                android:paddingLeft="16dp"
+                android:text="$13.50"
+                android:textSize="24sp"/>
+
+            <RatingBar
+                android:id="@+id/item_rating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignRight="@+id/item_name"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="4.5"
+                />
+
+            <com.denovo.denovo.CustomButton
+                android:id="@+id/btn_item_want"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignRight="@id/item_yard_sale"
+                android:layout_below="@id/item_rating"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/mybuttonsmall"
+                android:elevation="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Want it! | 32"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"/>
+
+            <com.denovo.denovo.CustomButton
+                android:id="@+id/btn_item_bargain"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignRight="@id/item_price"
+                android:layout_below="@id/btn_item_want"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:background="@drawable/mybuttonsmall"
+                android:elevation="2dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Bargain"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"/>
+
+            <com.denovo.denovo.CustomTextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/item_price"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textSize="18sp"/>
+
+            <LinearLayout
+                android:id="@+id/cont_q_and_a"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/description"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <com.denovo.denovo.BoldTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:text="Questions and Answers"
+                    android:textSize="@dimen/activity_title_text_size"/>
+
+
+                <com.denovo.denovo.CustomTextView
+                    android:id="@+id/q_and_a_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="I am a huge fan of the Lord of the Ring series; however, i am not sure I'm into the whole magic thing. Would you recommend this book for a reader like me?"
+                    android:textColor="#000"
+                    android:textSize="18sp"/>
+
+                <com.denovo.denovo.CustomTextView
+                    android:id="@+id/q_and_a_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="This book is great for all fiction fans! As long as you have an imagination and an open-mind you will adore this modern age classic!"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ask a question..."
+                    android:textSize="24sp"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.design.widget.CoordinatorLayout>
+

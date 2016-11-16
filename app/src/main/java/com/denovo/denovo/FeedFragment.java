@@ -15,9 +15,6 @@ import java.util.ArrayList;
 
 public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallback {
 
-    private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
-    private static final String EXTRA_NAME = "EXTRA_NAME";
-    private static final String EXTRA_DESC = "EXTRA_DESC";
     private ArrayList<Item> feed;
 
     public FeedFragment() {
@@ -35,14 +32,16 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
         rv.setLayoutManager(llm);
 
         feed = new ArrayList<>();
-        feed.add(new Item("Book", R.drawable.book, "Abhinav Khushalani", 1.5, 4, "What did Harry" +
+        feed.add(new Item("Book", R.drawable.book, "Dulaney FBLA", "Abhinav Khushalani", 1.5, 4,
+                "What " +
+                "did Harry" +
                 " Potter know about magic? He was stuck with the decidedly un-magical Dursleys, " +
                 "who hated him. He slept in a closet and ate their leftovers. But an owl " +
                 "messenger changes all that, with an invitation to attend the Hogwarts School for" +
                 " Wizards and Witches, where it turns out Harry is already famous."));
-        feed.add(new Item("Shoes", R.drawable.shoes, "Nick Owens", 3.0, 5, "Worn once, soles are" +
+        feed.add(new Item("Shoes", R.drawable.shoes, "Dulaney FBLA", "Nick Owens", 3.0, 5, "Worn once, soles are" +
                 " a bit stepped on, mid soles are a bit dirty."));
-        feed.add(new Item("Shirt", R.drawable.shirt, "Kevin Zorbach", 0.25, 3, "Printed on " +
+        feed.add(new Item("Shirt", R.drawable.shirt, "Dulaney FBLA", "Kevin Zorbach", 0.25, 3, "Printed on " +
                 "Gildan shirts just like the original. We also matched the ink for an almost " +
                 "identical match. If you're not happy with your purchase for any reason, simply " +
                 "let us know and we'll be sure to do whatever it takes to make sure the issue is " +
@@ -58,21 +57,17 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
 
     @Override
     public void onItemClick(int p) {
-        Item item = (Item) feed.get(p);
+        Item item = feed.get(p);
 
         Intent i = new Intent(getActivity(), ItemActivity.class);
+        i.putExtra("item", item);
 
-        Bundle extras = new Bundle();
-        extras.putString(EXTRA_NAME, item.getName());
-        extras.putString(EXTRA_DESC, item.getDescription());
-
-        i.putExtra(BUNDLE_EXTRAS, extras);
         startActivity(i);
     }
 
     @Override
     public void onWantItBtnClick(int p) {
-
+        feed.get(p).setWantIt();
     }
 
     @Override

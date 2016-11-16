@@ -22,7 +22,7 @@
             android:layout_marginBottom="-35dp"
             android:src="@drawable/ic_logo_shadow"/>
 
-        <TextView
+        <com.denovo.denovo.BoldTextView
             android:id="@+id/denovo_text_view"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:textColorHint="#FFFFFF"
             android:textSize="24sp"/>
 
-        <Button
+        <com.denovo.denovo.CustomButton
             android:id="@+id/sign_in_button"
             android:layout_width="280dp"
             android:layout_height="50dp"
