@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="top"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -39,15 +40,15 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
         android:clipToPadding="false"
-        android:layout_gravity="fill_vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:id="@+id/cont_item_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
 
             <com.denovo.denovo.BoldTextView
@@ -144,46 +145,46 @@
                 android:paddingTop="8dp"
                 android:textSize="18sp"/>
 
+            <com.denovo.denovo.BoldTextView
+                android:id="@+id/questions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/description"
+                android:paddingLeft="16dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:text="Questions"
+                android:textSize="@dimen/activity_title_text_size"/>
+
             <LinearLayout
-                android:id="@+id/cont_q_and_a"
+                android:id="@+id/questions_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/description"
+                android:layout_below="@id/questions"
                 android:layout_marginTop="8dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:orientation="vertical">
 
-                <com.denovo.denovo.BoldTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
-                    android:text="Questions and Answers"
-                    android:textSize="@dimen/activity_title_text_size"/>
-
-
                 <com.denovo.denovo.CustomTextView
-                    android:id="@+id/q_and_a_question"
-                    android:layout_width="match_parent"
+                    android:id="@+id/no_questions"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="I am a huge fan of the Lord of the Ring series; however, i am not sure I'm into the whole magic thing. Would you recommend this book for a reader like me?"
-                    android:textColor="#000"
-                    android:textSize="18sp"/>
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:text="No questions asked yet!"/>
 
-                <com.denovo.denovo.CustomTextView
-                    android:id="@+id/q_and_a_answer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="This book is great for all fiction fans! As long as you have an imagination and an open-mind you will adore this modern age classic!"
-                    android:textSize="18sp"/>
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Ask a question..."
-                    android:textSize="24sp"
-                    />
             </LinearLayout>
+
+            <com.denovo.denovo.CustomEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/questions_list"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:hint="Ask a question..."
+                android:textSize="24sp"
+                />
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>

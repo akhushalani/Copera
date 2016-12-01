@@ -31,6 +31,17 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
+        ArrayList<Question> questionList = new ArrayList<>();
+        Question a = new Question("I am a huge fan of the Lord of the Ring series; however, i am " +
+                "not sure I'm into the whole magic thing. Would you recommend this book for a " +
+                "reader like me?");
+        a.setAnswer("This book is great for all fiction fans! As long as you have an imagination " +
+                "and an open-mind you will adore this modern age classic!");
+        for (int i = 0; i < 7; i++) {
+            questionList.add(a);
+        }
+
+
         feed = new ArrayList<>();
         feed.add(new Item("Book", R.drawable.book, "Dulaney FBLA", "Abhinav Khushalani", 1.5, 4,
                 "What " +
@@ -38,14 +49,14 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
                 " Potter know about magic? He was stuck with the decidedly un-magical Dursleys, " +
                 "who hated him. He slept in a closet and ate their leftovers. But an owl " +
                 "messenger changes all that, with an invitation to attend the Hogwarts School for" +
-                " Wizards and Witches, where it turns out Harry is already famous."));
+                " Wizards and Witches, where it turns out Harry is already famous.", questionList));
         feed.add(new Item("Shoes", R.drawable.shoes, "Dulaney FBLA", "Nick Owens", 3.0, 5, "Worn once, soles are" +
-                " a bit stepped on, mid soles are a bit dirty."));
+                " a bit stepped on, mid soles are a bit dirty.", questionList));
         feed.add(new Item("Shirt", R.drawable.shirt, "Dulaney FBLA", "Kevin Zorbach", 0.25, 3, "Printed on " +
                 "Gildan shirts just like the original. We also matched the ink for an almost " +
                 "identical match. If you're not happy with your purchase for any reason, simply " +
                 "let us know and we'll be sure to do whatever it takes to make sure the issue is " +
-                "taken care of!"));
+                "taken care of!", questionList));
 
         RVAdapter adapter = new RVAdapter(feed);
         rv.setAdapter(adapter);
