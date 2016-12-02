@@ -11,7 +11,15 @@
         android:layout_centerVertical="true"
         android:src="@drawable/ic_settings"/>
 
-    <TextView
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_back"/>
+
+    <com.denovo.denovo.BoldTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

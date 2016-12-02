@@ -9,6 +9,7 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
+    android:clickable="true"
     card_view:cardBackgroundColor="@color/colorPrimary"
     card_view:cardCornerRadius="10dp">
 
@@ -63,13 +64,14 @@
             android:layout_below="@id/item_price"
             android:ellipsize="end"
             android:maxLines="3"
+            android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="8dp"
-            android:paddingBottom="16dp"
             android:textSize="18sp"/>
 
         <com.denovo.denovo.CustomButton
+            android:id="@+id/btn_item_want"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentLeft="true"
@@ -86,6 +88,7 @@
             android:textSize="22sp"/>
 
         <com.denovo.denovo.CustomButton
+            android:id="@+id/btn_item_bargain"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"

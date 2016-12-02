@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="horizontal">
+
+        <com.denovo.denovo.BoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="Q: "/>
+
+        <com.denovo.denovo.CustomTextView
+            android:id="@+id/question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text="I am a huge fan of the Lord of the Ring series; however, i am not sure I'm into the whole magic thing. Would you recommend this book for a reader like me?"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal">
+
+        <com.denovo.denovo.BoldTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="#9E9E9E"
+            android:text="A: "/>
+
+        <com.denovo.denovo.CustomTextView
+            android:id="@+id/answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textColor="#9E9E9E"
+            android:text="This book is great for all fiction fans! As long as you have an imagination and an open-mind you will adore this modern age classic!"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
