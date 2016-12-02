@@ -6,16 +6,20 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
 
+import static android.app.Activity.RESULT_OK;
 
 
 public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallback {
 
+    private static final String TAG = "FeedFragment";
     private ArrayList<Item> feed;
+    private RVAdapter adapter;
 
     public FeedFragment() {
         // Required empty public constructor
@@ -58,7 +62,7 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
                 "let us know and we'll be sure to do whatever it takes to make sure the issue is " +
                 "taken care of!", questionList));
 
-        RVAdapter adapter = new RVAdapter(feed);
+        adapter = new RVAdapter(feed);
         rv.setAdapter(adapter);
         adapter.setItemClickCallback(this);
 
@@ -72,8 +76,9 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
 
         Intent i = new Intent(getActivity(), ItemActivity.class);
         i.putExtra("item", item);
+        i.putExtra("position", p);
 
-        startActivity(i);
+        startActivityForResult(i, 1);
     }
 
     @Override
@@ -84,5 +89,18 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
     @Override
     public void onBargainBtnClick(int p) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == 1) {
+                int p = data.getExtras().getInt("position");
+                Item item = data.getExtras().getParcelable("item");
+                feed.set(p, item);
+                adapter.set(p, item);
+                adapter.notifyItemChanged(p);
+            }
+        }
     }
 }

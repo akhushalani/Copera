@@ -5,6 +5,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,10 @@ import static com.denovo.denovo.R.id.questions;
 
 
 public class ItemActivity extends AppCompatActivity {
+
+    private static final String TAG = "ItemActivity";
     private Item item;
+    private int feedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class ItemActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         item = data.getParcelable("item");
+        feedPosition = data.getInt("position");
 
         ImageView itemPhoto = (ImageView) findViewById(R.id.item_photo);
         itemPhoto.setImageResource(item.getImageResourceId());
@@ -63,6 +68,8 @@ public class ItemActivity extends AppCompatActivity {
         TextView description = (TextView) findViewById(R.id.description);
         description.setText(item.getDescription());
 
+        final Intent intent = getIntent();
+
         CustomButton wantItBtn = (CustomButton) findViewById(R.id.btn_item_want);
         wantItBtn.setText(getString(R.string.want_it, item.getWantIt()));
         wantItBtn.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +77,11 @@ public class ItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 item.setWantIt();
                 ((TextView) v).setText(getString(R.string.want_it, item.getWantIt()));
+                Bundle b = new Bundle();
+                b.putInt("position", feedPosition);
+                b.putParcelable("item", item);
+                intent.putExtras(b);
+                setResult(1, intent);
             }
         });
 

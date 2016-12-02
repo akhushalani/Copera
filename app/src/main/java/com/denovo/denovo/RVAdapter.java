@@ -3,6 +3,7 @@ package com.denovo.denovo;
 import android.content.res.Resources;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import java.util.List;
 
+import static android.R.attr.tag;
 import static java.security.AccessController.getContext;
 
 
@@ -20,6 +22,8 @@ import static java.security.AccessController.getContext;
  */
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
+
+    private static final String TAG = "RVAdapter";
 
     private List<Item> mFeed;
 
@@ -37,6 +41,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         this.itemClickCallback = itemClickCallback;
     }
 
+    public void set(int index, Item item) {
+        mFeed.set(index, item);
+    }
 
     RVAdapter(List<Item> feed) {
         this.mFeed = feed;
@@ -60,8 +67,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         itemViewHolder.itemPrice.setText(mFeed.get(i).getPrice());
         itemViewHolder.itemRating.setRating(mFeed.get(i).getRating());
         itemViewHolder.description.setText(mFeed.get(i).getDescription());
-        itemViewHolder.wantItBtn.setText("Want it! | " + mFeed
-                .get(i).getWantIt());
+        itemViewHolder.wantItBtn.setText("Want it! | " + mFeed.get(i).getWantIt());
     }
 
     @Override
@@ -78,7 +84,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         TextView description;
         CustomButton wantItBtn;
         CustomButton bargainBtn;
-        int wantIt;
+        int index;
 
         ItemViewHolder(View itemView, int i) {
             super(itemView);
@@ -90,7 +96,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
             description = (TextView) itemView.findViewById(R.id.description);
             wantItBtn = (CustomButton) itemView.findViewById(R.id.btn_item_want);
             bargainBtn = (CustomButton) itemView.findViewById(R.id.btn_item_bargain);
-            wantIt = mFeed.get(i).getWantIt();
+            index = i;
 
             cv.setOnClickListener(this);
             wantItBtn.setOnClickListener(this);
@@ -103,8 +109,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
                 itemClickCallback.onItemClick(getAdapterPosition());
             } else if (v.getId() == R.id.btn_item_want) {
                 itemClickCallback.onWantItBtnClick(getAdapterPosition());
-                wantIt++;
-                ((TextView) v).setText("Want it! | " + wantIt);
+                ((TextView) v).setText("Want it! | " + mFeed.get(index).getWantIt());
             } else if (v.getId() == R.id.btn_item_bargain) {
                 itemClickCallback.onBargainBtnClick(getAdapterPosition());
             } else {
