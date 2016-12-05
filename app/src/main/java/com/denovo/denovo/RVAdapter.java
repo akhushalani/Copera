@@ -45,6 +45,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         mFeed.set(index, item);
     }
 
+    public void swapDataSet(List<Item> newFeed) {
+        mFeed = newFeed;
+    }
+
     RVAdapter(List<Item> feed) {
         this.mFeed = feed;
     }
