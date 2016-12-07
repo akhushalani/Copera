@@ -180,8 +180,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/questions_list"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:hint="Ask a question..."
                 android:textSize="24sp"
                 />
