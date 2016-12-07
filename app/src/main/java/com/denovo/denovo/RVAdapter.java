@@ -1,20 +1,18 @@
 package com.denovo.denovo;
 
-import android.content.res.Resources;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import java.util.List;
 
-import static android.R.attr.tag;
-import static java.security.AccessController.getContext;
+import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 
 /**
@@ -45,6 +43,14 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         mFeed.set(index, item);
     }
 
+    public void swapDataSet(List<Item> newFeed) {
+        mFeed = newFeed;
+    }
+
+    public void clearDataSet() {
+        mFeed.clear();
+    }
+
     RVAdapter(List<Item> feed) {
         this.mFeed = feed;
     }
@@ -56,15 +62,16 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_card, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_card,
+                viewGroup, false);
         return new ItemViewHolder(v, i);
     }
 
     @Override
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
-        itemViewHolder.itemPhoto.setImageResource(mFeed.get(i).getImageResourceId());
+        mFeed.get(i).downloadImage(itemViewHolder.itemPhoto.getContext(), itemViewHolder.itemPhoto);
         itemViewHolder.itemName.setText(mFeed.get(i).getName());
-        itemViewHolder.itemPrice.setText(mFeed.get(i).getPrice());
+        itemViewHolder.itemPrice.setText(mFeed.get(i).formatPrice());
         itemViewHolder.itemRating.setRating(mFeed.get(i).getRating());
         itemViewHolder.description.setText(mFeed.get(i).getDescription());
         itemViewHolder.wantItBtn.setText("Want it! | " + mFeed.get(i).getWantIt());

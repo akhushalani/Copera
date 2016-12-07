@@ -8,17 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-
-import static com.denovo.denovo.R.id.questions;
 
 
 public class ItemActivity extends AppCompatActivity {
@@ -51,7 +44,7 @@ public class ItemActivity extends AppCompatActivity {
         feedPosition = data.getInt("position");
 
         ImageView itemPhoto = (ImageView) findViewById(R.id.item_photo);
-        itemPhoto.setImageResource(item.getImageResourceId());
+        item.downloadImage(this, itemPhoto);
 
         TextView itemName = (TextView) findViewById(R.id.item_name);
         itemName.setText(item.getName());
@@ -60,7 +53,7 @@ public class ItemActivity extends AppCompatActivity {
         itemYardSale.setText(item.getYardSale());
 
         TextView itemPrice = (TextView) findViewById(R.id.item_price);
-        itemPrice.setText(item.getPrice());
+        itemPrice.setText(item.formatPrice());
 
         RatingBar itemRating = (RatingBar) findViewById(R.id.item_rating);
         itemRating.setRating(itemRating.getRating());

@@ -11,6 +11,8 @@ public class Question implements Parcelable {
     private String mQuestion;
     private String mAnswer;
 
+    public Question() {}
+
     public Question(String question) {
         mQuestion = question;
     }
@@ -21,6 +23,10 @@ public class Question implements Parcelable {
 
     public String getAnswer() {
         return mAnswer;
+    }
+
+    public void setQuestion(String question) {
+        mQuestion = question;
     }
 
     public void setAnswer(String answer) {

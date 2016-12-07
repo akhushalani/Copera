@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "783037321407",
+    "firebase_url": "https://denovo-4024e.firebaseio.com",
+    "project_id": "denovo-4024e",
+    "storage_bucket": "denovo-4024e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783037321407:android:6543cd9c09d7f9ca",
+        "android_client_info": {
+          "package_name": "com.denovo.denovo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783037321407-s12gg7o6lmr6ep66defk02g0fgj4u6ed.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.denovo.denovo",
+            "certificate_hash": "8C6EBF5F837FD1112124B303082E645B355096C0"
+          }
+        },
+        {
+          "client_id": "783037321407-6v6irtk4q2aanbm9c06qjo2que2if2eq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCosa-gh4irNBW6vj3bZ75TRr_vgQUvE6U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783037321407-6v6irtk4q2aanbm9c06qjo2que2if2eq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
