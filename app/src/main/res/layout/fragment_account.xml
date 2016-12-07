@@ -1,12 +1,60 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.denovo.denovo.AccountFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.denovo.denovo.AccountFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Account info goes here"/>
+    <ImageView
+        android:id="@+id/prof_pic"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        android:src="@color/lightBlue"/>
 
-</FrameLayout>
+    <com.denovo.denovo.CustomTextView
+        android:id="@+id/user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/prof_pic"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:text="Full name goes here"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        tools:text="Full Name Goes Here"/>
+
+    <com.denovo.denovo.CustomButton
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_manage"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/user_name"
+        android:background="@drawable/mybuttonsmall"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Manage Items"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"/>
+
+    <com.denovo.denovo.CustomButton
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:id="@+id/btn_wishlist"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/btn_manage"
+        android:background="@drawable/mybuttonsmall"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Wish List"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"/>
+
+
+</RelativeLayout>
