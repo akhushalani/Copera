@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.action_bar);
 
         findViewById(R.id.back).setVisibility(View.GONE);
+        findViewById(R.id.next).setVisibility(View.GONE);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         PageAdapter adapter = new PageAdapter(this, getSupportFragmentManager());
@@ -45,13 +46,15 @@ public class HomeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent i = new Intent(HomeActivity.this, DonateActivity.class);
-                //startActivity(i);
-                Item item = new Item("Shoes", "shoes.png", "Dulaney FBLA", "Nick Owens", 3.0,
-                        5, "Worn once, soles are" +
-                        " a bit stepped on, mid soles are a bit dirty.", new ArrayList<Question>
-                        ());
-                writeNewItem(item);
+                Intent i = new Intent(HomeActivity.this, DonateActivity.class);
+                startActivity(i);
+                /* writeNewItem(new Item("Book", "book.png", "Dulaney FBLA", "Abhinav Khushalani", 1.5, 4,
+                        "What did Harry" +
+                                " Potter know about magic? He was stuck with the decidedly un-magical Dursleys, " +
+                                "who hated him. He slept in a closet and ate their leftovers. But an owl " +
+                                "messenger changes all that, with an invitation to attend the Hogwarts School for" +
+                                " Wizards and Witches, where it turns out Harry is already famous.",
+                        new ArrayList<Question>())); */
             }
         });
     }

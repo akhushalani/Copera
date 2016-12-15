@@ -38,6 +38,7 @@ public class ItemActivity extends AppCompatActivity {
 
         findViewById(R.id.settings).setVisibility(View.GONE);
         findViewById(R.id.search).setVisibility(View.GONE);
+        findViewById(R.id.next).setVisibility(View.GONE);
 
         Bundle data = getIntent().getExtras();
         item = data.getParcelable("item");

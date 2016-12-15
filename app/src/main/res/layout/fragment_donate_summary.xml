@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.denovo.denovo.DonateSummaryFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.denovo.denovo.SquareImageView
+                android:id="@+id/summary_item_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerCrop"/>
+
+            <com.denovo.denovo.BoldTextView
+                android:id="@+id/summary_item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/summary_item_photo"
+                android:paddingLeft="16dp"
+                android:paddingTop="1dp"
+                android:text="Book"
+                android:textSize="28sp"/>
+
+            <com.denovo.denovo.CustomTextView
+                android:id="@+id/summary_item_yard_sale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/summary_item_name"
+                android:paddingLeft="16dp"
+                android:paddingBottom="4dp"
+                android:text="Dulaney FBLA"
+                android:textSize="24sp"/>
+
+            <com.denovo.denovo.CustomTextView
+                android:id="@+id/summary_item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/summary_item_yard_sale"
+                android:paddingLeft="16dp"
+                android:text="$13.50"
+                android:textSize="24sp"/>
+
+            <RatingBar
+                android:id="@+id/summary_item_rating"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@id/summary_item_name"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="4.5"
+                />
+
+            <com.denovo.denovo.CustomTextView
+                android:id="@+id/summary_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/summary_item_price"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:textSize="18sp"/>
+
+            <com.denovo.denovo.CustomButton
+                android:id="@+id/btn_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/summary_description"
+                android:layout_margin="16dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/mybuttonsmall"
+                android:elevation="4dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Submit"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"/>
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>
