@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+             tools:context="com.denovo.denovo.DonateConditionFragment">
+
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:layout_centerInParent="true"
+        android:id="@+id/donate_ratingBar"/>
+
+    <com.denovo.denovo.CustomButton
+        android:id="@+id/btn_confirm_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/mybuttonsmall"
+        android:elevation="4dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Confirm"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"/>
+
+</RelativeLayout>
