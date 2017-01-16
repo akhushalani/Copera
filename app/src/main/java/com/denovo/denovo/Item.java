@@ -1,17 +1,12 @@
 package com.denovo.denovo;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -32,9 +27,8 @@ public class Item implements Parcelable {
     private String mDescription;
     private int mWantIt;
     private ArrayList<Question> mQuestions;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef;
-
+    private FirebaseStorage mStorage = FirebaseStorage.getInstance();
+    private StorageReference mStorageRef;
 
     public Item() {
 
@@ -51,7 +45,7 @@ public class Item implements Parcelable {
         mDescription = description;
         mWantIt = 0;
         mQuestions = questions;
-        storageRef = storage.getReferenceFromUrl("gs://denovo-4024e" +
+        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
                 ".appspot.com/images/" + imageFileName);
     }
 
@@ -70,12 +64,12 @@ public class Item implements Parcelable {
 
     public void setImageFileName(String imageFileName) {
         mImageFileName =  imageFileName;
-        storageRef = storage.getReferenceFromUrl("gs://denovo-4024e.appspot.com/images/"
+        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e.appspot.com/images/"
                 + imageFileName);
     }
 
     public void downloadImage(Context context, ImageView imageView) {
-        Glide.with(context).using(new FirebaseImageLoader()).load(storageRef).into(imageView);
+        Glide.with(context).using(new FirebaseImageLoader()).load(mStorageRef).into(imageView);
     }
 
     public String getYardSale() {
@@ -176,7 +170,7 @@ public class Item implements Parcelable {
         mWantIt = in.readInt();
         mQuestions = new ArrayList<>();
         in.readTypedList(mQuestions, Question.CREATOR);
-        storageRef = storage.getReferenceFromUrl("gs://denovo-4024e" +
+        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
                 ".appspot.com/images/" + mImageFileName);
     }
 }
