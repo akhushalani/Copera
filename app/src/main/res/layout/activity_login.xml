@@ -6,7 +6,7 @@
              android:layout_height="match_parent"
              android:background="@drawable/gradient_selector"
              android:windowSoftInputMode="adjustPan"
-             tools:context="com.denovo.denovo.MainActivity">
+             tools:context="com.denovo.denovo.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -36,14 +36,14 @@
             android:textSize="60sp"/>
 
         <EditText
-            android:id="@+id/username"
+            android:id="@+id/email"
             android:layout_width="280dp"
             android:layout_height="50dp"
             android:layout_below="@id/denovo_text_view"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"
             android:background="@drawable/myedittext"
-            android:hint="Username"
+            android:hint="Email"
             android:maxLines="1"
             android:paddingLeft="25dp"
             android:textColor="#FFFFFF"
@@ -54,7 +54,7 @@
             android:id="@+id/password"
             android:layout_width="280dp"
             android:layout_height="50dp"
-            android:layout_below="@id/username"
+            android:layout_below="@id/email"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"
             android:background="@drawable/myedittext"
@@ -76,6 +76,27 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="26sp"/>
+
+        <com.denovo.denovo.CustomTextView
+            android:id="@+id/dont_have_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sign_in_button"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:paddingTop="8dp"
+            android:text="Don't have an account?"/>
+
+        <com.denovo.denovo.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dont_have_account"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:paddingTop="2dp"
+            android:text="Sign up"/>
 
     </RelativeLayout>
 </FrameLayout>
