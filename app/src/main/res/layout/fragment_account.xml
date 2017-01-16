@@ -17,7 +17,7 @@
             android:id="@+id/prof_pic"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:src=""/>
+            />
 
         <ImageView
             android:id="@+id/prof_frame"

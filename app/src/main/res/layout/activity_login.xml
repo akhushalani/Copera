@@ -32,8 +32,8 @@
             android:paddingBottom="60dp"
             android:text="denovo"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="60sp"/>
+            android:textSize="60sp"
+            android:textStyle="bold"/>
 
         <EditText
             android:id="@+id/email"
@@ -83,20 +83,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/sign_in_button"
             android:layout_centerHorizontal="true"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
             android:paddingTop="8dp"
-            android:text="Don't have an account?"/>
+            android:text="Don't have an account?"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
 
         <com.denovo.denovo.CustomTextView
+            android:id="@+id/sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/dont_have_account"
             android:layout_centerHorizontal="true"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
             android:paddingTop="2dp"
-            android:text="Sign up"/>
+            android:text="Sign up"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 </FrameLayout>

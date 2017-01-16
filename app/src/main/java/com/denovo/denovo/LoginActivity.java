@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         Button signInButton = (Button) findViewById(R.id.sign_in_button);
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
+        TextView signUp = (TextView) findViewById(R.id.sign_up);
 
         Typeface typeFaceBold = Typeface.createFromAsset(getAssets(),"fonts/JosefinSans-Bold.ttf");
         denovoTextView.setTypeface(typeFaceBold);
@@ -43,6 +44,16 @@ public class LoginActivity extends AppCompatActivity {
         signInButton.setTypeface(typeFaceReg);
         inputEmail.setTypeface(typeFaceReg);
         inputPassword.setTypeface(typeFaceReg);
+
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
