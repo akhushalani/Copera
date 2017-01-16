@@ -55,6 +55,7 @@ public class Item implements Parcelable {
                 ".appspot.com/images/" + imageFileName);
     }
 
+    //Getters and Setters
     public String getName() {
         return mName;
     }
@@ -66,7 +67,6 @@ public class Item implements Parcelable {
     public String getImageFileName() {
         return mImageFileName;
     }
-
 
     public void setImageFileName(String imageFileName) {
         mImageFileName =  imageFileName;
