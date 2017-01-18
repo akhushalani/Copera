@@ -49,6 +49,7 @@ public class Item implements Parcelable {
                 ".appspot.com/images/" + imageFileName);
     }
 
+    //Getters and Setters
     public String getName() {
         return mName;
     }
