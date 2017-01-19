@@ -1,5 +1,6 @@
 package com.denovo.denovo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
@@ -76,6 +77,16 @@ public class ItemActivity extends AppCompatActivity {
                 b.putParcelable("item", item);
                 intent.putExtras(b);
                 setResult(1, intent);
+            }
+        });
+
+        CustomButton bargainBtn = (CustomButton) findViewById(R.id.btn_item_bargain);
+        bargainBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ItemActivity.this, BargainActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 
