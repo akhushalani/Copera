@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar);
@@ -70,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
                                 "messenger changes all that, with an invitation to attend the Hogwarts School for" +
                                 " Wizards and Witches, where it turns out Harry is already famous.",
                         new ArrayList<Question>())); */
+            }
+        });
+
+        ImageView preferencesButton = (ImageView) findViewById(R.id.settings);
+        preferencesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, PreferencesActivity.class);
+                startActivity(i);
             }
         });
     }

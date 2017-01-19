@@ -1,10 +1,14 @@
 package com.denovo.denovo;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +36,13 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText inputLastName;
     private EditText inputEmail;
     private EditText inputPassword;
+    private EditText confirmPassword;
+
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String confirm;
 
 
     @Override
@@ -39,10 +50,18 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
+        setSupportActionBar(toolbar);
+
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
+        collapsingToolbar.setTitle(null);
+
         inputFirstName = (EditText) findViewById(R.id.edit_first_name);
         inputLastName = (EditText) findViewById(R.id.edit_last_name);
         inputEmail = (EditText) findViewById(R.id.edit_email);
         inputPassword = (EditText) findViewById(R.id.edit_password);
+        confirmPassword = (EditText) findViewById(R.id.confirm_password);
         final Button signUpButton = (Button) findViewById(R.id.btn_sign_up);
 
         mAuth = FirebaseAuth.getInstance();
@@ -55,7 +74,6 @@ public class SignUpActivity extends AppCompatActivity {
                 }
                 createAccount(inputEmail.getText().toString(), inputPassword.getText().toString());
                 signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
-                updateProfile();
             }
         });
     }
@@ -85,10 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
                             Toast.makeText(SignUpActivity.this, "Login failed, check your " +
                                     "email and password", Toast.LENGTH_LONG).show();
                         } else {
-                            Intent intent = new Intent(SignUpActivity.this, MainActivity
-                                    .class);
-                            startActivity(intent);
-                            finish();
+                            updateProfile(firstName + " " + lastName);
                         }
                     }
                 });
@@ -102,10 +117,11 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
-        String firstName = inputFirstName.getText().toString();
-        String lastName = inputLastName.getText().toString();
-        String email = inputEmail.getText().toString();
-        String password = inputPassword.getText().toString();
+        firstName = inputFirstName.getText().toString();
+        lastName = inputLastName.getText().toString();
+        email = inputEmail.getText().toString();
+        password = inputPassword.getText().toString();
+        confirm = confirmPassword.getText().toString();
 
         if (TextUtils.isEmpty(firstName)) {
             Toast.makeText(getApplicationContext(), "Enter first name!", Toast.LENGTH_SHORT).show();
@@ -127,20 +143,29 @@ public class SignUpActivity extends AppCompatActivity {
             valid = false;
         }
 
+        if (!password.equals(confirm)) {
+            Toast.makeText(getApplicationContext(), "Passwords don't match!", Toast.LENGTH_SHORT).show();
+            valid = false;
+        }
+
         return valid;
     }
 
-    private void updateProfile() {
+    private void updateProfile(String name) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName("" + inputFirstName.getText().toString() + " " + inputLastName.getText().toString())
+                .setDisplayName(name)
                 .build();
 
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(SignUpActivity.this, MainActivity
+                                .class);
+                        startActivity(intent);
+                        finish();
                     }
                 });
     }

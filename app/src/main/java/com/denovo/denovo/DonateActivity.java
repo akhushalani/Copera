@@ -119,7 +119,6 @@ public class DonateActivity extends AppCompatActivity
                         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_two_complete);
                         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_three_active);
                         mTabLayout.getTabAt(3).setIcon(R.drawable.ic_check_incomplete);
-                        mBtnNext.setVisibility(View.VISIBLE);
                         mBtnBack.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -144,7 +143,6 @@ public class DonateActivity extends AppCompatActivity
                                 mTabLayout.getTabAt(2).select();
                             }
                         });
-                        mBtnNext.setVisibility(View.GONE);
                         break;
                 }
 

@@ -28,5 +28,10 @@
         <item name="android:windowBackground">@drawable/gradient_selector</item>
     </style>
 
+    <style name="AppBar" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 
 </resources>

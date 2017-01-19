@@ -32,8 +32,8 @@
             android:paddingBottom="60dp"
             android:text="denovo"
             android:textColor="@android:color/white"
-            android:textSize="60sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textSize="60sp"/>
 
         <EditText
             android:id="@+id/email"
@@ -45,6 +45,7 @@
             android:background="@drawable/myedittext"
             android:hint="Email"
             android:maxLines="1"
+            android:inputType="textEmailAddress"
             android:paddingLeft="25dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF"
@@ -59,6 +60,7 @@
             android:layout_marginBottom="8dp"
             android:background="@drawable/myedittext"
             android:hint="Password"
+            android:maxLines="1"
             android:inputType="textPassword"
             android:paddingLeft="25dp"
             android:textColor="#FFFFFF"
@@ -83,10 +85,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/sign_in_button"
             android:layout_centerHorizontal="true"
-            android:paddingTop="8dp"
-            android:text="Don't have an account?"
             android:textColor="@android:color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:paddingTop="8dp"
+            android:text="Don't have an account?"/>
 
         <com.denovo.denovo.CustomTextView
             android:id="@+id/sign_up"
@@ -94,10 +96,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/dont_have_account"
             android:layout_centerHorizontal="true"
-            android:paddingTop="2dp"
-            android:text="Sign up"
             android:textColor="@android:color/white"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:text="Sign up"/>
 
     </RelativeLayout>
 </FrameLayout>
