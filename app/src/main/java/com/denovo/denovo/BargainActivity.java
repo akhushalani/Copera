@@ -22,9 +22,12 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
+import static android.R.attr.id;
+
 public class BargainActivity extends AppCompatActivity {
 
     private String uid;
+    private String mUid;
     private String itemKey;
     private String chatName;
     private DatabaseReference mDatabase;
@@ -68,8 +71,10 @@ public class BargainActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            uid = user.getUid();
+            mUid = user.getUid();
         }
+
+        uid = "BELpNBzmANVXGdzklxth5YkJMn92";
 
         chatName = uid + itemKey;
 
@@ -103,14 +108,16 @@ public class BargainActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BargainMessage message = new BargainMessage(msgEntry.getText().toString(), uid);
-                DatabaseReference childRef = mDatabase.child("bargains").child(chatName).push();
+                BargainMessage message = new BargainMessage(msgEntry.getText().toString(), mUid);
+                DatabaseReference childRef = mDatabase.child("items").child(itemKey)
+                        .child("bargains").child(uid).push();
                 childRef.setValue(message);
                 msgEntry.setText("");
             }
         });
 
-        Query chatQuery = mDatabase.child("bargains").child(chatName).orderByChild("time");
+        Query chatQuery = mDatabase.child("items").child(itemKey).child("bargains").child(uid)
+                .orderByChild("time");
         chatQuery.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
