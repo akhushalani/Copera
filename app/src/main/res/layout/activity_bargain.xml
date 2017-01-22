@@ -24,6 +24,8 @@
                 android:id="@+id/cont_received_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <com.denovo.denovo.CustomTextView
@@ -49,7 +51,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cont_received_message"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <com.denovo.denovo.CustomTextView
