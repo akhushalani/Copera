@@ -85,6 +85,7 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ItemActivity.this, BargainActivity.class);
+                intent.putExtra("item_key", "-KYLXskpzmhDq5citlod");
                 startActivity(intent);
                 finish();
             }

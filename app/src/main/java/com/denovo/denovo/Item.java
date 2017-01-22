@@ -63,7 +63,7 @@ public class Item implements Parcelable {
     }
 
     public void setImageFileName(String imageFileName) {
-        mImageFileName =  imageFileName;
+        mImageFileName = imageFileName;
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e.appspot.com/images/"
                 + imageFileName);
     }
