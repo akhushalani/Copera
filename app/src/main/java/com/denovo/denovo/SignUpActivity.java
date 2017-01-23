@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import static android.R.attr.updatePeriodMillis;
 import static android.R.attr.y;
@@ -65,6 +66,7 @@ public class SignUpActivity extends AppCompatActivity {
         final Button signUpButton = (Button) findViewById(R.id.btn_sign_up);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +155,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void updateProfile(String name) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        addUserToDb(name, user.getUid());
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
@@ -168,5 +171,12 @@ public class SignUpActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    private void addUserToDb(String name, String uid) {
+        User newUser = new User(name, uid);
+
+        DatabaseReference childRef = mDatabase.child("users").push();
+        childRef.setValue(newUser);
     }
 }

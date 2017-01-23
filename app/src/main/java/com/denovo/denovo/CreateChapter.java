@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,8 +50,6 @@ public class CreateChapter extends AppCompatActivity {
         setContentView(R.layout.activity_create_chapter);
 
         editName = (EditText) findViewById(R.id.edit_chapter_name);
-        editLat = (EditText) findViewById(R.id.edit_lat);
-        editLong = (EditText) findViewById(R.id.edit_long);
         editLocation = (EditText) findViewById(R.id.edit_location);
         createChapterButton = (CustomButton) findViewById(R.id.btn_create_chapter);
 
@@ -74,7 +73,7 @@ public class CreateChapter extends AppCompatActivity {
         double latitude = geoPoint.getLatitude();
         double longitude = geoPoint.getLongitude();
 
-        DatabaseReference childRef = mDatabase.child("Chapters").push();
+        DatabaseReference childRef = mDatabase.child("chapters").push();
 
         Chapter chapter = new Chapter(name, latitude, longitude);
         childRef.setValue(chapter);

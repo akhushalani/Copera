@@ -36,15 +36,6 @@ public class AccountFragment extends Fragment {
         TextView userNameTextView = (TextView) rootView.findViewById(R.id.user_name_text_view);
         userNameTextView.setText(name);
 
-        createChapterButton = (CustomButton) rootView.findViewById(R.id.btn_chapter_link);
-        createChapterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CreateChapter.class);
-                startActivity(intent);
-            }
-        });
-
         return rootView;
     }
 

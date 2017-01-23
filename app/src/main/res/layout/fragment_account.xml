@@ -1,92 +1,70 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/offWhite"
-                tools:context="com.denovo.denovo.AccountFragment">
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.denovo.denovo.AccountFragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/offWhite"
+        >
 
-    <FrameLayout
-        android:id="@+id/prof_pic_cont"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp">
-
-        <ImageView
-            android:id="@+id/prof_pic"
+        <FrameLayout
+            android:id="@+id/prof_pic_cont"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:src="@drawable/profilepic"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp">
 
-        <ImageView
-            android:id="@+id/prof_frame"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            android:src="@drawable/rounded_image"/>
+            <ImageView
+                android:id="@+id/prof_pic"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:src="@drawable/profilepic"/>
 
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/prof_frame"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                android:src="@drawable/rounded_image"/>
 
-    <com.denovo.denovo.BoldTextView
-        android:id="@+id/user_name_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/prof_pic_cont"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="Denovo User"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        tools:text="Denovo User"/>
+        </FrameLayout>
 
-    <com.denovo.denovo.CustomButton
-        android:id="@+id/btn_manage"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@id/user_name_text_view"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/mybuttonsmall"
-        android:elevation="2dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Manage Items"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"/>
+        <com.denovo.denovo.BoldTextView
+            android:id="@+id/user_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/prof_pic_cont"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="Denovo User"
+            android:textAlignment="center"
+            android:textSize="36sp"
+            tools:text="Denovo User"/>
 
-    <com.denovo.denovo.CustomButton
-        android:id="@+id/btn_wishlist"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@id/btn_manage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/mybuttonsmall"
-        android:elevation="2dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Wish List"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"/>
+        <com.denovo.denovo.BoldTextView
+            android:id="@+id/wishlist_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_name_text_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="Denovo User"
+            android:textAlignment="center"
+            android:textSize="36sp"
+            tools:text="Wishlist"/>
 
-    <com.denovo.denovo.CustomButton
-        android:id="@+id/btn_chapter_link"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_below="@id/btn_wishlist"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/mybuttonsmall"
-        android:elevation="2dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="Create Chapter"
-        android:textColor="@android:color/white"
-        android:textSize="22sp"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/wishlist_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/wishlist_title_text_view">
+        </android.support.v7.widget.RecyclerView>
 
-</RelativeLayout>
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
