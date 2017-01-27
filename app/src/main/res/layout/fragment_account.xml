@@ -18,19 +18,22 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp">
 
-            <ImageView
+            <com.denovo.denovo.CustomTextView
                 android:id="@+id/prof_pic"
                 android:layout_width="160dp"
                 android:layout_height="160dp"
-                android:src="@drawable/profilepic"/>
+                android:text="AK"
+                android:textColor="@color/colorPrimary"
+                android:textSize="60sp"
+                android:gravity="center"
+                android:background="@drawable/profile_red"/>
 
             <ImageView
-                android:id="@+id/prof_frame"
-                android:layout_width="160dp"
-                android:layout_height="160dp"
-                android:contentDescription="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/rounded_image"/>
+                android:id="@+id/edit_profile"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom|right"
+                android:src="@drawable/ic_edit"/>
 
         </FrameLayout>
 

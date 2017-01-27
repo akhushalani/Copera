@@ -1,5 +1,9 @@
 package com.denovo.denovo;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +12,9 @@ import android.support.v7.widget.SimpleItemAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +40,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
     private WrapContentLinearLayoutManager llm;
     private RVAdapter mAdapter;
     private TextView emptyWishList;
+    private TextView profilePic;
 
 
     public AccountFragment() {
@@ -50,6 +58,8 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
             name = user.getDisplayName();
             uid = user.getUid();
         }
+
+        profilePic = (TextView) rootView.findViewById(R.id.prof_pic);
 
         TextView userNameTextView = (TextView) rootView.findViewById(R.id.user_name_text_view);
         userNameTextView.setText(name);
@@ -89,6 +99,100 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        ImageView editProfile = (ImageView) rootView.findViewById(R.id.edit_profile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(getContext());
+                dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.dialog_edit_profile);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
+                View red = dialog.findViewById(R.id.red);
+                View pink = dialog.findViewById(R.id.pink);
+                View purple = dialog.findViewById(R.id.purple);
+                View blue = dialog.findViewById(R.id.blue);
+                View teal = dialog.findViewById(R.id.teal);
+                View green = dialog.findViewById(R.id.green);
+                View yellow = dialog.findViewById(R.id.yellow);
+                View orange = dialog.findViewById(R.id.orange);
+                View gray = dialog.findViewById(R.id.gray);
+
+                red.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_red);
+                        dialog.dismiss();
+                    }
+                });
+
+                pink.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_pink);
+                        dialog.dismiss();
+                    }
+                });
+
+                purple.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_purple);
+                        dialog.dismiss();
+                    }
+                });
+
+                blue.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_blue);
+                        dialog.dismiss();
+                    }
+                });
+
+                teal.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_teal);
+                        dialog.dismiss();
+                    }
+                });
+
+                green.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_green);
+                        dialog.dismiss();
+                    }
+                });
+
+                yellow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_yellow);
+                        dialog.dismiss();
+                    }
+                });
+
+                orange.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_orange);
+                        dialog.dismiss();
+                    }
+                });
+
+                gray.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        profilePic.setBackgroundResource(R.drawable.profile_gray);
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 
