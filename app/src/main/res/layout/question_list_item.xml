@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -8,53 +9,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal">
 
         <com.denovo.denovo.BoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="Q: "/>
+            tools:text="DisplayName"/>
 
         <com.denovo.denovo.CustomTextView
-            android:id="@+id/question"
+            android:id="@+id/comment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="fill"
-            android:maxLines="3"
-            android:ellipsize="end"
-            android:text="I am a huge fan of the Lord of the Ring series; however, i am not sure I'm into the whole magic thing. Would you recommend this book for a reader like me?"
-            android:textSize="18sp"/>
-
+            android:layout_marginLeft="8dp"
+            android:text=""
+            android:textSize="18sp"
+            tools:text="I love this item! I am considering buying this but i have a question. Do you think this item is going to imrove my life?"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <com.denovo.denovo.CustomTextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:orientation="horizontal">
-
-        <com.denovo.denovo.BoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="#9E9E9E"
-            android:text="A: "/>
-
-        <com.denovo.denovo.CustomTextView
-            android:id="@+id/answer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
-            android:maxLines="3"
-            android:ellipsize="end"
-            android:textColor="#9E9E9E"
-            android:text="This book is great for all fiction fans! As long as you have an imagination and an open-mind you will adore this modern age classic!"
-            android:textSize="18sp"/>
-
-    </LinearLayout>
+        android:layout_marginTop="8dp"
+        tools:text="Jan 2, 2014"
+        />
 
 
 </LinearLayout>

@@ -18,19 +18,17 @@ public class DonateActivity extends AppCompatActivity
         DonatePriceFragment.OnPriceSubmittedListener {
 
     private static final String TAG = "DonateActivity";
-    
-    private TabLayout mTabLayout;
-    private ImageView mBtnBack;
-    private ImageView mBtnNext;
-    private DonateAdapter mAdapter;
-    private DonateItemInfoFragment donateItemInfoFragment;
-
     String mItemPhotoPath;
     String mItemName;
     String mItemYardSale;
     String mItemDescription;
     int mItemRating;
     double mItemPrice;
+    private TabLayout mTabLayout;
+    private ImageView mBtnBack;
+    private ImageView mBtnNext;
+    private DonateAdapter mAdapter;
+    private DonateItemInfoFragment donateItemInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +158,14 @@ public class DonateActivity extends AppCompatActivity
         });
     }
 
+    /**
+     * Get general item information from tab one
+     *
+     * @param photoPath   is the path to the item photo
+     * @param name        is the name of the item
+     * @param yardSale    is the yard sale that the item is donated to
+     * @param description is a description of the item
+     */
     public void onInfoSubmitted(String photoPath, String name, String yardSale, String
             description) {
         mItemPhotoPath = photoPath;
@@ -169,16 +175,29 @@ public class DonateActivity extends AppCompatActivity
         mTabLayout.getTabAt(1).select();
     }
 
+    /**
+     * Get condition rating of item from tab 2
+     *
+     * @param rating is the condition rating of the object
+     */
     public void onConditionSubmitted(int rating) {
         mItemRating = rating;
         mTabLayout.getTabAt(2).select();
     }
 
+    /**
+     * Get price of the object
+     *
+     * @param price is the price of the object
+     */
     public void onPriceSubmitted(double price) {
         mItemPrice = price;
         mTabLayout.getTabAt(3).select();
     }
 
+    /**
+     * Enable the next button
+     */
     public void enableButton() {
         mBtnNext.setEnabled(true);
     }

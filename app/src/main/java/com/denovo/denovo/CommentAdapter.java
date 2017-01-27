@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,9 +13,9 @@ import java.util.ArrayList;
  * Created by abhinavkhushalani on 12/1/16.
  */
 
-public class QuestionAdapter extends ArrayAdapter<Question> {
-    public QuestionAdapter(Activity context, ArrayList<Question> questionList) {
-        super(context, 0, questionList);
+public class CommentAdapter extends ArrayAdapter<ItemComment> {
+    public CommentAdapter(Activity context, ArrayList<ItemComment> commentList, String uid) {
+        super(context, 0, commentList);
     }
 
     @Override
@@ -27,13 +26,11 @@ public class QuestionAdapter extends ArrayAdapter<Question> {
                     R.layout.question_list_item, parent, false);
         }
 
-        Question currentQuestion = getItem(position);
+        ItemComment currentComment = getItem(position);
 
-        TextView questionTextView = (TextView) listItemView.findViewById(R.id.question);
-        questionTextView.setText(currentQuestion.getQuestion());
+        TextView commentTextView = (TextView) listItemView.findViewById(R.id.comments);
+        commentTextView.setText(currentComment.getComment());
 
-        TextView answerTextView = (TextView) listItemView.findViewById(R.id.answer);
-        answerTextView.setText(currentQuestion.getAnswer());
 
         return listItemView;
     }

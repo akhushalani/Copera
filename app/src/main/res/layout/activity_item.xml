@@ -17,20 +17,20 @@
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:fitsSystemWindows="true"
+            app:collapsedTitleGravity="center_horizontal"
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleGravity="center_horizontal"
-            app:collapsedTitleGravity="center_horizontal"
-            app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
-            android:fitsSystemWindows="true">
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.denovo.denovo.SquareImageView
                 android:id="@+id/item_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
                 android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -67,8 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/item_name"
-                android:paddingLeft="16dp"
                 android:paddingBottom="4dp"
+                android:paddingLeft="16dp"
                 android:text="Dulaney FBLA"
                 android:textSize="24sp"/>
 
@@ -88,8 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignRight="@+id/item_name"
                 android:layout_alignParentTop="true"
+                android:layout_alignRight="@+id/item_name"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="14dp"
                 android:isIndicator="true"
@@ -146,33 +146,33 @@
                 android:textSize="18sp"/>
 
             <com.denovo.denovo.BoldTextView
-                android:id="@+id/questions"
+                android:id="@+id/comments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/description"
-                android:paddingLeft="16dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:paddingLeft="16dp"
                 android:text="Questions"
                 android:textSize="@dimen/activity_title_text_size"/>
 
             <LinearLayout
-                android:id="@+id/questions_list"
+                android:id="@+id/comments_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/questions"
+                android:layout_below="@id/comments"
                 android:layout_marginTop="8dp"
+                android:orientation="vertical"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:orientation="vertical">
+                android:paddingRight="16dp">
 
                 <com.denovo.denovo.CustomTextView
                     android:id="@+id/no_questions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textSize="18sp"
-                    android:text="No questions asked yet!"/>
+                    android:text="No questions asked yet!"
+                    android:textSize="18sp"/>
 
             </LinearLayout>
 
@@ -180,8 +180,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/questions_list"
-                android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
                 android:hint="Ask a question..."
                 android:textSize="24sp"
                 />

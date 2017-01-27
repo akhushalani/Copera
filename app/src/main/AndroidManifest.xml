@@ -67,6 +67,8 @@
         </activity>
         <activity android:name=".CreateChapter">
         </activity>
+        <activity android:name=".ManageChapter">
+        </activity>
     </application>
 
 </manifest>

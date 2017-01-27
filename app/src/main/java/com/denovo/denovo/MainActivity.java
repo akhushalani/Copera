@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
+                    //if user is not signed in then send them to login activity
                     Intent homeIntent = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(homeIntent);
                 }

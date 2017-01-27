@@ -18,6 +18,17 @@ import java.util.ArrayList;
  */
 
 public class Item implements Parcelable {
+    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
     private String mName;
     private String mImageFileName;
     private String mYardSale;
@@ -30,8 +41,9 @@ public class Item implements Parcelable {
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageRef;
 
-    public Item() {
 
+    public Item() {
+        //required blank constructor
     }
 
     public Item(String name, String imageFileName, String yardSale, String donor, double price, int
@@ -47,6 +59,21 @@ public class Item implements Parcelable {
         mQuestions = questions;
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
                 ".appspot.com/images/" + imageFileName);
+    }
+
+    private Item(Parcel in) {
+        mName = in.readString();
+        mImageFileName = in.readString();
+        mYardSale = in.readString();
+        mDonor = in.readString();
+        mPrice = in.readDouble();
+        mRating = in.readInt();
+        mDescription = in.readString();
+        mWantIt = in.readInt();
+        mQuestions = new ArrayList<>();
+        in.readTypedList(mQuestions, Question.CREATOR);
+        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
+                ".appspot.com/images/" + mImageFileName);
     }
 
     //Getters and Setters
@@ -84,13 +111,13 @@ public class Item implements Parcelable {
         return mPrice;
     }
 
+    public void setPrice(double price) {
+        mPrice = price;
+    }
+
     public String formatPrice() {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         return format.format(mPrice);
-    }
-
-    public void setPrice(double price) {
-        mPrice = price;
     }
 
     public int getRating() {
@@ -145,32 +172,5 @@ public class Item implements Parcelable {
         out.writeString(mDescription);
         out.writeInt(mWantIt);
         out.writeTypedList(mQuestions);
-    }
-
-    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
-        @Override
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
-        }
-
-        @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
-        }
-    };
-
-    private Item(Parcel in) {
-        mName = in.readString();
-        mImageFileName = in.readString();
-        mYardSale = in.readString();
-        mDonor = in.readString();
-        mPrice = in.readDouble();
-        mRating = in.readInt();
-        mDescription = in.readString();
-        mWantIt = in.readInt();
-        mQuestions = new ArrayList<>();
-        in.readTypedList(mQuestions, Question.CREATOR);
-        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
-                ".appspot.com/images/" + mImageFileName);
     }
 }

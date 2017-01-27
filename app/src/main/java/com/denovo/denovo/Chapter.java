@@ -11,6 +11,13 @@ public class Chapter {
         //required default constructor
     }
 
+    /**
+     * Class Constructor
+     *
+     * @param name      is the chapter name
+     * @param latitude  is the latitude coordinate of the chapter's location
+     * @param longitude is the longitude coordinate of the chapter's location
+     */
     public Chapter(String name, double latitude, double longitude) {
         this.name = name;
         this.latitude = latitude;

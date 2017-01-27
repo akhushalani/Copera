@@ -11,14 +11,16 @@ public class User {
 
 
     public User() {
-        //required default constructor
+        //required blank constructor
     }
 
-    public User(String name, String uid) {
-        this.name = name;
-        this.uid = uid;
-    }
-
+    /**
+     * Class Constuctor
+     *
+     * @param name     is the name of the user
+     * @param uid      is the unique user id
+     * @param wishlist is the  array of strings that contains the ids of items on their wishlist
+     */
     public User(String name, String uid, ArrayList<String> wishlist) {
         this.name = name;
         this.uid = uid;

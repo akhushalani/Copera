@@ -40,12 +40,20 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
+        //Find recycler view from xml
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv);
+
+        //set WrapContentLinearLayoutManager on recycler view
         llm = new WrapContentLinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
+
+        //instantiate mFeed
         mFeed = new ArrayList<>();
 
+        //get reference to database
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //add child event listener to database to watch for changes
         mDatabase.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -106,6 +114,7 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
             writeNewItem(item);
         } */
 
+        //set RVAdapter on the recycler view
         mAdapter = new RVAdapter(mFeed);
         rv.setAdapter(mAdapter);
         mAdapter.setItemClickCallback(this);

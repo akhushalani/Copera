@@ -11,6 +11,12 @@ public class BargainMessage {
     private String mUser;
     private long mTime;
 
+    /**
+     * Class Constructor
+     *
+     * @param text contains the text content of the message
+     * @param user represents the user that sent the message
+     */
     public BargainMessage(String text, String user) {
         mText = text;
         mUser = user;
@@ -20,9 +26,11 @@ public class BargainMessage {
     }
 
     public BargainMessage(){
-
+        //required blank constructor
     }
 
+
+    //getters and setters
     public String getText() {
         return mText;
     }

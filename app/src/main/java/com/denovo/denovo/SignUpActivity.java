@@ -25,6 +25,8 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 import static android.R.attr.updatePeriodMillis;
 import static android.R.attr.y;
 import static android.R.id.input;
@@ -174,7 +176,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void addUserToDb(String name, String uid) {
-        User newUser = new User(name, uid);
+        ArrayList<String> wishlist = new ArrayList<>();
+        User newUser = new User(name, uid, wishlist);
 
         DatabaseReference childRef = mDatabase.child("users").push();
         childRef.setValue(newUser);

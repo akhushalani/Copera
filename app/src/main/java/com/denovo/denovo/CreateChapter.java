@@ -36,8 +36,6 @@ import static android.media.CamcorderProfile.get;
 public class CreateChapter extends AppCompatActivity {
 
     private EditText editName;
-    private EditText editLat;
-    private EditText editLong;
     private EditText editLocation;
     private CustomButton createChapterButton;
     private Address location;
