@@ -7,7 +7,7 @@ public class User {
 
     private String name;
     private String uid;
-    private ArrayList<String> wishlist;
+    private ArrayList<String> wishList;
 
 
     public User() {
@@ -19,10 +19,10 @@ public class User {
         this.uid = uid;
     }
 
-    public User(String name, String uid, ArrayList<String> wishlist) {
+    public User(String name, String uid, ArrayList<String> wishList) {
         this.name = name;
         this.uid = uid;
-        this.wishlist = wishlist;
+        this.wishList = wishList;
     }
 
     //Setters and Getters
@@ -42,12 +42,12 @@ public class User {
         this.uid = uid;
     }
 
-    public ArrayList<String> getWishlist() {
-        return wishlist;
+    public ArrayList<String> getWishList() {
+        return wishList;
     }
 
-    public void setWishlist(ArrayList<String> wishlist) {
-        this.wishlist = wishlist;
+    public void setWishList(ArrayList<String> wishList) {
+        this.wishList = wishList;
     }
 
 }

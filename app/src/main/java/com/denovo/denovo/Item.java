@@ -1,12 +1,23 @@
 package com.denovo.denovo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -18,6 +29,9 @@ import java.util.ArrayList;
  */
 
 public class Item implements Parcelable {
+
+    private static final String TAG = "Item";
+
     private String mName;
     private String mImageFileName;
     private String mYardSale;
@@ -25,8 +39,9 @@ public class Item implements Parcelable {
     private double mPrice;
     private int mRating;
     private String mDescription;
-    private int mWantIt;
+    private int mWishListNum;
     private ArrayList<Question> mQuestions;
+    private ArrayList<String> mWishListUsers;
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageRef;
 
@@ -35,7 +50,8 @@ public class Item implements Parcelable {
     }
 
     public Item(String name, String imageFileName, String yardSale, String donor, double price, int
-            rating, String description, ArrayList<Question> questions) {
+            rating, String description, ArrayList<Question> questions, ArrayList<String>
+            wishListUsers) {
         mName = name;
         mImageFileName = imageFileName;
         mYardSale = yardSale;
@@ -43,8 +59,9 @@ public class Item implements Parcelable {
         mPrice = price;
         mRating = rating;
         mDescription = description;
-        mWantIt = 0;
+        mWishListNum = 0;
         mQuestions = questions;
+        mWishListUsers = wishListUsers;
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
                 ".appspot.com/images/" + imageFileName);
     }
@@ -109,16 +126,21 @@ public class Item implements Parcelable {
         mDescription = description;
     }
 
-    public int getWantIt() {
-        return mWantIt;
+    public int getWishListNum() {
+        return mWishListNum;
     }
 
-    public void setWantIt(int wantIt){
-        mWantIt = wantIt;
+    public void setWishListNum(int wishList){
+        mWishListNum = wishList;
     }
 
-    public void setWantIt() {
-        mWantIt++;
+    @Exclude
+    public void setWishListNum(boolean value) {
+        if (value) {
+            mWishListNum++;
+        } else {
+            mWishListNum--;
+        }
     }
 
     public ArrayList<Question> getQuestions() {
@@ -127,6 +149,98 @@ public class Item implements Parcelable {
 
     public void setQuestions(ArrayList<Question> questions) {
         mQuestions = questions;
+    }
+
+    public ArrayList<String> getWishListUsers() {
+        return mWishListUsers;
+    }
+
+    public void setWishListUsers(ArrayList<String> wishListUsers) {
+        if (wishListUsers == null) {
+            mWishListUsers = new ArrayList<>();
+        } else {
+            mWishListUsers = wishListUsers;
+        }
+    }
+
+    @Exclude
+    public String getId() {
+        return mImageFileName.substring(0, mImageFileName.length() - 4);
+    }
+
+    public void onAddedToWishList(final String uid, final String itemId) {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference itemRef = databaseRef.child("items").child(itemId);
+        itemRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                final Item i = mutableData.getValue(Item.class);
+                if (i == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                if (i.getWishListUsers() == null) {
+                    i.setWishListUsers(new ArrayList<String>());
+                }
+
+                if (i.getWishListUsers().contains(uid)) {
+                    i.setWishListNum(false);
+                    ArrayList<String> tempList = i.getWishListUsers();
+                    tempList.remove(uid);
+                    i.setWishListUsers(tempList);
+                    setWishListNum(false);
+                    setWishListUsers(tempList);
+                } else {
+                    i.setWishListNum(true);
+                    ArrayList<String> tempList = i.getWishListUsers();
+                    tempList.add(uid);
+                    i.setWishListUsers(tempList);
+                    setWishListNum(true);
+                    setWishListUsers(tempList);
+                }
+
+                mutableData.setValue(i);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                Log.d("Item", "itemTransaction:onComplete:" + databaseError);
+            }
+        });
+
+        DatabaseReference userRef = databaseRef.child("users").child(uid);
+        Log.v(TAG, uid);
+        userRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                User u = mutableData.getValue(User.class);
+                if (u == null) {
+                    return Transaction.success(mutableData);
+                }
+
+                if (u.getWishList() == null) {
+                    u.setWishList (new ArrayList<String>());
+                }
+                if (u.getWishList().contains(itemId)) {
+                    ArrayList<String> tempList = u.getWishList();
+                    tempList.remove(itemId);
+                    u.setWishList(tempList);
+                } else {
+                    ArrayList<String> tempList = u.getWishList();
+                    tempList.add(itemId);
+                    u.setWishList(tempList);
+                }
+
+                mutableData.setValue(u);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                Log.d("Item", "userTransaction:onComplete:" + databaseError);
+            }
+        });
     }
 
     @Override
@@ -143,8 +257,9 @@ public class Item implements Parcelable {
         out.writeDouble(mPrice);
         out.writeInt(mRating);
         out.writeString(mDescription);
-        out.writeInt(mWantIt);
+        out.writeInt(mWishListNum);
         out.writeTypedList(mQuestions);
+        out.writeStringList(mWishListUsers);
     }
 
     public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
@@ -167,9 +282,11 @@ public class Item implements Parcelable {
         mPrice = in.readDouble();
         mRating = in.readInt();
         mDescription = in.readString();
-        mWantIt = in.readInt();
+        mWishListNum = in.readInt();
         mQuestions = new ArrayList<>();
         in.readTypedList(mQuestions, Question.CREATOR);
+        mWishListUsers = new ArrayList<>();
+        in.readStringList(mWishListUsers);
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
                 ".appspot.com/images/" + mImageFileName);
     }

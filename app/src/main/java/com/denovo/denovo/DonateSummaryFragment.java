@@ -82,14 +82,16 @@ public class DonateSummaryFragment extends Fragment {
         summaryRatingBar = (RatingBar) rootView.findViewById(R.id.summary_item_rating);
         summaryItemPrice = (TextView) rootView.findViewById(R.id.summary_item_price);
 
-        Button submitButton = (Button) rootView.findViewById(R.id.btn_submit);
+        final Button submitButton = (Button) rootView.findViewById(R.id.btn_submit);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                submitButton.setEnabled(false);
                 DatabaseReference childRef = mDatabase.child("items").push();
                 String fileName = childRef.getKey() + ".jpg";
                 Item item = new Item(mItemName, fileName, mItemYardSale, "Abhinav Khushalani",
-                        mItemPrice, mItemRating, mItemDescription, new ArrayList<Question>());
+                        mItemPrice, mItemRating, mItemDescription, new ArrayList<Question>(), new
+                        ArrayList<String>());
                 childRef.setValue(item);
                 final File file = new File(mItemPhotoPath);
                 Uri fileUri = Uri.fromFile(file);

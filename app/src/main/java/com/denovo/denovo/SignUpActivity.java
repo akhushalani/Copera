@@ -72,6 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!validateForm()) {
+                    signUpButton.setEnabled(false);
                     return;
                 }
                 createAccount(inputEmail.getText().toString(), inputPassword.getText().toString());
@@ -176,7 +177,6 @@ public class SignUpActivity extends AppCompatActivity {
     private void addUserToDb(String name, String uid) {
         User newUser = new User(name, uid);
 
-        DatabaseReference childRef = mDatabase.child("users").push();
-        childRef.setValue(newUser);
+        mDatabase.child("users").child(uid).setValue(newUser);
     }
 }
