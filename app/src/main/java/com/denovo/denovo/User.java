@@ -7,24 +7,22 @@ public class User {
 
     private String name;
     private String uid;
-    private ArrayList<String> wishlist;
+    private ArrayList<String> wishList;
 
 
     public User() {
-        //required blank constructor
+        //required default constructor
     }
 
-    /**
-     * Class Constuctor
-     *
-     * @param name     is the name of the user
-     * @param uid      is the unique user id
-     * @param wishlist is the  array of strings that contains the ids of items on their wishlist
-     */
-    public User(String name, String uid, ArrayList<String> wishlist) {
+    public User(String name, String uid) {
         this.name = name;
         this.uid = uid;
-        this.wishlist = wishlist;
+    }
+
+    public User(String name, String uid, ArrayList<String> wishList) {
+        this.name = name;
+        this.uid = uid;
+        this.wishList = wishList;
     }
 
     //Setters and Getters
@@ -44,12 +42,12 @@ public class User {
         this.uid = uid;
     }
 
-    public ArrayList<String> getWishlist() {
-        return wishlist;
+    public ArrayList<String> getWishList() {
+        return wishList;
     }
 
-    public void setWishlist(ArrayList<String> wishlist) {
-        this.wishlist = wishlist;
+    public void setWishList(ArrayList<String> wishList) {
+        this.wishList = wishList;
     }
 
 }

@@ -53,18 +53,30 @@
             android:layout_below="@id/user_name_text_view"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:text="Denovo User"
+            android:text="Wish List"
             android:textAlignment="center"
-            android:textSize="36sp"
-            tools:text="Wishlist"/>
+            android:textSize="24sp"
+            tools:text="Wish List"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/wishlist_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/wishlist_title_text_view">
+            android:layout_below="@id/wishlist_title_text_view"
+            android:paddingTop="8dp">
+
         </android.support.v7.widget.RecyclerView>
 
+
+        <com.denovo.denovo.CustomTextView
+            android:id="@+id/empty_wish_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/wishlist_title_text_view"
+            android:text="Your wish list is empty!"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:gravity="center"/>
 
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

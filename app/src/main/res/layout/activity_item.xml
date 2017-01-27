@@ -110,7 +110,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:text="Want it! | 32"
+                android:text="Wish List | 32"
                 android:textColor="@android:color/white"
                 android:textSize="22sp"/>
 

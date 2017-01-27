@@ -2,6 +2,7 @@ package com.denovo.denovo;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,13 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
+
+import static android.R.attr.data;
+import static java.security.AccessController.getContext;
 
 
 /**
@@ -45,10 +50,17 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
 
     public void swapDataSet(List<Item> newFeed) {
         mFeed = newFeed;
+        notifyItemInserted(0);
     }
 
-    public void clearDataSet() {
-        mFeed.clear();
+    public void swapDataSet(List<Item> newFeed, int index) {
+        mFeed = newFeed;
+        notifyItemChanged(index);
+    }
+
+    public void swapDataSet(List<Item> newFeed, boolean notify) {
+        mFeed = newFeed;
+        notifyDataSetChanged();
     }
 
     RVAdapter(List<Item> feed) {
@@ -69,12 +81,23 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = " ";
+        if (user != null) {
+            uid = user.getUid();
+        }
         mFeed.get(i).downloadImage(itemViewHolder.itemPhoto.getContext(), itemViewHolder.itemPhoto);
         itemViewHolder.itemName.setText(mFeed.get(i).getName());
         itemViewHolder.itemPrice.setText(mFeed.get(i).formatPrice());
         itemViewHolder.itemRating.setRating(mFeed.get(i).getRating());
         itemViewHolder.description.setText(mFeed.get(i).getDescription());
-        itemViewHolder.wantItBtn.setText("Want it! | " + mFeed.get(i).getWantIt());
+        itemViewHolder.wantItBtn.setText("Wish List | " + mFeed.get(i).getWishListNum());
+        if (mFeed.get(i).getWishListUsers() == null ||
+                !mFeed.get(i).getWishListUsers().contains(uid)) {
+            itemViewHolder.wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
+        } else {
+            itemViewHolder.wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
+        }
     }
 
     @Override
@@ -112,11 +135,22 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
 
         @Override
         public void onClick(View v) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = " ";
+            if (user != null) {
+                uid = user.getUid();
+            }
             if (v.getId() == R.id.cv) {
                 itemClickCallback.onItemClick(getAdapterPosition());
             } else if (v.getId() == R.id.btn_item_want) {
                 itemClickCallback.onWantItBtnClick(getAdapterPosition());
-                ((TextView) v).setText("Want it! | " + mFeed.get(index).getWantIt());
+                ((TextView) v).setText("Wish List | " + mFeed.get(index).getWishListNum());
+                if (mFeed.get(index).getWishListUsers() == null ||
+                        !mFeed.get(index).getWishListUsers().contains(uid)) {
+                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
+                } else {
+                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
+                }
             } else if (v.getId() == R.id.btn_item_bargain) {
                 itemClickCallback.onBargainBtnClick(getAdapterPosition());
             } else {

@@ -128,7 +128,9 @@ public class BargainActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                BargainMessage message = dataSnapshot.getValue(BargainMessage.class);
+                mChat.add(message);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override

@@ -6,4 +6,5 @@
     <color name="lightBlue">#3F51B5</color>
     <color name="blue">#0E2A7F</color>
     <color name="colorAccent">#1A8AF1</color>
+    <color name="colorInactive">#999999</color>
 </resources>
