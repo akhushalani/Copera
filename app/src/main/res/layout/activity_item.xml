@@ -146,7 +146,7 @@
                 android:textSize="18sp"/>
 
             <com.denovo.denovo.BoldTextView
-                android:id="@+id/comments"
+                android:id="@+id/comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/description"
@@ -160,18 +160,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/comments"
+                android:layout_below="@id/comment"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
                 <com.denovo.denovo.CustomTextView
-                    android:id="@+id/no_questions"
+                    android:id="@+id/no_comments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="No questions asked yet!"
+                    android:text="No Comments Yet!"
                     android:textSize="18sp"/>
 
             </LinearLayout>
@@ -179,7 +179,7 @@
             <com.denovo.denovo.CustomEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/questions_list"
+                android:layout_below="@id/comments_list"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:hint="Ask a question..."

@@ -36,8 +36,8 @@ public class ItemComment implements Parcelable {
         return mComment;
     }
 
-    public void setComment(String question) {
-        mComment = question;
+    public void setComment(String comment) {
+        mComment = comment;
     }
 
     @Override

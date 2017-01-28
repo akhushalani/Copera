@@ -28,7 +28,7 @@ public class CommentAdapter extends ArrayAdapter<ItemComment> {
 
         ItemComment currentComment = getItem(position);
 
-        TextView commentTextView = (TextView) listItemView.findViewById(R.id.comments);
+        TextView commentTextView = (TextView) listItemView.findViewById(R.id.comment);
         commentTextView.setText(currentComment.getComment());
 
 

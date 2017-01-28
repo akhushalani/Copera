@@ -30,8 +30,18 @@ import java.util.ArrayList;
 
 public class Item implements Parcelable {
 
-    private static final String TAG = "Item";
+    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
 
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
+    private static final String TAG = "Item";
     private String mName;
     private String mImageFileName;
     private String mYardSale;
@@ -40,7 +50,7 @@ public class Item implements Parcelable {
     private int mRating;
     private String mDescription;
     private int mWishListNum;
-    private ArrayList<Question> mQuestions;
+    private ArrayList<ItemComment> mComments;
     private ArrayList<String> mWishListUsers;
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageRef;
@@ -50,7 +60,7 @@ public class Item implements Parcelable {
     }
 
     public Item(String name, String imageFileName, String yardSale, String donor, double price, int
-            rating, String description, ArrayList<Question> questions, ArrayList<String>
+            rating, String description, ArrayList<ItemComment> comments, ArrayList<String>
             wishListUsers) {
         mName = name;
         mImageFileName = imageFileName;
@@ -60,10 +70,27 @@ public class Item implements Parcelable {
         mRating = rating;
         mDescription = description;
         mWishListNum = 0;
-        mQuestions = questions;
+        mComments = comments;
         mWishListUsers = wishListUsers;
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
                 ".appspot.com/images/" + imageFileName);
+    }
+
+    private Item(Parcel in) {
+        mName = in.readString();
+        mImageFileName = in.readString();
+        mYardSale = in.readString();
+        mDonor = in.readString();
+        mPrice = in.readDouble();
+        mRating = in.readInt();
+        mDescription = in.readString();
+        mWishListNum = in.readInt();
+        mComments = new ArrayList<>();
+        in.readTypedList(mComments, ItemComment.CREATOR);
+        mWishListUsers = new ArrayList<>();
+        in.readStringList(mWishListUsers);
+        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
+                ".appspot.com/images/" + mImageFileName);
     }
 
     //Getters and Setters
@@ -101,13 +128,13 @@ public class Item implements Parcelable {
         return mPrice;
     }
 
+    public void setPrice(double price) {
+        mPrice = price;
+    }
+
     public String formatPrice() {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         return format.format(mPrice);
-    }
-
-    public void setPrice(double price) {
-        mPrice = price;
     }
 
     public int getRating() {
@@ -130,10 +157,6 @@ public class Item implements Parcelable {
         return mWishListNum;
     }
 
-    public void setWishListNum(int wishList){
-        mWishListNum = wishList;
-    }
-
     @Exclude
     public void setWishListNum(boolean value) {
         if (value) {
@@ -143,12 +166,16 @@ public class Item implements Parcelable {
         }
     }
 
-    public ArrayList<Question> getQuestions() {
-        return mQuestions;
+    public void setWishListNum(int wishList) {
+        mWishListNum = wishList;
     }
 
-    public void setQuestions(ArrayList<Question> questions) {
-        mQuestions = questions;
+    public ArrayList<ItemComment> getComments() {
+        return mComments;
+    }
+
+    public void setQuestions(ArrayList<ItemComment> comment) {
+        mComments = comment;
     }
 
     public ArrayList<String> getWishListUsers() {
@@ -258,36 +285,7 @@ public class Item implements Parcelable {
         out.writeInt(mRating);
         out.writeString(mDescription);
         out.writeInt(mWishListNum);
-        out.writeTypedList(mQuestions);
+        out.writeTypedList(mComments);
         out.writeStringList(mWishListUsers);
-    }
-
-    public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
-        @Override
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
-        }
-
-        @Override
-        public Item[] newArray(int size) {
-            return new Item[size];
-        }
-    };
-
-    private Item(Parcel in) {
-        mName = in.readString();
-        mImageFileName = in.readString();
-        mYardSale = in.readString();
-        mDonor = in.readString();
-        mPrice = in.readDouble();
-        mRating = in.readInt();
-        mDescription = in.readString();
-        mWishListNum = in.readInt();
-        mQuestions = new ArrayList<>();
-        in.readTypedList(mQuestions, Question.CREATOR);
-        mWishListUsers = new ArrayList<>();
-        in.readStringList(mWishListUsers);
-        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
-                ".appspot.com/images/" + mImageFileName);
     }
 }

@@ -90,7 +90,7 @@ public class DonateSummaryFragment extends Fragment {
                 DatabaseReference childRef = mDatabase.child("items").push();
                 String fileName = childRef.getKey() + ".jpg";
                 Item item = new Item(mItemName, fileName, mItemYardSale, "Abhinav Khushalani",
-                        mItemPrice, mItemRating, mItemDescription, new ArrayList<Question>(), new
+                        mItemPrice, mItemRating, mItemDescription, new ArrayList<ItemComment>(), new
                         ArrayList<String>());
                 childRef.setValue(item);
                 final File file = new File(mItemPhotoPath);

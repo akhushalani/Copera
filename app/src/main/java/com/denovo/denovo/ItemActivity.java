@@ -71,8 +71,8 @@ public class ItemActivity extends AppCompatActivity {
         final TextView description = (TextView) findViewById(R.id.description);
         final CustomButton wantItBtn = (CustomButton) findViewById(R.id.btn_item_want);
 
-        final LinearLayout questionList = (LinearLayout) findViewById(R.id.questions_list);
-        final TextView noQuestions = (TextView) findViewById(R.id.no_questions);
+        final LinearLayout questionList = (LinearLayout) findViewById(R.id.comments_list);
+        final TextView noQuestions = (TextView) findViewById(R.id.no_comments);
         final LayoutInflater inflater = LayoutInflater.from(this);
 
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
@@ -97,10 +97,10 @@ public class ItemActivity extends AppCompatActivity {
                     wantItBtn.setElevation(dpToPx(1));
                 }
                 int previewCount;
-                if (item.getQuestions() == null) {
+                if (item.getComments() == null) {
                     previewCount = 0;
                 } else {
-                    previewCount = item.getQuestions().size();
+                    previewCount = item.getComments().size();
                 }
                 if (previewCount > 0) {
                     noQuestions.setVisibility(View.GONE);
@@ -109,14 +109,11 @@ public class ItemActivity extends AppCompatActivity {
                     previewCount = 3;
                 }
                 for (int i = 0; i < previewCount; i++) {
-                    Question currentQuestion = item.getQuestions().get(i);
+                    ItemComment currentComment = item.getComments().get(i);
                     View view  = inflater.inflate(R.layout.question_list_item, questionList, false);
 
-                    TextView questionTextView = (TextView) view.findViewById(R.id.question);
-                    questionTextView.setText(currentQuestion.getQuestion());
-
-                    TextView answerTextView = (TextView) view.findViewById(R.id.answer);
-                    answerTextView.setText(currentQuestion.getAnswer());
+                    TextView CommentTextView = (TextView) view.findViewById(R.id.comment);
+                    CommentTextView.setText(currentComment.getComment());
 
                     questionList.addView(view);
                 }
