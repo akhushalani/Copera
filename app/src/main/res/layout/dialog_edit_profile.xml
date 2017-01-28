@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:rowCount="3"
+            android:columnCount="3"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:background="@drawable/custom_dialog">
+
+    <View
+        android:id="@+id/red"
+        android:background="@drawable/profile_red_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/pink"
+        android:background="@drawable/profile_pink_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/purple"
+        android:background="@drawable/profile_purple_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/blue"
+        android:background="@drawable/profile_blue_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/teal"
+        android:background="@drawable/profile_teal_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/green"
+        android:background="@drawable/profile_green_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/yellow"
+        android:background="@drawable/profile_yellow_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/orange"
+        android:background="@drawable/profile_orange_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+    <View
+        android:id="@+id/gray"
+        android:background="@drawable/profile_gray_wbg"
+        android:layout_margin="4dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"/>
+
+</GridLayout>

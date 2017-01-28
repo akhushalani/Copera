@@ -7,6 +7,7 @@ public class User {
 
     private String name;
     private String uid;
+    private String initials;
     private ArrayList<String> wishList;
 
 
