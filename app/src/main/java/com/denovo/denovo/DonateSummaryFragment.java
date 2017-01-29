@@ -1,6 +1,5 @@
 package com.denovo.denovo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,8 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,7 +87,7 @@ public class DonateSummaryFragment extends Fragment {
                 DatabaseReference childRef = mDatabase.child("items").push();
                 String fileName = childRef.getKey() + ".jpg";
                 Item item = new Item(mItemName, fileName, mItemYardSale, "Abhinav Khushalani",
-                        mItemPrice, mItemRating, mItemDescription, new ArrayList<ItemComment>(), new
+                        mItemPrice, mItemRating, mItemDescription, new ArrayList<Comment>(), new
                         ArrayList<String>());
                 childRef.setValue(item);
                 final File file = new File(mItemPhotoPath);

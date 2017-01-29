@@ -5,12 +5,16 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -21,10 +25,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-import static java.security.AccessController.getContext;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.denovo.denovo.R.id.comment;
+import static com.denovo.denovo.R.layout.comment_item;
 
 
 public class ItemActivity extends AppCompatActivity {
@@ -34,13 +40,17 @@ public class ItemActivity extends AppCompatActivity {
     private String itemId;
     private String uid;
     private int feedPosition;
+    private ListView mMessageListView;
+    private Comment mCommentAdapter;
+    private DatabaseReference mDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             uid = user.getUid();
         }
@@ -71,12 +81,15 @@ public class ItemActivity extends AppCompatActivity {
         final TextView description = (TextView) findViewById(R.id.description);
         final CustomButton wantItBtn = (CustomButton) findViewById(R.id.btn_item_want);
 
-        final LinearLayout questionList = (LinearLayout) findViewById(R.id.comments_list);
-        final TextView noQuestions = (TextView) findViewById(R.id.no_comments);
+        final LinearLayout commentList = (LinearLayout) findViewById(R.id.comments_list);
+        final TextView noComments = (TextView) findViewById(R.id.no_comments);
+        final EditText commentEntry = (EditText) findViewById(R.id.comment_entry);
+        final ImageView sendCommentBtn = (ImageView) findViewById(R.id.send_comment_btn);
+
         final LayoutInflater inflater = LayoutInflater.from(this);
 
-        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-        databaseRef.child("items").orderByKey().equalTo(itemId)
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("items").orderByKey().equalTo(itemId)
                 .addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -91,10 +104,10 @@ public class ItemActivity extends AppCompatActivity {
                 wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
                 if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
                     wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
-                    wantItBtn.setElevation(dpToPx(4));
+                    //wantItBtn.setElevation(dpToPx(4));
                 } else {
                     wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
-                    wantItBtn.setElevation(dpToPx(1));
+                    //wantItBtn.setElevation(dpToPx(1));
                 }
                 int previewCount;
                 if (item.getComments() == null) {
@@ -103,19 +116,19 @@ public class ItemActivity extends AppCompatActivity {
                     previewCount = item.getComments().size();
                 }
                 if (previewCount > 0) {
-                    noQuestions.setVisibility(View.GONE);
+                    noComments.setVisibility(View.GONE);
                 }
                 if (previewCount > 3) {
                     previewCount = 3;
                 }
                 for (int i = 0; i < previewCount; i++) {
-                    ItemComment currentComment = item.getComments().get(i);
-                    View view  = inflater.inflate(R.layout.question_list_item, questionList, false);
+                    Comment currentComment = item.getComments().get(i);
+                    View view = inflater.inflate(comment_item, commentList, false);
 
-                    TextView CommentTextView = (TextView) view.findViewById(R.id.comment);
+                    TextView CommentTextView = (TextView) view.findViewById(comment);
                     CommentTextView.setText(currentComment.getComment());
 
-                    questionList.addView(view);
+                    commentList.addView(view);
                 }
             }
 
@@ -171,6 +184,44 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
+        // Enable Send button when there's text to send
+        commentEntry.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.toString().trim().length() > 0) {
+                    sendCommentBtn.setEnabled(true);
+                } else {
+                    sendCommentBtn.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        sendCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //get users time
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+                String currentDateandTime = sdf.format(new Date());
+
+                //create new comment variable and add it to realtime database
+                Comment newComment = new Comment(commentEntry.getText().toString(), user.getUid(), currentDateandTime);
+                DatabaseReference commentRef = mDatabase.child("comments").child(itemId).child("comment").push();
+                commentRef.setValue(newComment);
+
+                //clear comment field
+                commentEntry.setText("");
+            }
+        });
+
         NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.scroll);
         scrollView.fullScroll(View.FOCUS_DOWN);
     }
@@ -179,4 +230,6 @@ public class ItemActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
+
+
 }

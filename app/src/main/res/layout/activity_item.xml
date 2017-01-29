@@ -176,15 +176,37 @@
 
             </LinearLayout>
 
-            <com.denovo.denovo.CustomEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/comments_list"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:hint="Ask a question..."
-                android:textSize="24sp"
-                />
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_below="@id/comments_list"
+                          android:layout_gravity="center_vertical"
+                          android:background="@color/colorPrimaryDark"
+                          android:elevation="16dp"
+                          android:gravity="bottom"
+                          android:orientation="horizontal"
+                          android:padding="4dp">
+
+                <com.denovo.denovo.CustomEditText
+                    android:id="@+id/comment_entry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Write a comment"
+                    android:textColorHint="#CFD8DC"
+                    android:textSize="18sp"/>
+
+                <ImageView
+                    android:id="@+id/send_comment_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="5"
+                    android:clickable="true"
+                    android:paddingBottom="4dp"
+                    android:paddingRight="4dp"
+                    android:paddingTop="4dp"
+                    android:src="@drawable/send_button"/>
+            </LinearLayout>
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>

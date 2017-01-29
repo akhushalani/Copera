@@ -13,8 +13,8 @@ import java.util.ArrayList;
  * Created by abhinavkhushalani on 12/1/16.
  */
 
-public class CommentAdapter extends ArrayAdapter<ItemComment> {
-    public CommentAdapter(Activity context, ArrayList<ItemComment> commentList, String uid) {
+public class CommentAdapter extends ArrayAdapter<Comment> {
+    public CommentAdapter(Activity context, ArrayList<Comment> commentList, String uid) {
         super(context, 0, commentList);
     }
 
@@ -23,14 +23,16 @@ public class CommentAdapter extends ArrayAdapter<ItemComment> {
         View listItemView = convertView;
         if(listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.question_list_item, parent, false);
+                    R.layout.comment_item, parent, false);
         }
 
-        ItemComment currentComment = getItem(position);
+        Comment currentComment = getItem(position);
 
-        TextView commentTextView = (TextView) listItemView.findViewById(R.id.comment);
+        TextView commentTextView = (TextView) listItemView.findViewById(R.id.comment_text);
         commentTextView.setText(currentComment.getComment());
 
+        //TextView dateTextView = (TextView) listItemView.findViewById(R.id.comment_date);
+        //DateFormat dateFormat = new DateFormat();
 
         return listItemView;
     }

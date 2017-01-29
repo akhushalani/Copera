@@ -1,12 +1,9 @@
 package com.denovo.denovo;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -50,17 +47,18 @@ public class Item implements Parcelable {
     private int mRating;
     private String mDescription;
     private int mWishListNum;
-    private ArrayList<ItemComment> mComments;
+    private ArrayList<Comment> mComments;
     private ArrayList<String> mWishListUsers;
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageRef;
+
 
     public Item() {
 
     }
 
     public Item(String name, String imageFileName, String yardSale, String donor, double price, int
-            rating, String description, ArrayList<ItemComment> comments, ArrayList<String>
+            rating, String description, ArrayList<Comment> comments, ArrayList<String>
             wishListUsers) {
         mName = name;
         mImageFileName = imageFileName;
@@ -86,7 +84,7 @@ public class Item implements Parcelable {
         mDescription = in.readString();
         mWishListNum = in.readInt();
         mComments = new ArrayList<>();
-        in.readTypedList(mComments, ItemComment.CREATOR);
+        in.readTypedList(mComments, Comment.CREATOR);
         mWishListUsers = new ArrayList<>();
         in.readStringList(mWishListUsers);
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
@@ -157,6 +155,10 @@ public class Item implements Parcelable {
         return mWishListNum;
     }
 
+    public void setWishListNum(int wishList) {
+        mWishListNum = wishList;
+    }
+
     @Exclude
     public void setWishListNum(boolean value) {
         if (value) {
@@ -166,15 +168,11 @@ public class Item implements Parcelable {
         }
     }
 
-    public void setWishListNum(int wishList) {
-        mWishListNum = wishList;
-    }
-
-    public ArrayList<ItemComment> getComments() {
+    public ArrayList<Comment> getComments() {
         return mComments;
     }
 
-    public void setQuestions(ArrayList<ItemComment> comment) {
+    public void setComments(ArrayList<Comment> comment) {
         mComments = comment;
     }
 
