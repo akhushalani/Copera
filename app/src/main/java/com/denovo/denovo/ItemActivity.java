@@ -208,13 +208,13 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //get users time
+                //get current time
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                String currentDateandTime = sdf.format(new Date());
+                String currentTime = sdf.format(new Date());
 
                 //create new comment variable and add it to realtime database
-                Comment newComment = new Comment(commentEntry.getText().toString(), user.getUid(), currentDateandTime);
-                DatabaseReference commentRef = mDatabase.child("comments").child(itemId).child("comment").push();
+                Comment newComment = new Comment(commentEntry.getText().toString(), user.getUid(), currentTime);
+                DatabaseReference commentRef = mDatabase.child("comments").child(itemId).push();
                 commentRef.setValue(newComment);
 
                 //clear comment field

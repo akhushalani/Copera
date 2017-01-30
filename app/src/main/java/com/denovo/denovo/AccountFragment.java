@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +28,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.denovo.denovo.R.id.rv;
-
 public class AccountFragment extends Fragment implements RVAdapter.ItemClickCallback {
+
+    private static final String TAG = "AccountFragment";
 
     private String name;
     private String uid;
@@ -41,6 +42,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
     private RVAdapter mAdapter;
     private TextView emptyWishList;
     private TextView profilePic;
+    private int mItemsLeft;
 
 
     public AccountFragment() {
@@ -92,8 +94,20 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                     mWishListKeys.add(key);
                 }
                 checkWishListEmpty();
-                getWishList();
-                mAdapter.swapDataSet(mWishList, true);
+                getWishList(new OnDataReceivedListener() {
+                    @Override
+                    public void onStart(int listSize) {
+                        mItemsLeft = listSize;
+                    }
+
+                    @Override
+                    public void onNext() {
+                        mItemsLeft--;
+                        if (mItemsLeft == 0) {
+                            mAdapter.swapDataSet(mWishList, true);
+                        }
+                    }
+                });
             }
 
             @Override
@@ -209,7 +223,9 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
         }
     }
 
-    private void getWishList() {
+    private void getWishList(final OnDataReceivedListener listener) {
+        mWishList = new ArrayList<>();
+        listener.onStart(mWishListKeys.size());
         for (String key : mWishListKeys) {
             mDatabase.child("items").orderByKey().equalTo(key)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -218,6 +234,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                             for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
                                 Item item = itemSnapshot.getValue(Item.class);
                                 mWishList.add(item);
+                                listener.onNext();
                             }
                         }
 

@@ -169,11 +169,11 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
     }
 
     void refreshItems() {
-
+        onItemsLoadComplete();
     }
 
     void onItemsLoadComplete() {
-        mAdapter.notifyDataSetChanged();
+        //mAdapter.notifyDataSetChanged();
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
