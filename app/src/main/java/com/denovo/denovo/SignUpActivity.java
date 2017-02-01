@@ -92,7 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignUpActivity.this, "Sign Up failed, restart app and try again.",
+                            Toast.makeText(SignUpActivity.this, "Sign Up failed, check that you have a secure internet connection",
                                     Toast.LENGTH_LONG).show();
                         }
                     }
@@ -105,8 +105,8 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignUpActivity.this, "Login failed, check your " +
-                                    "email and password", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(SignUpActivity.this, "Login failed, check your " +
+                            //        "email and password", Toast.LENGTH_LONG).show();
                         } else {
                             updateProfile(firstName + " " + lastName);
                         }

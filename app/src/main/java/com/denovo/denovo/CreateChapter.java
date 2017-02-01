@@ -13,6 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -32,13 +39,16 @@ import java.util.Locale;
 import static android.R.attr.name;
 import static android.R.id.edit;
 import static android.media.CamcorderProfile.get;
+import static com.google.android.gms.location.places.Place.TYPE_SCHOOL;
 
 public class CreateChapter extends AppCompatActivity {
 
+    private static final String TAG = "CreateChapter";
     private EditText editName;
-    private EditText editLocation;
     private CustomButton createChapterButton;
-    private Address location;
+    private LatLng chapterLatLng;
+    private PlaceAutocompleteFragment mAutocompleteFragment;
+
 
     private DatabaseReference mDatabase;
 
@@ -48,7 +58,7 @@ public class CreateChapter extends AppCompatActivity {
         setContentView(R.layout.activity_create_chapter);
 
         editName = (EditText) findViewById(R.id.edit_chapter_name);
-        editLocation = (EditText) findViewById(R.id.edit_location);
+
         createChapterButton = (CustomButton) findViewById(R.id.btn_create_chapter);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -60,6 +70,31 @@ public class CreateChapter extends AppCompatActivity {
                 createChapter();
             }
         });
+
+        mAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        mAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                chapterLatLng = place.getLatLng();
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });
+
+
+        int TYPE_SCHOOL = 82;
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setTypeFilter(TYPE_SCHOOL).build();
+        AutocompleteFilter countryFiter = new AutocompleteFilter.Builder().setCountry("US").build();
+        // mAutocompleteFragment.setFilter(typeFilter
+        // mAutocompleteFragment.setFilter(countryFilter);
+
+
+
     }
 
 
@@ -67,13 +102,10 @@ public class CreateChapter extends AppCompatActivity {
 
         String name = editName.getText().toString();
 
-        GeoPoint geoPoint = convertAddressToLatLong(editLocation.getText().toString());
-        double latitude = geoPoint.getLatitude();
-        double longitude = geoPoint.getLongitude();
 
         DatabaseReference childRef = mDatabase.child("chapters").push();
 
-        Chapter chapter = new Chapter(name, latitude, longitude);
+        Chapter chapter = new Chapter(name, chapterLatLng.latitude, chapterLatLng.longitude);
         childRef.setValue(chapter);
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -81,30 +113,7 @@ public class CreateChapter extends AppCompatActivity {
         finish();
     }
 
-    public GeoPoint convertAddressToLatLong(String streetAddress) {
 
-        Geocoder coder = new Geocoder(this, Locale.getDefault());
-        List<Address> address;
-        GeoPoint geoPoint;
-
-        try {
-            address = coder.getFromLocationName(streetAddress, 5);
-            if (address == null) {
-                return null;
-            }
-            location = address.get(0);
-
-
-        } catch (IOException e) {
-
-        }
-
-        geoPoint = new GeoPoint();
-        geoPoint.setLatitude(location.getLatitude());
-        geoPoint.setLongitude(location.getLongitude());
-
-        return geoPoint;
-    }
 
 }
 
