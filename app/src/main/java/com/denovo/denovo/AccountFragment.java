@@ -3,6 +3,7 @@ package com.denovo.denovo;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
     private RVAdapter mAdapter;
     private TextView emptyWishList;
     private TextView profilePic;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
     private int mItemsLeft;
 
 
@@ -55,11 +58,52 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_account, container, false);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            name = user.getDisplayName();
-            uid = user.getUid();
-        }
+        mAuth = FirebaseAuth.getInstance();
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    name = user.getDisplayName();
+                    uid = user.getUid();
+                    mDatabase.child("users").child(uid).child("wishList").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            mWishListKeys = new ArrayList<>();
+                            for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
+                                String key = keySnapshot.getValue(String.class);
+                                mWishListKeys.add(key);
+                            }
+                            checkWishListEmpty();
+                            getWishList(new OnDataReceivedListener() {
+                                @Override
+                                public void onStart(int listSize) {
+                                    mItemsLeft = listSize;
+                                }
+
+                                @Override
+                                public void onNext() {
+                                    mItemsLeft--;
+                                    if (mItemsLeft == 0) {
+                                        mAdapter.swapDataSet(mWishList, true);
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                } else {
+                    // User is signed out
+                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                }
+                // ...
+            }
+        };
 
         profilePic = (TextView) rootView.findViewById(R.id.prof_pic);
 
@@ -84,37 +128,6 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
         ((SimpleItemAnimator) wishListRV.getItemAnimator()).setSupportsChangeAnimations(false);
 
         checkWishListEmpty();
-
-        mDatabase.child("users").child(uid).child("wishList").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mWishListKeys = new ArrayList<>();
-                for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
-                    String key = keySnapshot.getValue(String.class);
-                    mWishListKeys.add(key);
-                }
-                checkWishListEmpty();
-                getWishList(new OnDataReceivedListener() {
-                    @Override
-                    public void onStart(int listSize) {
-                        mItemsLeft = listSize;
-                    }
-
-                    @Override
-                    public void onNext() {
-                        mItemsLeft--;
-                        if (mItemsLeft == 0) {
-                            mAdapter.swapDataSet(mWishList, true);
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         ImageView editProfile = (ImageView) rootView.findViewById(R.id.edit_profile);
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -282,4 +295,17 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 }

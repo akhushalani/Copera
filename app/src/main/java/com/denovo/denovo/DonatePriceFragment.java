@@ -44,7 +44,7 @@ public class DonatePriceFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() != 0) {
+                if (s.toString().trim().replaceAll("[.]","").length() != 0) {
                     mItemPrice = Double.parseDouble(s.toString());
                     onFieldsFilled();
                 }
