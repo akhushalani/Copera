@@ -12,6 +12,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.denovo.denovo.CreateChapterActivity">
 
+
     <com.denovo.denovo.BoldTextView
         android:id="@+id/chapter_name_title"
         android:layout_width="wrap_content"
@@ -46,7 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/chapter_location_title"
-
         tools:layout="@layout/place_autocomplete_fragment"/>
 
 

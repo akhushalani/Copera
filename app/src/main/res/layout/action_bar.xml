@@ -19,14 +19,6 @@
         android:layout_centerVertical="true"
         android:src="@drawable/ic_back"/>
 
-    <com.denovo.denovo.BoldTextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/title"
-        android:textStyle="bold"
-        android:textSize="30sp"/>
 
     <ImageView
         android:id="@+id/search"
@@ -43,5 +35,32 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_next"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <com.denovo.denovo.BoldTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/title"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/action_bar_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="-10dp"
+            android:elevation="1dp"
+            />
+
+    </LinearLayout>
 
 </RelativeLayout>

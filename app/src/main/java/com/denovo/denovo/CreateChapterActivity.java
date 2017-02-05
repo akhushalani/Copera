@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -56,6 +58,21 @@ public class CreateChapterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_chapter);
+
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.action_bar);
+
+        ImageView btnBack = (ImageView) findViewById(R.id.back);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateChapterActivity.this.finish();
+            }
+        });
+
+        findViewById(R.id.settings).setVisibility(View.GONE);
+        findViewById(R.id.search).setVisibility(View.GONE);
+        findViewById(R.id.next).setVisibility(View.GONE);
 
         editName = (EditText) findViewById(R.id.edit_chapter_name);
 
@@ -109,9 +126,6 @@ public class CreateChapterActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
-
-
-
 }
 
 
