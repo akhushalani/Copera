@@ -41,9 +41,9 @@ import static android.R.id.edit;
 import static android.media.CamcorderProfile.get;
 import static com.google.android.gms.location.places.Place.TYPE_SCHOOL;
 
-public class CreateChapter extends AppCompatActivity {
+public class CreateChapterActivity extends AppCompatActivity {
 
-    private static final String TAG = "CreateChapter";
+    private static final String TAG = "CreateChapterActivity";
     private EditText editName;
     private CustomButton createChapterButton;
     private LatLng chapterLatLng;
@@ -87,11 +87,8 @@ public class CreateChapter extends AppCompatActivity {
         });
 
 
-        int TYPE_SCHOOL = 82;
-        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder().setTypeFilter(TYPE_SCHOOL).build();
-        AutocompleteFilter countryFiter = new AutocompleteFilter.Builder().setCountry("US").build();
-        // mAutocompleteFragment.setFilter(typeFilter
-        // mAutocompleteFragment.setFilter(countryFilter);
+        AutocompleteFilter countryFilter = new AutocompleteFilter.Builder().setCountry("US").build();
+        mAutocompleteFragment.setFilter(countryFilter);
 
 
 

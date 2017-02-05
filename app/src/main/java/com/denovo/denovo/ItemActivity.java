@@ -177,11 +177,9 @@ public class ItemActivity extends AppCompatActivity {
         bargainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(ItemActivity.this, BargainActivity.class);
-                Intent intent = new Intent(ItemActivity.this, CreateChapter.class);
+                Intent intent = new Intent(ItemActivity.this, BargainActivity.class);
+                intent.putExtra("item_key", "-KYLXskpzmhDq5citlod");
                 startActivity(intent);
-                //intent.putExtra("item_key", "-KYLXskpzmhDq5citlod");
-                //startActivity(intent);
                 finish();
             }
         });

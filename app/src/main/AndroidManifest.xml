@@ -77,9 +77,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".CreateChapter">
+        <activity android:name=".CreateChapterActivity">
         </activity>
-        <activity android:name=".ManageChapter">
+        <activity android:name=".ManageChapterActivity">
         </activity>
         <meta-data
             android:name="com.google.android.gms.version"
