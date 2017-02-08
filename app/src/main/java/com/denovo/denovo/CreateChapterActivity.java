@@ -22,6 +22,8 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -53,11 +55,18 @@ public class CreateChapterActivity extends AppCompatActivity {
 
 
     private DatabaseReference mDatabase;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_chapter);
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            uid = user.getUid();
+        }
+
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar);
@@ -121,6 +130,9 @@ public class CreateChapterActivity extends AppCompatActivity {
 
         Chapter chapter = new Chapter(name, chapterLatLng.latitude, chapterLatLng.longitude);
         childRef.setValue(chapter);
+
+        DatabaseReference userRef = mDatabase.child("users").child(uid).child("ownsChapter").push();
+        userRef.setValue(true);
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

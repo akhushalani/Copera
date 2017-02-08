@@ -1,56 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_preferences"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.denovo.denovo.PreferencesActivity">
-
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_preferences"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                tools:context="com.denovo.denovo.PreferencesActivity">
 
 
     <com.denovo.denovo.BoldTextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/sign_in_as_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Signed in as:"
         android:textSize="28sp"
-    />
+        />
 
     <com.denovo.denovo.CustomTextView
         android:id="@+id/username_text_view"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:paddingTop="45dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sign_in_as_txt"
         android:layout_centerHorizontal="true"
+        android:padding="8dp"
         android:text="Username"
         android:textSize="28dp"
         />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="75dp"
-        android:layout_centerHorizontal="true">
 
 
     <com.denovo.denovo.CustomButton
         android:id="@+id/sign_out_button"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_margin="16dp"
+        android:layout_below="@id/username_text_view"
         android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
         android:background="@drawable/mybuttonsmall"
         android:elevation="4dp"
-        android:gravity="center_vertical"
+
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="Sign Out"
         android:textColor="@android:color/white"
         android:textSize="22sp"/>
 
-    </LinearLayout>
+
+    <com.denovo.denovo.CustomButton
+        android:id="@+id/chapter_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@id/sign_out_button"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="8dp"
+        android:background="@drawable/mybuttonsmall"
+        android:elevation="4dp"
+
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Create a Chapter"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"/>
 
 </RelativeLayout>

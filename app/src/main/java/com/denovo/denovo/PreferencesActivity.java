@@ -19,10 +19,37 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 public class PreferencesActivity extends AppCompatActivity {
+
+    private DatabaseReference mDatabase;
     private String email;
+    private String uid;
+    private boolean hasChapter;
+
+    private View.OnClickListener createChapterClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(PreferencesActivity.this, CreateChapterActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
+
+    private View.OnClickListener manageChapterClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(PreferencesActivity.this, ManageChapterActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +74,7 @@ public class PreferencesActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             email = user.getEmail();
+            uid = user.getUid();
         }
 
         TextView usernameTextView = (TextView) findViewById(R.id.username_text_view);
@@ -61,5 +89,35 @@ public class PreferencesActivity extends AppCompatActivity {
                 startActivity(homeIntent);
             }
         });
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference userRef = mDatabase.child("users").child(uid).child("ownsChapter");
+
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        Button chapterBtn = (Button) findViewById(R.id.chapter_btn);
+
+
+        hasChapter = true;
+
+        if (hasChapter) {
+            chapterBtn.setText("Manage Your Chapter");
+            chapterBtn.setOnClickListener(manageChapterClickListener);
+        } else {
+            chapterBtn.setText("Create a Chapter");
+            chapterBtn.setOnClickListener(createChapterClickListener);
+        }
     }
+
+
 }
