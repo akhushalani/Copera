@@ -118,6 +118,14 @@ public class Item implements Parcelable {
         mYardSale = yardSale;
     }
 
+    public String getDonor() {
+        return mDonor;
+    }
+
+    public void setDonor(String donor) {
+        mDonor = donor;
+    }
+
     public double getPrice() {
         return mPrice;
     }

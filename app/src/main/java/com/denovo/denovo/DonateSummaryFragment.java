@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,6 +38,7 @@ public class DonateSummaryFragment extends Fragment {
 
     public static final String TAG = "DonateSummaryFragment";
 
+    private String uid;
     private DonateActivity mActivity;
     private DatabaseReference mDatabase;
     private ImageView summaryItemPhoto;
@@ -68,6 +71,11 @@ public class DonateSummaryFragment extends Fragment {
         Point size = new Point();
         display.getSize(size);
 
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            uid = user.getUid();
+        }
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReferenceFromUrl("gs://denovo-4024e.appspot.com");
@@ -86,7 +94,7 @@ public class DonateSummaryFragment extends Fragment {
                 submitButton.setEnabled(false);
                 DatabaseReference childRef = mDatabase.child("items").push();
                 String fileName = childRef.getKey() + ".jpg";
-                Item item = new Item(mItemName, fileName, mItemYardSale, "Abhinav Khushalani",
+                Item item = new Item(mItemName, fileName, mItemYardSale, uid,
                         mItemPrice, mItemRating, mItemDescription, new
                         ArrayList<String>());
                 childRef.setValue(item);

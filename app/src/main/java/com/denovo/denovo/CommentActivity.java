@@ -29,6 +29,7 @@ import static com.denovo.denovo.R.layout.comment_item;
 public class CommentActivity extends AppCompatActivity {
 
     private String uid;
+    private String donorId;
     private String itemId;
     private ArrayList<Comment> mCommentList;
     private DatabaseReference mDatabase;
@@ -60,6 +61,7 @@ public class CommentActivity extends AppCompatActivity {
 
         Bundle data = getIntent().getExtras();
         itemId = data.getString("item");
+        donorId = data.getString("donor_id");
 
         mCommentList = new ArrayList<>();
 
@@ -145,7 +147,8 @@ public class CommentActivity extends AppCompatActivity {
                 long currentTime = currentDate.getTime();
 
                 //create new comment variable and add it to realtime database
-                Comment newComment = new Comment(commentEntry.getText().toString(), user.getUid(), currentTime);
+                Comment newComment = new Comment(commentEntry.getText().toString(), uid,
+                        currentTime);
                 DatabaseReference commentRef = mDatabase.child("comments").child(itemId).push();
                 commentRef.setValue(newComment);
 
@@ -165,7 +168,7 @@ public class CommentActivity extends AppCompatActivity {
                             userInfo.add(user.getName());
                             userInfo.add(user.getInitials());
                             userInfo.add(user.getColor());
-
+                            userInfo.add(user.getUid());
                             populateUserFields(view, userInfo);
                         }
                     }
@@ -220,7 +223,7 @@ public class CommentActivity extends AppCompatActivity {
         TextView officerTag = (TextView) view.findViewById(R.id.officer_tag);
         officerTag.setVisibility(View.GONE);
 
-        if (userInfo.get(0).equals("FBLA Officer")) {
+        if (userInfo.get(3).equals(donorId)) {
             officerTag.setVisibility(View.VISIBLE);
         } else if (userInfo.get(0).equals("Item Donor")) {
             donorTag.setVisibility(View.VISIBLE);

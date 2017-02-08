@@ -87,8 +87,6 @@ public class ItemActivity extends AppCompatActivity {
 
         final LinearLayout commentFeed = (LinearLayout) findViewById(R.id.comments_list);
         final TextView noComments = (TextView) findViewById(R.id.no_comments);
-        final EditText commentEntry = (EditText) findViewById(R.id.comment_entry);
-        final ImageView sendCommentBtn = (ImageView) findViewById(R.id.send_comment_btn);
         final TextView allCommentBtn = (TextView) findViewById(R.id.btn_all_comments);
 
         final LayoutInflater inflater = LayoutInflater.from(this);
@@ -234,49 +232,12 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
-        // Enable Send button when there's text to send
-        commentEntry.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (charSequence.toString().trim().length() > 0) {
-                    sendCommentBtn.setEnabled(true);
-                } else {
-                    sendCommentBtn.setEnabled(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        sendCommentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //get current time
-                Date currentDate = new Date();
-                long currentTime = currentDate.getTime();
-
-                //create new comment variable and add it to realtime database
-                Comment newComment = new Comment(commentEntry.getText().toString(), user.getUid(), currentTime);
-                DatabaseReference commentRef = mDatabase.child("comments").child(itemId).push();
-                commentRef.setValue(newComment);
-
-                //clear comment field
-                commentEntry.setText("");
-            }
-        });
-
         allCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ItemActivity.this, CommentActivity.class);
                 i.putExtra("item", itemId);
+                i.putExtra("donor_id", item.getDonor());
                 startActivity(i);
             }
         });
@@ -300,7 +261,7 @@ public class ItemActivity extends AppCompatActivity {
                             userInfo.add(user.getName());
                             userInfo.add(user.getInitials());
                             userInfo.add(user.getColor());
-
+                            userInfo.add(user.getUid());
                             populateUserFields(view, userInfo);
                         }
                     }
@@ -355,10 +316,10 @@ public class ItemActivity extends AppCompatActivity {
         TextView officerTag = (TextView) view.findViewById(R.id.officer_tag);
         officerTag.setVisibility(View.GONE);
 
-        if (userInfo.get(0).equals("FBLA Officer")) {
-            officerTag.setVisibility(View.VISIBLE);
-        } else if (userInfo.get(0).equals("Item Donor")) {
+        if (userInfo.get(3).equals(item.getDonor())) {
             donorTag.setVisibility(View.VISIBLE);
+        } else if (userInfo.get(0).equals("FBLA Officer")) {
+            officerTag.setVisibility(View.VISIBLE);
         }
     }
 
