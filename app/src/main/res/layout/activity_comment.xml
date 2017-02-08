@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_comment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.denovo.denovo.CommentActivity">
+
+    <ScrollView
+        android:id="@+id/comment_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <LinearLayout
+            android:id="@+id/activity_comment_feed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:orientation="vertical"/>
+    </ScrollView>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center_vertical"
+                  android:background="@color/colorPrimary"
+                  android:gravity="bottom"
+                  android:orientation="horizontal"
+                  android:elevation="16dp"
+                  android:padding="4dp">
+
+        <com.denovo.denovo.CustomEditText
+            android:id="@+id/activity_comment_entry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Write a comment"
+            android:textColorHint="#CFD8DC"
+            android:textSize="18sp"/>
+
+        <ImageView
+            android:id="@+id/activity_send_comment_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:clickable="true"
+            android:paddingBottom="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/send_button"/>
+    </LinearLayout>
+
+</LinearLayout>

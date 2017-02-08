@@ -21,15 +21,15 @@ public class Comment implements Parcelable {
     };
 
     private String mComment;
-    private String mName;
-    private String mDate;
+    private String mUid;
+    private long mDate;
 
     public Comment() {
     }
 
-    public Comment(String comment, String uid, String date) {
+    public Comment(String comment, String uid, long date) {
         mComment = comment;
-        mName = uid;
+        mUid = uid;
         mDate = date;
     }
 
@@ -47,19 +47,19 @@ public class Comment implements Parcelable {
         mComment = comment;
     }
 
-    public String getName() {
-        return mName;
+    public String getUid() {
+        return mUid;
     }
 
-    public void setName(String uid) {
-        mName = uid;
+    public void setUid(String uid) {
+        mUid = uid;
     }
 
-    public String getDate() {
+    public long getDate() {
         return mDate;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         mDate = date;
     }
 

@@ -47,7 +47,6 @@ public class Item implements Parcelable {
     private int mRating;
     private String mDescription;
     private int mWishListNum;
-    private ArrayList<Comment> mComments;
     private ArrayList<String> mWishListUsers;
     private FirebaseStorage mStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageRef;
@@ -58,7 +57,7 @@ public class Item implements Parcelable {
     }
 
     public Item(String name, String imageFileName, String yardSale, String donor, double price, int
-            rating, String description, ArrayList<Comment> comments, ArrayList<String>
+            rating, String description, ArrayList<String>
             wishListUsers) {
         mName = name;
         mImageFileName = imageFileName;
@@ -68,7 +67,6 @@ public class Item implements Parcelable {
         mRating = rating;
         mDescription = description;
         mWishListNum = 0;
-        mComments = comments;
         mWishListUsers = wishListUsers;
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
                 ".appspot.com/images/" + imageFileName);
@@ -83,8 +81,6 @@ public class Item implements Parcelable {
         mRating = in.readInt();
         mDescription = in.readString();
         mWishListNum = in.readInt();
-        mComments = new ArrayList<>();
-        in.readTypedList(mComments, Comment.CREATOR);
         mWishListUsers = new ArrayList<>();
         in.readStringList(mWishListUsers);
         mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
@@ -166,14 +162,6 @@ public class Item implements Parcelable {
         } else {
             mWishListNum--;
         }
-    }
-
-    public ArrayList<Comment> getComments() {
-        return mComments;
-    }
-
-    public void setComments(ArrayList<Comment> comment) {
-        mComments = comment;
     }
 
     public ArrayList<String> getWishListUsers() {
@@ -283,7 +271,6 @@ public class Item implements Parcelable {
         out.writeInt(mRating);
         out.writeString(mDescription);
         out.writeInt(mWishListNum);
-        out.writeTypedList(mComments);
         out.writeStringList(mWishListUsers);
     }
 }

@@ -8,6 +8,7 @@ public class User {
     private String name;
     private String uid;
     private String initials;
+    private String color;
     private ArrayList<String> wishList;
 
 
@@ -15,14 +16,19 @@ public class User {
         //required default constructor
     }
 
-    public User(String name, String uid) {
+    public User(String name, String uid, String initials, String color) {
         this.name = name;
         this.uid = uid;
+        this.initials = initials;
+        this.color = color;
     }
 
-    public User(String name, String uid, ArrayList<String> wishList) {
+    public User(String name, String uid, String initials, String color, ArrayList<String>
+            wishList) {
         this.name = name;
         this.uid = uid;
+        this.initials = initials;
+        this.color = color;
         this.wishList = wishList;
     }
 
@@ -41,6 +47,22 @@ public class User {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    public String getInitials() {
+        return initials;
+    }
+
+    public void setInitials(String initials) {
+        this.initials = initials;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public ArrayList<String> getWishList() {

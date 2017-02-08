@@ -1,6 +1,8 @@
 package com.denovo.denovo;
 
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DropDownImageView mDropDownImageView;
+    private TransparentPanel mTransparentPanel;
+    private boolean mIsDropped;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,20 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.back).setVisibility(View.GONE);
         findViewById(R.id.next).setVisibility(View.GONE);
+
+        /* mIsDropped = false;
+        mTransparentPanel = (TransparentPanel) findViewById(R.id.transparent_panel);
+        mTransparentPanel.setVisibility(View.GONE);
+
+        mDropDownImageView = (DropDownImageView) findViewById(R.id.drop_down_image_view);
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDropDownImageView.morph();
+                setTransparentPanel();
+            }
+        }); */
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         PageAdapter adapter = new PageAdapter(this, getSupportFragmentManager());
@@ -89,6 +109,16 @@ public class MainActivity extends AppCompatActivity {
     private void writeNewItem(Item item) {
         DatabaseReference childRef = mDatabase.child("items").push();
         childRef.setValue(item);
+    }
+
+    private void setTransparentPanel() {
+        if (mIsDropped) {
+            mTransparentPanel.setVisibility(View.GONE);
+            mIsDropped = false;
+        } else {
+            mTransparentPanel.setVisibility(View.VISIBLE);
+            mIsDropped = true;
+        }
     }
 
     @Override

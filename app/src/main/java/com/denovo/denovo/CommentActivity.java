@@ -1,21 +1,15 @@
 package com.denovo.denovo;
 
-import android.content.Intent;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,30 +21,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.denovo.denovo.R.id.comment;
-import static com.denovo.denovo.R.id.comment_text;
 import static com.denovo.denovo.R.layout.comment_item;
 
+public class CommentActivity extends AppCompatActivity {
 
-public class ItemActivity extends AppCompatActivity {
-
-    private static final String TAG = "ItemActivity";
-    private Item item;
-    private String itemId;
     private String uid;
-    private int feedPosition;
+    private String itemId;
     private ArrayList<Comment> mCommentList;
     private DatabaseReference mDatabase;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item);
+        setContentView(R.layout.activity_comment);
 
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -64,7 +50,7 @@ public class ItemActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ItemActivity.this.finish();
+                CommentActivity.this.finish();
             }
         });
 
@@ -77,126 +63,24 @@ public class ItemActivity extends AppCompatActivity {
 
         mCommentList = new ArrayList<>();
 
-        final ImageView itemPhoto = (ImageView) findViewById(R.id.item_photo);
-        final TextView itemName = (TextView) findViewById(R.id.item_name);
-        final TextView itemYardSale = (TextView) findViewById(R.id.item_yard_sale);
-        final TextView itemPrice = (TextView) findViewById(R.id.item_price);
-        final RatingBar itemRating = (RatingBar) findViewById(R.id.item_rating);
-        final TextView description = (TextView) findViewById(R.id.description);
-        final CustomButton wantItBtn = (CustomButton) findViewById(R.id.btn_item_want);
-
-        final LinearLayout commentFeed = (LinearLayout) findViewById(R.id.comments_list);
-        final TextView noComments = (TextView) findViewById(R.id.no_comments);
-        final EditText commentEntry = (EditText) findViewById(R.id.comment_entry);
-        final ImageView sendCommentBtn = (ImageView) findViewById(R.id.send_comment_btn);
-        final TextView allCommentBtn = (TextView) findViewById(R.id.btn_all_comments);
-
-        final LayoutInflater inflater = LayoutInflater.from(this);
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("items").orderByKey().equalTo(itemId)
-                .addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                item = dataSnapshot.getValue(Item.class);
-                Log.v(TAG, item.getName());
-                item.downloadImage(getApplicationContext(), itemPhoto);
-                itemName.setText(item.getName());
-                itemYardSale.setText(item.getYardSale());
-                itemPrice.setText(item.formatPrice());
-                itemRating.setRating(item.getRating());
-                description.setText(item.getDescription());
-                wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
-                if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
-                    //wantItBtn.setElevation(dpToPx(4));
-                } else {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
-                    //wantItBtn.setElevation(dpToPx(1));
-                }
 
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                item = dataSnapshot.getValue(Item.class);
-                wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
-                if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
-                } else {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        final Intent intent = getIntent();
-
-        wantItBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                item.onAddedToWishList(uid, itemId);
-                Bundle b = new Bundle();
-                b.putInt("position", feedPosition);
-                b.putParcelable("item", item);
-                intent.putExtras(b);
-                setResult(1, intent);
-            }
-        });
-
-        CustomButton bargainBtn = (CustomButton) findViewById(R.id.btn_item_bargain);
-        bargainBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(ItemActivity.this, BargainActivity.class);
-                Intent intent = new Intent(ItemActivity.this, CreateChapterActivity.class);
-                startActivity(intent);
-                //intent.putExtra("item_key", "-KYLXskpzmhDq5citlod");
-                //startActivity(intent);
-                finish();
-            }
-        });
+        final LinearLayout commentFeed = (LinearLayout) findViewById(R.id.activity_comment_feed);
+        final EditText commentEntry = (EditText) findViewById(R.id.activity_comment_entry);
+        final ImageView sendCommentBtn = (ImageView) findViewById(R.id.activity_send_comment_btn);
+        final LayoutInflater inflater = LayoutInflater.from(this);
 
         mDatabase.child("comments").child(itemId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 mCommentList.add(dataSnapshot.getValue(Comment.class));
-
                 commentFeed.removeAllViews();
 
-                int previewCount;
-                if (mCommentList == null) {
-                    previewCount = 0;
-                } else {
-                    previewCount = mCommentList.size();
-                }
-                if (previewCount > 0) {
-                    noComments.setVisibility(View.GONE);
-                }
-                if (previewCount >= 3) {
-                    previewCount = mCommentList.size() - 3;
-                } else {
-                    previewCount = 0;
-                }
-                for (int i = previewCount; i < mCommentList.size(); i++) {
+                for (int i = 0; i < mCommentList.size(); i++) {
                     Comment currentComment = mCommentList.get(i);
                     View view = inflater.inflate(comment_item, commentFeed, false);
 
-                    if (i == previewCount) {
+                    if (i == 0) {
                         view.findViewById(R.id.comment_divider).setVisibility(View.GONE);
                     }
 
@@ -212,7 +96,6 @@ public class ItemActivity extends AppCompatActivity {
                     commentFeed.addView(view);
                 }
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
@@ -234,7 +117,6 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
-        // Enable Send button when there's text to send
         commentEntry.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -271,23 +153,6 @@ public class ItemActivity extends AppCompatActivity {
                 commentEntry.setText("");
             }
         });
-
-        allCommentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ItemActivity.this, CommentActivity.class);
-                i.putExtra("item", itemId);
-                startActivity(i);
-            }
-        });
-
-        NestedScrollView scrollView = (NestedScrollView) findViewById(R.id.scroll);
-        scrollView.fullScroll(View.FOCUS_DOWN);
-    }
-
-    public int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
 
     public void retrieveUserInfo(final View view, final ArrayList<String> userInfo, String uid) {
@@ -390,5 +255,4 @@ public class ItemActivity extends AppCompatActivity {
 
         return time;
     }
-
 }

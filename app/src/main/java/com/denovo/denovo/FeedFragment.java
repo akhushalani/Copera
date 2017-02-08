@@ -189,7 +189,7 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
     private void writeNewItem(String name, String yardSale, String donor, double price, int
             rating, String description) {
         Item item = new Item(name, "shoes.png", yardSale, donor, price, rating, description,
-                new ArrayList<Comment>(), new ArrayList<String>());
+                new ArrayList<String>());
         DatabaseReference childRef = mDatabase.child("items").push();
         childRef.setValue(item);
     }

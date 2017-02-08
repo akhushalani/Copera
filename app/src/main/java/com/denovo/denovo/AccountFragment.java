@@ -25,6 +25,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -60,13 +62,65 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
 
         mAuth = FirebaseAuth.getInstance();
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        profilePic = (TextView) rootView.findViewById(R.id.prof_pic);
+        final TextView userNameTextView = (TextView) rootView.findViewById(R.id
+                .user_name_text_view);
+
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     name = user.getDisplayName();
+                    userNameTextView.setText(name);
                     uid = user.getUid();
+                    mDatabase.child("users").orderByKey().equalTo(uid)
+                            .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                User user = userSnapshot.getValue(User.class);
+                                profilePic.setText(user.getInitials());
+                                String color = user.getColor();
+                                switch (color) {
+                                    case "red":
+                                        profilePic.setBackgroundResource(R.drawable.profile_red);
+                                        break;
+                                    case "pink":
+                                        profilePic.setBackgroundResource(R.drawable.profile_pink);
+                                        break;
+                                    case "purple":
+                                        profilePic.setBackgroundResource(R.drawable.profile_purple);
+                                        break;
+                                    case "blue":
+                                        profilePic.setBackgroundResource(R.drawable.profile_blue);
+                                        break;
+                                    case "teal":
+                                        profilePic.setBackgroundResource(R.drawable.profile_teal);
+                                        break;
+                                    case "green":
+                                        profilePic.setBackgroundResource(R.drawable.profile_green);
+                                        break;
+                                    case "yellow":
+                                        profilePic.setBackgroundResource(R.drawable.profile_yellow);
+                                        break;
+                                    case "orange":
+                                        profilePic.setBackgroundResource(R.drawable.profile_orange);
+                                        break;
+                                    case "gray":
+                                        profilePic.setBackgroundResource(R.drawable.profile_gray);
+                                        break;
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                     mDatabase.child("users").child(uid).child("wishList").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -104,13 +158,6 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 // ...
             }
         };
-
-        profilePic = (TextView) rootView.findViewById(R.id.prof_pic);
-
-        TextView userNameTextView = (TextView) rootView.findViewById(R.id.user_name_text_view);
-        userNameTextView.setText(name);
-
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mWishListKeys = new ArrayList<>();
         mWishList = new ArrayList<>();
@@ -152,7 +199,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 red.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_red);
+                        updateProfileColor("red");
                         dialog.dismiss();
                     }
                 });
@@ -160,7 +207,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 pink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_pink);
+                        updateProfileColor("pink");
                         dialog.dismiss();
                     }
                 });
@@ -168,7 +215,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 purple.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_purple);
+                        updateProfileColor("purple");
                         dialog.dismiss();
                     }
                 });
@@ -176,7 +223,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 blue.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_blue);
+                        updateProfileColor("blue");
                         dialog.dismiss();
                     }
                 });
@@ -184,7 +231,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 teal.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_teal);
+                        updateProfileColor("teal");
                         dialog.dismiss();
                     }
                 });
@@ -192,7 +239,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 green.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_green);
+                        updateProfileColor("green");
                         dialog.dismiss();
                     }
                 });
@@ -200,7 +247,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 yellow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_yellow);
+                        updateProfileColor("yellow");
                         dialog.dismiss();
                     }
                 });
@@ -208,7 +255,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 orange.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_orange);
+                        updateProfileColor("orange");
                         dialog.dismiss();
                     }
                 });
@@ -216,7 +263,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                 gray.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        profilePic.setBackgroundResource(R.drawable.profile_gray);
+                        updateProfileColor("gray");
                         dialog.dismiss();
                     }
                 });
@@ -257,6 +304,22 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
                         }
                     });
         }
+    }
+
+    public void updateProfileColor(final String color) {
+        DatabaseReference colorRef = mDatabase.child("users").child(uid).child("color");
+        colorRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                mutableData.setValue(color);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
     }
 
     @Override

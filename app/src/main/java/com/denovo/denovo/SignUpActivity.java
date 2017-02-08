@@ -26,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.R.attr.updatePeriodMillis;
 import static android.R.attr.y;
@@ -108,7 +109,8 @@ public class SignUpActivity extends AppCompatActivity {
                             //Toast.makeText(SignUpActivity.this, "Login failed, check your " +
                             //        "email and password", Toast.LENGTH_LONG).show();
                         } else {
-                            updateProfile(firstName + " " + lastName);
+                            updateProfile(firstName + " " + lastName,
+                                    "" + firstName.charAt(0) + lastName.charAt(0));
                         }
                     }
                 });
@@ -156,9 +158,9 @@ public class SignUpActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void updateProfile(String name) {
+    private void updateProfile(String name, String initials) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        addUserToDb(name, user.getUid());
+        addUserToDb(name, initials, user.getUid());
 
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
@@ -176,10 +178,36 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    private void addUserToDb(String name, String uid) {
+    private void addUserToDb(String name, String initials, String uid) {
         ArrayList<String> wishlist = new ArrayList<>();
-        User newUser = new User(name, uid, wishlist);
-
+        User newUser = new User(name, uid, initials, randomColor(), wishlist);
         mDatabase.child("users").child(uid).setValue(newUser);
+    }
+
+    private String randomColor() {
+        Random rand = new Random();
+        int n = rand.nextInt(9) + 1;
+        switch (n) {
+            case 1:
+                return "red";
+            case 2:
+                return "pink";
+            case 3:
+                return "purple";
+            case 4:
+                return "blue";
+            case 5:
+                return "teal";
+            case 6:
+                return "green";
+            case 7:
+                return "yellow";
+            case 8:
+                return "orange";
+            case 9:
+                return "gray";
+            default:
+                return "blue";
+        }
     }
 }

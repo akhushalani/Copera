@@ -152,7 +152,7 @@
                 android:layout_below="@id/description"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:paddingLeft="16dp"
-                android:text="Questions"
+                android:text="Comments"
                 android:textSize="@dimen/activity_title_text_size"/>
 
             <LinearLayout
@@ -171,19 +171,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_margin="20dp"
                     android:text="No Comments Yet!"
                     android:textSize="18sp"/>
 
             </LinearLayout>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout android:id="@+id/entry_cont"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content"
                           android:layout_below="@id/comments_list"
-                          android:layout_alignParentBottom="true"
                           android:layout_gravity="center_vertical"
-                          android:background="@color/colorPrimaryDark"
-                          android:elevation="16dp"
+                          android:background="@color/offWhite"
                           android:gravity="bottom"
                           android:orientation="horizontal"
                           android:padding="4dp">
@@ -193,6 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginLeft="16dp"
                     android:hint="Write a comment"
                     android:textColorHint="#CFD8DC"
                     android:textSize="18sp"/>
@@ -204,10 +204,22 @@
                     android:layout_weight="5"
                     android:clickable="true"
                     android:paddingBottom="4dp"
-                    android:paddingRight="4dp"
                     android:paddingTop="4dp"
                     android:src="@drawable/send_button"/>
             </LinearLayout>
+
+            <com.denovo.denovo.CustomTextView
+                android:id="@+id/btn_all_comments"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/entry_cont"
+                android:layout_margin="16dp"
+                android:background="@drawable/mybuttondark"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="See all comments"
+                android:textSize="22sp"/>
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
