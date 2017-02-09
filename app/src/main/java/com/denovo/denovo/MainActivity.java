@@ -26,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private DropDownImageView mDropDownImageView;
-    private TransparentPanel mTransparentPanel;
+
     private boolean mIsDropped;
 
     @Override
@@ -113,10 +112,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setTransparentPanel() {
         if (mIsDropped) {
-            mTransparentPanel.setVisibility(View.GONE);
+
             mIsDropped = false;
         } else {
-            mTransparentPanel.setVisibility(View.VISIBLE);
+
             mIsDropped = true;
         }
     }

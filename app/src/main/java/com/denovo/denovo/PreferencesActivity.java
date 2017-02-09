@@ -1,37 +1,28 @@
 package com.denovo.denovo;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.preference.PreferenceActivity;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 
 public class PreferencesActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private String email;
     private String uid;
-    private boolean hasChapter;
+    private boolean ownsChapter;
 
     private View.OnClickListener createChapterClickListener = new View.OnClickListener() {
         @Override
@@ -90,33 +81,32 @@ public class PreferencesActivity extends AppCompatActivity {
             }
         });
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userRef = mDatabase.child("users").child(uid).child("ownsChapter");
+        final Button chapterBtn = (Button) findViewById(R.id.chapter_btn);
 
-        userRef.addValueEventListener(new ValueEventListener() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").orderByKey().equalTo(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    ownsChapter = user.getOwnsChapter();
+                }
+                if (ownsChapter) {
+                    chapterBtn.setText("Manage Your Chapter");
+                    chapterBtn.setOnClickListener(manageChapterClickListener);
+                } else {
+                    chapterBtn.setText("Create a Chapter");
+                    chapterBtn.setOnClickListener(createChapterClickListener);
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //in case of fail to access database do nothing
             }
         });
 
-        Button chapterBtn = (Button) findViewById(R.id.chapter_btn);
 
-
-        hasChapter = true;
-
-        if (hasChapter) {
-            chapterBtn.setText("Manage Your Chapter");
-            chapterBtn.setOnClickListener(manageChapterClickListener);
-        } else {
-            chapterBtn.setText("Create a Chapter");
-            chapterBtn.setOnClickListener(createChapterClickListener);
-        }
     }
 
 

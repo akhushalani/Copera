@@ -10,17 +10,11 @@ public class User {
     private String initials;
     private String color;
     private ArrayList<String> wishList;
+    private boolean ownsChapter;
 
 
     public User() {
         //required default constructor
-    }
-
-    public User(String name, String uid, String initials, String color) {
-        this.name = name;
-        this.uid = uid;
-        this.initials = initials;
-        this.color = color;
     }
 
     public User(String name, String uid, String initials, String color, ArrayList<String>
@@ -30,6 +24,7 @@ public class User {
         this.initials = initials;
         this.color = color;
         this.wishList = wishList;
+        ownsChapter = false;
     }
 
     //Setters and Getters
@@ -73,4 +68,11 @@ public class User {
         this.wishList = wishList;
     }
 
+    public boolean getOwnsChapter() {
+        return ownsChapter;
+    }
+
+    public void setOwnsChapter(boolean ownsChapter) {
+        this.ownsChapter = ownsChapter;
+    }
 }

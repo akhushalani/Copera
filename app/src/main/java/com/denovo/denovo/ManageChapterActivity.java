@@ -15,6 +15,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,11 +26,11 @@ import static com.denovo.denovo.R.id.map;
 
 public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    String mChapterName;
     private GoogleMap mMap;
     private TextView mChapterNameView;
     private double mChapterLat;
     private double mChapterLong;
-
     private DatabaseReference mDatabase;
 
 
@@ -53,9 +56,11 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         findViewById(R.id.search).setVisibility(View.GONE);
         findViewById(R.id.next).setVisibility(View.GONE);
         mChapterNameView = (TextView) findViewById(R.id.chapter_name_txt);
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        mChapterNameView.setText("Dulaney FBLA");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference chapterRef = mDatabase.child("chapters");
+
+        mChapterNameView.setText(mChapterName);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(map);
