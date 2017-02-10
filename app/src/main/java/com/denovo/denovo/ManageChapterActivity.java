@@ -128,7 +128,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
             @Override
             public void onFinish() {
                 CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(mChapterLoc)         // Sets the center of the map to the location of the chapter
+                        .target(mChapterLoc)        // Sets the center of the map to the location of the chapter
                         .zoom(16)                   // Sets the zoom
                         .bearing(90)                // Sets the orientation of the camera to east
                         .tilt(30)                   // Sets the tilt of the camera to 30 degrees
