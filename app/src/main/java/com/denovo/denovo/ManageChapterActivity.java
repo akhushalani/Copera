@@ -37,6 +37,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     private TextView mChapterNameView;
     private double mChapterLat;
     private double mChapterLong;
+    private LatLng mChapterLoc;
     private String uid;
     private String chapterKey;
     private DatabaseReference mDatabase;
@@ -114,27 +115,37 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        LatLng chapterLoc = new LatLng(mChapterLat, mChapterLong);
+        mChapterLoc = new LatLng(mChapterLat, mChapterLong);
         mMap.addMarker(new MarkerOptions()
-                .position(chapterLoc)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                .position(mChapterLoc)
+                .icon(BitmapDescriptorFactory.defaultMarker(211)));
 
         CameraPosition cameraOriginPosition = new CameraPosition.Builder()
-                .target(chapterLoc)         // Sets the center of the map to Mountain View
-                .zoom(12)                   // Sets the zoom
+                .target(mChapterLoc)         // Sets the center of the map to the location of the chapter
+                .zoom(13)                   // Sets the zoom
                 .build();                   // Creates a CameraPosition from the builder
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraOriginPosition), 4000, null);
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraOriginPosition), 2000, new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(mChapterLoc)         // Sets the center of the map to the location of the chapter
+                        .zoom(16)                   // Sets the zoom
+                        .bearing(90)                // Sets the orientation of the camera to east
+                        .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                        .build();                   // Creates a CameraPosition from the builder
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 4000, null);
+            }
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(chapterLoc, 16));
+            @Override
+            public void onCancel() {
 
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(chapterLoc)         // Sets the center of the map to Mountain View
-                .zoom(17)                   // Sets the zoom
-                .bearing(90)                // Sets the orientation of the camera to east
-                .tilt(30)                   // Sets the tilt of the camera to 30 degrees
-                .build();                   // Creates a CameraPosition from the builder
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 4000, null);
+            }
+        });
+
+
     }
+
+
 }
 
 
