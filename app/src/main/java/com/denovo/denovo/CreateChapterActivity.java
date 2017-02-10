@@ -131,8 +131,9 @@ public class CreateChapterActivity extends AppCompatActivity {
         Chapter chapter = new Chapter(name, chapterLatLng.latitude, chapterLatLng.longitude);
         childRef.setValue(chapter);
 
-        DatabaseReference userRef = mDatabase.child("users").child(uid).child("ownsChapter");
-        userRef.setValue(true);
+        DatabaseReference userRef = mDatabase.child("users").child(uid);
+        userRef.child("ownsChapter").setValue(true);
+        userRef.child("chapterKey").setValue(childRef.getKey());
 
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

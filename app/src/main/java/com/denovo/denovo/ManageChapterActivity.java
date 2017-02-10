@@ -3,6 +3,7 @@ package com.denovo.denovo;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,25 +16,30 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import static android.R.attr.id;
 import static com.denovo.denovo.R.id.map;
 
 
 public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "ManageChapterActivity:";
     String mChapterName;
     private GoogleMap mMap;
     private TextView mChapterNameView;
     private double mChapterLat;
     private double mChapterLong;
+    private String uid;
+    private String chapterKey;
     private DatabaseReference mDatabase;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,23 +63,56 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         findViewById(R.id.next).setVisibility(View.GONE);
         mChapterNameView = (TextView) findViewById(R.id.chapter_name_txt);
 
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            uid = user.getUid();
+        }
+
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference chapterRef = mDatabase.child("chapters");
 
-        mChapterNameView.setText(mChapterName);
+        mDatabase.child("users").orderByKey().equalTo(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    chapterKey = user.getChapterKey();
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(map);
-        mapFragment.getMapAsync(this);
+                    mDatabase.child("chapters").orderByKey().equalTo(chapterKey).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot chapterSnapshot : dataSnapshot.getChildren()) {
+                                Chapter chapter = chapterSnapshot.getValue(Chapter.class);
+                                mChapterName = chapter.getName();
+                                mChapterLat = chapter.getLatitude();
+                                mChapterLong = chapter.getLongitude();
+                            }
+
+                            mChapterNameView.setText(mChapterName);
+                            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                                    .findFragmentById(map);
+                            mapFragment.getMapAsync(ManageChapterActivity.this);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            //in case of fail to access database do nothing
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //in case of fail to access database do nothing
+            }
+        });
     }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-
-        mChapterLat = 39.46029889999999;
-        mChapterLong = -76.6124786;
 
         LatLng chapterLoc = new LatLng(mChapterLat, mChapterLong);
         mMap.addMarker(new MarkerOptions()

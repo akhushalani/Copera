@@ -11,7 +11,7 @@ public class User {
     private String color;
     private ArrayList<String> wishList;
     private boolean ownsChapter;
-
+    private String chapterKey;
 
     public User() {
         //required default constructor
@@ -25,6 +25,7 @@ public class User {
         this.color = color;
         this.wishList = wishList;
         ownsChapter = false;
+        chapterKey = null;
     }
 
     //Setters and Getters
@@ -74,5 +75,13 @@ public class User {
 
     public void setOwnsChapter(boolean ownsChapter) {
         this.ownsChapter = ownsChapter;
+    }
+
+    public String getChapterKey() {
+        return chapterKey;
+    }
+
+    public void setChapterKey(String chapterKey) {
+        this.chapterKey = chapterKey;
     }
 }
