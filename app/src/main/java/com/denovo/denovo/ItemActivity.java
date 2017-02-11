@@ -1,20 +1,16 @@
 package com.denovo.denovo;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -27,12 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.denovo.denovo.R.id.comment;
-import static com.denovo.denovo.R.id.comment_text;
 import static com.denovo.denovo.R.layout.comment_item;
 
 
@@ -94,53 +87,53 @@ public class ItemActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("items").orderByKey().equalTo(itemId)
                 .addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                item = dataSnapshot.getValue(Item.class);
-                Log.v(TAG, item.getName());
-                item.downloadImage(getApplicationContext(), itemPhoto);
-                itemName.setText(item.getName());
-                itemYardSale.setText(item.getYardSale());
-                itemPrice.setText(item.formatPrice());
-                itemRating.setRating(item.getRating());
-                description.setText(item.getDescription());
-                wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
-                if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
-                    //wantItBtn.setElevation(dpToPx(4));
-                } else {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
-                    //wantItBtn.setElevation(dpToPx(1));
-                }
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        item = dataSnapshot.getValue(Item.class);
+                        Log.v(TAG, item.getName());
+                        item.downloadImage(getApplicationContext(), itemPhoto);
+                        itemName.setText(item.getName());
+                        itemYardSale.setText(item.getYardSale());
+                        itemPrice.setText(item.formatPrice());
+                        itemRating.setRating(item.getRating());
+                        description.setText(item.getDescription());
+                        wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
+                        if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
+                            wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
+                            //wantItBtn.setElevation(dpToPx(4));
+                        } else {
+                            wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
+                            //wantItBtn.setElevation(dpToPx(1));
+                        }
 
-            }
+                    }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                item = dataSnapshot.getValue(Item.class);
-                wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
-                if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
-                } else {
-                    wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
-                }
-            }
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        item = dataSnapshot.getValue(Item.class);
+                        wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
+                        if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
+                            wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
+                        } else {
+                            wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
+                        }
+                    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
 
         final Intent intent = getIntent();
 
