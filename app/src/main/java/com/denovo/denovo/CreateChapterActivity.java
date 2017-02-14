@@ -1,6 +1,8 @@
 package com.denovo.denovo;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,15 +24,24 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 public class CreateChapterActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateChapterActivity";
     private EditText editName;
     private CustomButton createChapterButton;
     private LatLng chapterLatLng;
+    private Locale chapterLocale;
     private PlaceAutocompleteFragment mAutocompleteFragment;
     private DatabaseReference mDatabase;
     private String uid;
+    private String chapterCity;
+    private String chapterState;
+    private String chapterAddress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +99,8 @@ public class CreateChapterActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 //get the latitude and longitude of the selected place
                 chapterLatLng = place.getLatLng();
+                //get the locale of the selected chapter
+                chapterLocale = place.getLocale();
             }
 
             @Override
@@ -110,11 +123,13 @@ public class CreateChapterActivity extends AppCompatActivity {
         //get string from edit Text
         String name = editName.getText().toString();
 
-        //get reference to chapter branch of db and generate a unique key for the chapter
+        //get reference to chapter branch of database and generate a unique key for the chapter
         DatabaseReference childRef = mDatabase.child("chapters").push();
 
+        reverseGeocode();
+
         //create a new Chapter object with the inputted data and write to the db
-        Chapter chapter = new Chapter(name, chapterLatLng.latitude, chapterLatLng.longitude);
+        Chapter chapter = new Chapter(name, chapterAddress, chapterLatLng.latitude, chapterLatLng.longitude);
         childRef.setValue(chapter);
 
         //get reference to the current user
@@ -151,6 +166,36 @@ public class CreateChapterActivity extends AppCompatActivity {
         }
         return valid;
     }
+
+    /**
+     * Translate the chapter's LatLng to address String formatted as city, state
+     *
+     * @return the formatted address String
+     */
+    private String reverseGeocode() {
+        List<Address> addresses = null;
+        //create new Geocoder to translate LatLng to address
+        Geocoder geocoder = new Geocoder(this, chapterLocale);
+        try {
+            addresses = geocoder.getFromLocation(chapterLatLng.latitude, chapterLatLng.longitude, 1);
+
+            if (addresses != null && addresses.size() > 0) {
+                Address address = addresses.get(0);
+                //get the city of the address
+                chapterCity = address.getLocality();
+                //get the state of the address
+                chapterState = address.getAdminArea();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //concatenate the parts of the address into a full address
+        chapterAddress = chapterCity + ", " + chapterState;
+        return chapterAddress;
+    }
+
 }
 
 
