@@ -38,9 +38,6 @@ public class CreateChapterActivity extends AppCompatActivity {
     private PlaceAutocompleteFragment mAutocompleteFragment;
     private DatabaseReference mDatabase;
     private String uid;
-    private String chapterCity;
-    private String chapterState;
-    private String chapterAddress;
 
 
     @Override
@@ -126,10 +123,8 @@ public class CreateChapterActivity extends AppCompatActivity {
         //get reference to chapter branch of database and generate a unique key for the chapter
         DatabaseReference childRef = mDatabase.child("chapters").push();
 
-        reverseGeocode();
-
         //create a new Chapter object with the inputted data and write to the db
-        Chapter chapter = new Chapter(name, chapterAddress, chapterLatLng.latitude, chapterLatLng.longitude);
+        Chapter chapter = new Chapter(name, reverseGeocode(chapterLatLng), chapterLatLng.latitude, chapterLatLng.longitude);
         childRef.setValue(chapter);
 
         //get reference to the current user
@@ -156,15 +151,15 @@ public class CreateChapterActivity extends AppCompatActivity {
         //if the editName field is empty set valid to false
         if (TextUtils.isEmpty(editName.getText().toString())) {
             Toast.makeText(getApplicationContext(), "Enter Chapter Name!", Toast.LENGTH_SHORT).show();
-            valid = false;
+            return false;
         }
 
         //if no place is selected from the PlaceAutCompleteFragment set valid to false;
         if (chapterLatLng == null) {
             Toast.makeText(getApplicationContext(), "Enter a location for your chapter!", Toast.LENGTH_SHORT).show();
-            valid = false;
+            return false;
         }
-        return valid;
+        return true;
     }
 
     /**
@@ -172,12 +167,16 @@ public class CreateChapterActivity extends AppCompatActivity {
      *
      * @return the formatted address String
      */
-    private String reverseGeocode() {
-        List<Address> addresses = null;
+    private String reverseGeocode(LatLng loc) {
         //create new Geocoder to translate LatLng to address
-        Geocoder geocoder = new Geocoder(this, chapterLocale);
+        Geocoder geocoder = new Geocoder(this);
+
+        List<Address> addresses = null;
+        String chapterCity = "";
+        String chapterState = "";
+
         try {
-            addresses = geocoder.getFromLocation(chapterLatLng.latitude, chapterLatLng.longitude, 1);
+            addresses = geocoder.getFromLocation(loc.latitude, loc.longitude, 1);
 
             if (addresses != null && addresses.size() > 0) {
                 Address address = addresses.get(0);
@@ -192,7 +191,7 @@ public class CreateChapterActivity extends AppCompatActivity {
         }
 
         //concatenate the parts of the address into a full address
-        chapterAddress = chapterCity + ", " + chapterState;
+        String chapterAddress = chapterCity + ", " + chapterState;
         return chapterAddress;
     }
 
