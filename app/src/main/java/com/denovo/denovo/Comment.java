@@ -27,16 +27,27 @@ public class Comment implements Parcelable {
     public Comment() {
     }
 
+    /**
+     * Class Constructor
+     *
+     * @param comment is the text of the comment
+     * @param uid     is the unique id of the user that posted the comment
+     * @param date    is time that the comment is written
+     */
     public Comment(String comment, String uid, long date) {
         mComment = comment;
         mUid = uid;
         mDate = date;
     }
 
+    /**
+     * Class Constructor
+     *
+     * @param in is the parcel that is passed to the constructor
+     */
     private Comment(Parcel in) {
         mComment = in.readString();
     }
-
 
     //setters and getters
     public String getComment() {

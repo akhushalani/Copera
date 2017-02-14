@@ -31,9 +31,6 @@ public class CommentAdapter extends ArrayAdapter<Comment> {
         TextView commentTextView = (TextView) listItemView.findViewById(R.id.comment_text);
         commentTextView.setText(currentComment.getComment());
 
-        //TextView dateTextView = (TextView) listItemView.findViewById(R.id.comment_date);
-        //DateFormat dateFormat = new DateFormat();
-
         return listItemView;
     }
 }

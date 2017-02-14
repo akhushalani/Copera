@@ -17,6 +17,15 @@ public class User {
         //required default constructor
     }
 
+    /**
+     * Class Constructor
+     *
+     * @param name     is the name of the user
+     * @param uid      is the unique id of the user
+     * @param initials is the initials of the user
+     * @param color    is the background color of the user's profile pic
+     * @param wishList is an ArrayList of Strings of the item keys of the items that the user has bookmarked
+     */
     public User(String name, String uid, String initials, String color, ArrayList<String>
             wishList) {
         this.name = name;

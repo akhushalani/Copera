@@ -45,14 +45,17 @@ public class ItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item);
 
+        //get the unique id of the current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             uid = user.getUid();
         }
 
+        //set the action bar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar);
 
+        //hook up back button
         ImageView btnBack = (ImageView) findViewById(R.id.back);
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,15 +64,18 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
+        //hide unused action bar icons
         findViewById(R.id.settings).setVisibility(View.GONE);
         findViewById(R.id.search).setVisibility(View.GONE);
         findViewById(R.id.next).setVisibility(View.GONE);
 
+        //get item id from MainActivity
         Bundle data = getIntent().getExtras();
         itemId = data.getString("item");
 
         mCommentList = new ArrayList<>();
 
+        //find views from xml
         final ImageView itemPhoto = (ImageView) findViewById(R.id.item_photo);
         final TextView itemName = (TextView) findViewById(R.id.item_name);
         final TextView itemYardSale = (TextView) findViewById(R.id.item_yard_sale);
@@ -84,14 +90,19 @@ public class ItemActivity extends AppCompatActivity {
 
         final LayoutInflater inflater = LayoutInflater.from(this);
 
+        //instantiate the database
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        //add child event listener on the item to listen for changes in the database
         mDatabase.child("items").orderByKey().equalTo(itemId)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        //create Item from data read from the database
                         item = dataSnapshot.getValue(Item.class);
                         Log.v(TAG, item.getName());
                         item.downloadImage(getApplicationContext(), itemPhoto);
+                        //populate the views
                         itemName.setText(item.getName());
                         itemYardSale.setText(item.getYardSale());
                         itemPrice.setText(item.formatPrice());
@@ -102,6 +113,7 @@ public class ItemActivity extends AppCompatActivity {
                             wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
                             //wantItBtn.setElevation(dpToPx(4));
                         } else {
+                            //if the item is not wish listed by the current user, display a grayed-out button
                             wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
                             //wantItBtn.setElevation(dpToPx(1));
                         }
@@ -110,11 +122,14 @@ public class ItemActivity extends AppCompatActivity {
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        //create Item from data read from the database
                         item = dataSnapshot.getValue(Item.class);
+                        //if any user wish lists or de-wish lists the item, update the number displayed on the wishlist button
                         wantItBtn.setText(getString(R.string.wish_list, item.getWishListNum()));
                         if (item.getWishListUsers() == null || !item.getWishListUsers().contains(uid)) {
                             wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
                         } else {
+                            //if the item is not wish listed by the current user, display a grayed-out button
                             wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
                         }
                     }
@@ -160,20 +175,26 @@ public class ItemActivity extends AppCompatActivity {
             }
         });
 
+        //add child event listener to listen for changes in the item's branch of the the comment tree
         mDatabase.child("comments").child(itemId).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //add comments to the comment list
                 mCommentList.add(dataSnapshot.getValue(Comment.class));
 
+                //clear the feed
                 commentFeed.removeAllViews();
 
                 int previewCount;
                 if (mCommentList == null) {
+                    //if there are no comments, do not display a preview
                     previewCount = 0;
                 } else {
+                    //else display a preview
                     previewCount = mCommentList.size();
                 }
                 if (previewCount > 0) {
+                    //if there are comments hide the noComments view
                     noComments.setVisibility(View.GONE);
                 }
                 if (previewCount >= 3) {

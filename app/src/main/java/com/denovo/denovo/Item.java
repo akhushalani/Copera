@@ -56,6 +56,18 @@ public class Item implements Parcelable {
 
     }
 
+    /**
+     * Class Constructor
+     *
+     * @param name          is the item name
+     * @param imageFileName is the item image
+     * @param yardSale      is the yardsale the item is donated to
+     * @param donor         is the id of the donor that donated the item
+     * @param price         is the asking price of the item
+     * @param rating        is the item condition rating
+     * @param description   is a descfiption of the item
+     * @param wishListUsers is an array of the unique user ids that have wishlisted the item
+     */
     public Item(String name, String imageFileName, String yardSale, String donor, double price, int
             rating, String description, ArrayList<String>
             wishListUsers) {
@@ -72,6 +84,11 @@ public class Item implements Parcelable {
                 ".appspot.com/images/" + imageFileName);
     }
 
+    /**
+     * Class Constructor
+     *
+     * @param in is the parcel that is passed to the constructor
+     */
     private Item(Parcel in) {
         mName = in.readString();
         mImageFileName = in.readString();
@@ -159,10 +176,6 @@ public class Item implements Parcelable {
         return mWishListNum;
     }
 
-    public void setWishListNum(int wishList) {
-        mWishListNum = wishList;
-    }
-
     @Exclude
     public void setWishListNum(boolean value) {
         if (value) {
@@ -170,6 +183,10 @@ public class Item implements Parcelable {
         } else {
             mWishListNum--;
         }
+    }
+
+    public void setWishListNum(int wishList) {
+        mWishListNum = wishList;
     }
 
     public ArrayList<String> getWishListUsers() {
@@ -189,9 +206,14 @@ public class Item implements Parcelable {
         return mImageFileName.substring(0, mImageFileName.length() - 4);
     }
 
+
     public void onAddedToWishList(final String uid, final String itemId) {
+        //instantiate the database
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+
+        //get a reference to the database
         DatabaseReference itemRef = databaseRef.child("items").child(itemId);
+
         itemRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {

@@ -54,6 +54,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        //set toolbar
         final Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
         setSupportActionBar(toolbar);
 
@@ -61,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
                 (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
         collapsingToolbar.setTitle(null);
 
+        //find views from xml
         inputFirstName = (EditText) findViewById(R.id.edit_first_name);
         inputLastName = (EditText) findViewById(R.id.edit_last_name);
         inputEmail = (EditText) findViewById(R.id.edit_email);
@@ -68,6 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
         confirmPassword = (EditText) findViewById(R.id.confirm_password);
         final Button signUpButton = (Button) findViewById(R.id.btn_sign_up);
 
+        //instantiate database and FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -75,9 +78,11 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!validateForm()) {
+                    //disable signUpButton if fields are empty
                     signUpButton.setEnabled(false);
                     return;
                 }
+                //else create an account and sign in
                 createAccount(inputEmail.getText().toString(), inputPassword.getText().toString());
                 signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
             }
@@ -106,9 +111,9 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            //Toast.makeText(SignUpActivity.this, "Login failed, check your " +
-                            //        "email and password", Toast.LENGTH_LONG).show();
+
                         } else {
+                            //if sign in is successful then update the user's profile with their first and last name
                             updateProfile(firstName + " " + lastName,
                                     "" + firstName.charAt(0) + lastName.charAt(0));
                         }
@@ -124,12 +129,14 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean validateForm() {
         boolean valid = true;
 
+        //get Strings from EditTexts
         firstName = inputFirstName.getText().toString();
         lastName = inputLastName.getText().toString();
         email = inputEmail.getText().toString();
         password = inputPassword.getText().toString();
         confirm = confirmPassword.getText().toString();
 
+        //Check to see if field is filled, if not display a toast to the user and set valid to false
         if (TextUtils.isEmpty(firstName)) {
             Toast.makeText(getApplicationContext(), "Enter first name!", Toast.LENGTH_SHORT).show();
             valid = false;
@@ -158,14 +165,23 @@ public class SignUpActivity extends AppCompatActivity {
         return valid;
     }
 
+    /**
+     * Update the new user's profile with name and initials from the EditTexts
+     *
+     * @param name     is the name of the new user
+     * @param initials is the initials of the new user
+     */
     private void updateProfile(String name, String initials) {
+        //get current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         addUserToDb(name, initials, user.getUid());
 
+        //set user display name
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(name)
                 .build();
 
+        //when the profile is finished updating, finish SignUpActivity and start MainActivity
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -178,12 +194,27 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Write the new User to the database
+     *
+     * @param name is the name of the new user
+     * @param initials is the initials of the new user
+     * @param uid is the unique id of the new user
+     */
     private void addUserToDb(String name, String initials, String uid) {
+        //create empty wishlist for each new user
         ArrayList<String> wishlist = new ArrayList<>();
+        //create new User with inputted information
         User newUser = new User(name, uid, initials, randomColor(), wishlist);
+        //write user to database's users branch
         mDatabase.child("users").child(uid).setValue(newUser);
     }
 
+    /**
+     * Choose a random color for the default user profile pic
+     *
+     * @return String of the random color
+     */
     private String randomColor() {
         Random rand = new Random();
         int n = rand.nextInt(9) + 1;
