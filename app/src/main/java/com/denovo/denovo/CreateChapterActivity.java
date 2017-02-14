@@ -168,7 +168,7 @@ public class CreateChapterActivity extends AppCompatActivity {
     }
 
     /**
-     * Translate the chapter's LatLng to address String formatted as 'city, state'
+     * Translate the chapter's LatLng to address String formatted as city, state
      *
      * @return the formatted address String
      */
