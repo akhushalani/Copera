@@ -24,8 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.denovo.denovo.R.layout.comment_item;
-
 public class CommentActivity extends AppCompatActivity {
 
     private String uid;
@@ -92,24 +90,40 @@ public class CommentActivity extends AppCompatActivity {
                 //inflate the feed with comment objects from commentList
                 for (int i = 0; i < mCommentList.size(); i++) {
                     Comment currentComment = mCommentList.get(i);
-                    View view = inflater.inflate(comment_item, commentFeed, false);
+
+                    View view;
+
+                    if (currentComment.getType().equals("comment")) {
+                        view = inflater.inflate(R.layout.comment_item, commentFeed, false);
+
+                        //set the text of the current comment
+                        TextView commentTextView = (TextView) view.findViewById(R.id.comment_text);
+                        commentTextView.setText(currentComment.getComment());
+
+                        //create userInfo arrayList and pass it along with the users uid to retrieveUserInfo.
+                        ArrayList<String> userInfo = new ArrayList<>();
+                        retrieveUserInfo(view, userInfo, currentComment.getUid(), "comment");
+
+                        //set the date of the current comment
+                        TextView commentDate = (TextView) view.findViewById(R.id.comment_date);
+                        commentDate.setText(createDateString(currentComment.getDate()));
+                    } else {
+                        view = inflater.inflate(R.layout.offer_item, commentFeed, false);
+
+                        //set the text of the current comment
+                        TextView offerAmountTextView = (TextView) view.findViewById(R.id.offer_amount);
+                        offerAmountTextView.setText("$" + currentComment.getComment());
+
+                        //create userInfo arrayList and pass it along with the users uid to retrieveUserInfo.
+                        ArrayList<String> userInfo = new ArrayList<>();
+                        retrieveUserInfo(view, userInfo, currentComment.getUid(), "offer");
+                    }
 
                     //if the comment is the first in the list, hide the divider
                     if (i == 0) {
                         view.findViewById(R.id.comment_divider).setVisibility(View.GONE);
                     }
 
-                    //set the text of the current comment
-                    TextView commentTextView = (TextView) view.findViewById(R.id.comment_text);
-                    commentTextView.setText(currentComment.getComment());
-
-                    //create userInfo arrayList and pass it along with the users uid to retrieveUserInfo.
-                    ArrayList<String> userInfo = new ArrayList<>();
-                    retrieveUserInfo(view, userInfo, currentComment.getUid());
-
-                    //set the date of the current comment
-                    TextView commentDate = (TextView) view.findViewById(R.id.comment_date);
-                    commentDate.setText(createDateString(currentComment.getDate()));
 
                     //add comment to feed
                     commentFeed.addView(view);
@@ -169,7 +183,7 @@ public class CommentActivity extends AppCompatActivity {
 
                 //create new comment variable from inputted text, the current user's uid, and the current time
                 Comment newComment = new Comment(commentEntry.getText().toString(), uid,
-                        currentTime);
+                        currentTime, "comment");
 
                 //get a reference to comment branch of the database
                 DatabaseReference commentRef = mDatabase.child("comments").child(itemId).push();
@@ -189,8 +203,10 @@ public class CommentActivity extends AppCompatActivity {
      * @param view     is the current comment view
      * @param userInfo is an ArrayList of user information
      * @param uid      is the uid of the current user
+     * @param type     is the type of the comment (comment or offer)
      */
-    public void retrieveUserInfo(final View view, final ArrayList<String> userInfo, String uid) {
+    public void retrieveUserInfo(final View view, final ArrayList<String> userInfo, String uid,
+                                 final String type) {
         //get reference to the current user in the users branch of the database and listen for changes
         mDatabase.child("users").orderByKey().equalTo(uid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -204,8 +220,9 @@ public class CommentActivity extends AppCompatActivity {
                             userInfo.add(user.getInitials());
                             userInfo.add(user.getColor());
                             userInfo.add(user.getUid());
-                            //pass view and userInfo arrayList to populateUSerFields
-                            populateUserFields(view, userInfo);
+
+                            //pass view and userInfo arrayList to populateUserFields
+                            populateUserFields(view, userInfo, type);
                         }
                     }
 
@@ -219,63 +236,69 @@ public class CommentActivity extends AppCompatActivity {
     /**
      * Populate the current comment view with information about the current user
      *
-     * @param view is the current comment view
+     * @param view     is the current comment view
      * @param userInfo is an ArrayList of Strings containing the current user's profile information
+     * @param type     is the type of the comment (comment or offer)
      */
-    public void populateUserFields(View view, ArrayList<String> userInfo) {
+    public void populateUserFields(View view, ArrayList<String> userInfo, String type) {
 
-        //set the display name of the current comment to the display name of the current user
-        TextView displayName = (TextView) view.findViewById(R.id.comment_display_name);
-        displayName.setText(userInfo.get(0));
+        if (type.equals("comment")) {
+            //set the display name of the current comment to the display name of the current user
+            TextView displayName = (TextView) view.findViewById(R.id.comment_display_name);
+            displayName.setText(userInfo.get(0));
 
-        //get the initials of the current user and display them in the profilePic TextView
-        TextView profilePic = (TextView) view.findViewById(R.id.comment_prof_pic);
-        profilePic.setText(userInfo.get(1));
+            //get the initials of the current user and display them in the profilePic TextView
+            TextView profilePic = (TextView) view.findViewById(R.id.comment_prof_pic);
+            profilePic.setText(userInfo.get(1));
 
-        //get the color of the current user's profile pic and set it as the background color of the comment's profilePic View
-        switch (userInfo.get(2)) {
-            case "red":
-                profilePic.setBackgroundResource(R.drawable.profile_red);
-                break;
-            case "pink":
-                profilePic.setBackgroundResource(R.drawable.profile_pink);
-                break;
-            case "purple":
-                profilePic.setBackgroundResource(R.drawable.profile_purple);
-                break;
-            case "blue":
-                profilePic.setBackgroundResource(R.drawable.profile_blue);
-                break;
-            case "teal":
-                profilePic.setBackgroundResource(R.drawable.profile_teal);
-                break;
-            case "green":
-                profilePic.setBackgroundResource(R.drawable.profile_green);
-                break;
-            case "yellow":
-                profilePic.setBackgroundResource(R.drawable.profile_yellow);
-                break;
-            case "orange":
-                profilePic.setBackgroundResource(R.drawable.profile_orange);
-                break;
-            case "gray":
-                profilePic.setBackgroundResource(R.drawable.profile_gray);
-                break;
-        }
+            //get the color of the current user's profile pic and set it as the background color of the comment's profilePic View
+            switch (userInfo.get(2)) {
+                case "red":
+                    profilePic.setBackgroundResource(R.drawable.profile_red);
+                    break;
+                case "pink":
+                    profilePic.setBackgroundResource(R.drawable.profile_pink);
+                    break;
+                case "purple":
+                    profilePic.setBackgroundResource(R.drawable.profile_purple);
+                    break;
+                case "blue":
+                    profilePic.setBackgroundResource(R.drawable.profile_blue);
+                    break;
+                case "teal":
+                    profilePic.setBackgroundResource(R.drawable.profile_teal);
+                    break;
+                case "green":
+                    profilePic.setBackgroundResource(R.drawable.profile_green);
+                    break;
+                case "yellow":
+                    profilePic.setBackgroundResource(R.drawable.profile_yellow);
+                    break;
+                case "orange":
+                    profilePic.setBackgroundResource(R.drawable.profile_orange);
+                    break;
+                case "gray":
+                    profilePic.setBackgroundResource(R.drawable.profile_gray);
+                    break;
+            }
 
-        //hide the donorTag
-        TextView donorTag = (TextView) view.findViewById(R.id.donor_tag);
-        donorTag.setVisibility(View.GONE);
+            //hide the donorTag
+            TextView donorTag = (TextView) view.findViewById(R.id.donor_tag);
+            donorTag.setVisibility(View.GONE);
 
-        //hide the officerTag
-        TextView officerTag = (TextView) view.findViewById(R.id.officer_tag);
-        officerTag.setVisibility(View.GONE);
+            //hide the officerTag
+            TextView officerTag = (TextView) view.findViewById(R.id.officer_tag);
+            officerTag.setVisibility(View.GONE);
 
-        //if the current user is the donor then display the donorTag
-        if (userInfo.get(3).equals(donorId)) {
-            donorTag.setVisibility(View.VISIBLE);
-        } else if (userInfo.get(0).equals("FBLA Officer")) {
-            officerTag.setVisibility(View.VISIBLE);
+            //if the current user is the donor then display the donorTag
+            if (userInfo.get(3).equals(donorId)) {
+                donorTag.setVisibility(View.VISIBLE);
+            } else if (userInfo.get(0).equals("FBLA Officer")) {
+                officerTag.setVisibility(View.VISIBLE);
+            }
+        } else {
+            TextView offerUserTextView = (TextView) view.findViewById(R.id.offer_user);
+            offerUserTextView.setText(userInfo.get(0));
         }
     }
 

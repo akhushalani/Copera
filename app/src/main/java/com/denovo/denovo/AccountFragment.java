@@ -339,7 +339,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
     }
 
     @Override
-    public void onBargainBtnClick(int p) {
+    public void onOfferBtnClick(int p) {
         Intent intent = new Intent(getActivity(), BargainActivity.class);
         intent.putExtra("item_key", "-KYLXskpzmhDq5citlod");
         startActivity(intent);

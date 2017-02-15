@@ -2,8 +2,6 @@ package com.denovo.denovo;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
-
-import static android.R.attr.data;
-import static java.security.AccessController.getContext;
 
 
 /**
@@ -37,7 +32,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
 
         void onWantItBtnClick(int p);
 
-        void onBargainBtnClick(int p);
+        void onOfferBtnClick(int p);
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -113,7 +108,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         RatingBar itemRating;
         TextView description;
         CustomButton wantItBtn;
-        CustomButton bargainBtn;
+        CustomButton offerBtn;
         int index;
 
         ItemViewHolder(View itemView, int i) {
@@ -125,12 +120,12 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
             itemRating = (RatingBar) itemView.findViewById(R.id.item_rating);
             description = (TextView) itemView.findViewById(R.id.description);
             wantItBtn = (CustomButton) itemView.findViewById(R.id.btn_item_want);
-            bargainBtn = (CustomButton) itemView.findViewById(R.id.btn_item_bargain);
+            offerBtn = (CustomButton) itemView.findViewById(R.id.btn_item_offer);
             index = i;
 
             cv.setOnClickListener(this);
             wantItBtn.setOnClickListener(this);
-            bargainBtn.setOnClickListener(this);
+            offerBtn.setOnClickListener(this);
         }
 
         @Override
@@ -151,8 +146,8 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
                 } else {
                     wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
                 }
-            } else if (v.getId() == R.id.btn_item_bargain) {
-                itemClickCallback.onBargainBtnClick(getAdapterPosition());
+            } else if (v.getId() == R.id.btn_item_offer) {
+                itemClickCallback.onOfferBtnClick(getAdapterPosition());
             } else {
 
             }

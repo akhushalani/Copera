@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_marginLeft="8dp"
+              android:layout_marginRight="8dp"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/custom_dialog">
+
+    <com.denovo.denovo.BoldTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:paddingTop="4dp"
+        android:text="Make an Offer"
+        android:textSize="30sp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_vertical">
+        <com.denovo.denovo.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$"
+            android:textSize="28sp"/>
+        <com.denovo.denovo.CustomEditText
+            android:id="@+id/offer_amount_edit_text"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/myedittextsmall_selector"
+            android:layout_margin="8dp"
+            android:inputType="numberDecimal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical">
+        <com.denovo.denovo.CustomButton
+            android:id="@+id/cancel_offer_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:text="Cancel"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:background="@drawable/mybuttonsmall"/>
+        <com.denovo.denovo.CustomButton
+            android:id="@+id/submit_offer_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:text="Submit"
+            android:textSize="24sp"
+            android:textColor="@color/colorPrimary"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:background="@drawable/mybuttonsmall"/>
+    </LinearLayout>
+
+</LinearLayout>

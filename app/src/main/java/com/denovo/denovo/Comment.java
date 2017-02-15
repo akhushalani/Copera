@@ -23,6 +23,7 @@ public class Comment implements Parcelable {
     private String mComment;
     private String mUid;
     private long mDate;
+    private String mType;
 
     public Comment() {
     }
@@ -32,12 +33,14 @@ public class Comment implements Parcelable {
      *
      * @param comment is the text of the comment
      * @param uid     is the unique id of the user that posted the comment
-     * @param date    is time that the comment is written
+     * @param date    is the time that the comment is written
+     * @param type    is the type of comment (offer or comment)
      */
-    public Comment(String comment, String uid, long date) {
+    public Comment(String comment, String uid, long date, String type) {
         mComment = comment;
         mUid = uid;
         mDate = date;
+        mType = type;
     }
 
     /**
@@ -74,6 +77,13 @@ public class Comment implements Parcelable {
         mDate = date;
     }
 
+    public String getType() {
+        return mType;
+    }
+
+    public void setType(String type) {
+        mType = type;
+    }
 
     @Override
     public int describeContents() {
