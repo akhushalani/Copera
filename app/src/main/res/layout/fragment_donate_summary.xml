@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.denovo.denovo.DonateSummaryFragment">
+             tools:context="com.denovo.denovo.fragments.DonateSummaryFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -12,14 +12,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.denovo.denovo.SquareImageView
+            <com.denovo.denovo.views.SquareImageView
                 android:id="@+id/summary_item_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop"/>
 
-            <com.denovo.denovo.BoldTextView
+            <com.denovo.denovo.views.BoldTextView
                 android:id="@+id/summary_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
                 android:text="Book"
                 android:textSize="28sp"/>
 
-            <com.denovo.denovo.CustomTextView
+            <com.denovo.denovo.views.CustomTextView
                 android:id="@+id/summary_item_yard_sale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:text="Dulaney FBLA"
                 android:textSize="24sp"/>
 
-            <com.denovo.denovo.CustomTextView
+            <com.denovo.denovo.views.CustomTextView
                 android:id="@+id/summary_item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                 android:rating="4.5"
                 />
 
-            <com.denovo.denovo.CustomTextView
+            <com.denovo.denovo.views.CustomTextView
                 android:id="@+id/summary_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                 android:paddingTop="8dp"
                 android:textSize="18sp"/>
 
-            <com.denovo.denovo.CustomButton
+            <com.denovo.denovo.views.CustomButton
                 android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"

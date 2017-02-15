@@ -7,7 +7,7 @@
               android:layout_height="wrap_content"
               android:background="@drawable/custom_dialog">
 
-    <com.denovo.denovo.BoldTextView
+    <com.denovo.denovo.views.BoldTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -21,12 +21,12 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical">
-        <com.denovo.denovo.CustomTextView
+        <com.denovo.denovo.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$"
             android:textSize="28sp"/>
-        <com.denovo.denovo.CustomEditText
+        <com.denovo.denovo.views.CustomEditText
             android:id="@+id/offer_amount_edit_text"
             android:layout_width="120dp"
             android:layout_height="40dp"
@@ -43,7 +43,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="8dp"
         android:gravity="center_vertical">
-        <com.denovo.denovo.CustomButton
+        <com.denovo.denovo.views.CustomButton
             android:id="@+id/cancel_offer_btn"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -54,7 +54,7 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:background="@drawable/mybuttonsmall"/>
-        <com.denovo.denovo.CustomButton
+        <com.denovo.denovo.views.CustomButton
             android:id="@+id/submit_offer_btn"
             android:layout_width="wrap_content"
             android:layout_height="40dp"

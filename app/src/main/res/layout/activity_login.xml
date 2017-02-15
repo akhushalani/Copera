@@ -6,7 +6,7 @@
              android:layout_height="match_parent"
              android:background="@drawable/gradient_selector"
              android:windowSoftInputMode="adjustPan"
-             tools:context="com.denovo.denovo.LoginActivity">
+             tools:context="com.denovo.denovo.activities.LoginActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_marginBottom="-35dp"
             android:src="@drawable/ic_logo_shadow"/>
 
-        <com.denovo.denovo.BoldTextView
+        <com.denovo.denovo.views.BoldTextView
             android:id="@+id/denovo_text_view"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:textColorHint="#FFFFFF"
             android:textSize="24sp"/>
 
-        <com.denovo.denovo.CustomButton
+        <com.denovo.denovo.views.CustomButton
             android:id="@+id/sign_in_button"
             android:layout_width="280dp"
             android:layout_height="50dp"
@@ -79,7 +79,7 @@
             android:textColor="@android:color/white"
             android:textSize="26sp"/>
 
-        <com.denovo.denovo.CustomTextView
+        <com.denovo.denovo.views.CustomTextView
             android:id="@+id/dont_have_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
             android:paddingTop="8dp"
             android:text="Don't have an account?"/>
 
-        <com.denovo.denovo.CustomTextView
+        <com.denovo.denovo.views.CustomTextView
             android:id="@+id/sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

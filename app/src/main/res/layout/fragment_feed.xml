@@ -4,7 +4,7 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.denovo.denovo.FeedFragment">
+    tools:context="com.denovo.denovo.fragments.FeedFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv"

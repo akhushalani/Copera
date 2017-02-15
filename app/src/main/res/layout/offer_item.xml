@@ -24,7 +24,7 @@
         android:layout_centerInParent="true"
         android:orientation="vertical">
 
-        <com.denovo.denovo.BoldTextView
+        <com.denovo.denovo.views.BoldTextView
             android:id="@+id/offer_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,14 +32,14 @@
             android:text="Abhinav Khushalani"
             android:textSize="18sp"/>
 
-        <com.denovo.denovo.CustomTextView
+        <com.denovo.denovo.views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="made an offer of"
             android:textSize="18sp"/>
 
-        <com.denovo.denovo.BoldTextView
+        <com.denovo.denovo.views.BoldTextView
             android:id="@+id/offer_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

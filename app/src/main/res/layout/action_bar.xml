@@ -36,7 +36,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/ic_next"/>
 
-    <com.denovo.denovo.BoldTextView
+    <com.denovo.denovo.views.BoldTextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

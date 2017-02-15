@@ -25,28 +25,28 @@
         </provider>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
         <activity
-            android:name=".ItemActivity"
+            android:name=".activities.ItemActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
         <activity
-            android:name=".DonateActivity"
+            android:name=".activities.DonateActivity"
             android:screenOrientation="portrait">
             <meta-data android:name="android.app.default_searchable"
                        android:value=".SearchableActivity" />
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -56,19 +56,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PreferencesActivity"
+            android:name=".activities.PreferencesActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".BargainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".SignUpActivity"
+            android:name=".activities.SignUpActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".SearchableActivity"
+        <activity android:name=".activities.SearchableActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/AppTheme.Item"
                   android:launchMode="singleTop">
@@ -79,9 +75,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".CreateChapterActivity">
+        <activity android:name=".activities.CreateChapterActivity">
         </activity>
-        <activity android:name=".ManageChapterActivity">
+        <activity android:name=".activities.ManageChapterActivity">
         </activity>
 
         <meta-data
@@ -95,7 +91,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".CommentActivity">
+        <activity android:name=".activities.CommentActivity">
         </activity>
     </application>
 

@@ -38,7 +38,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_centerHorizontal="true">
 
-                <com.denovo.denovo.CustomTextView
+                <com.denovo.denovo.views.CustomTextView
                     android:id="@+id/comment_prof_pic"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -49,7 +49,7 @@
                     android:textSize="18sp"/>
             </FrameLayout>
 
-            <com.denovo.denovo.BoldTextView
+            <com.denovo.denovo.views.BoldTextView
                 android:id="@+id/donor_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                 android:layout_marginTop="4dp"
                 android:text="DONOR"/>
 
-            <com.denovo.denovo.BoldTextView
+            <com.denovo.denovo.views.BoldTextView
                 android:id="@+id/officer_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:layout_marginLeft="6dp"
             android:orientation="vertical">
 
-            <com.denovo.denovo.BoldTextView
+            <com.denovo.denovo.views.BoldTextView
                 android:id="@+id/comment_display_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                 android:textSize="19sp"
                 tools:text="Abhinav Khushalani"/>
 
-            <com.denovo.denovo.CustomTextView
+            <com.denovo.denovo.views.CustomTextView
                 android:id="@+id/comment_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                 android:textSize="18sp"
                 tools:text="I love this item! I am considering buying this but I have a question. Do you think this item is going to improve my life?" />
 
-            <com.denovo.denovo.CustomTextView
+            <com.denovo.denovo.views.CustomTextView
                 android:id="@+id/comment_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

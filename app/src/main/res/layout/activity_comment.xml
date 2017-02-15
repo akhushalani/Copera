@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.denovo.denovo.CommentActivity">
+    tools:context="com.denovo.denovo.activities.CommentActivity">
 
     <ScrollView
         android:id="@+id/comment_scroll"
@@ -32,7 +32,7 @@
                   android:elevation="16dp"
                   android:padding="4dp">
 
-        <com.denovo.denovo.CustomEditText
+        <com.denovo.denovo.views.CustomEditText
             android:id="@+id/activity_comment_entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -11,7 +11,7 @@
         android:padding="8dp"
         android:orientation="vertical">
 
-        <com.denovo.denovo.BoldTextView
+        <com.denovo.denovo.views.BoldTextView
             android:id="@+id/search_result_chapter_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
             android:text="Dulaney High School"
             android:textSize="26sp"/>
 
-        <com.denovo.denovo.CustomTextView
+        <com.denovo.denovo.views.CustomTextView
             android:id="@+id/search_result_chapter_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

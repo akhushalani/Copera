@@ -25,7 +25,7 @@
             android:layout_alignParentTop="true"
             android:scaleType="centerCrop"/>
 
-        <com.denovo.denovo.BoldTextView
+        <com.denovo.denovo.views.BoldTextView
             android:id="@+id/item_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:paddingTop="8dp"
             android:textSize="28sp"/>
 
-        <com.denovo.denovo.CustomTextView
+        <com.denovo.denovo.views.CustomTextView
             android:id="@+id/item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
             android:isIndicator="true"
             android:numStars="5"/>
 
-        <com.denovo.denovo.CustomTextView
+        <com.denovo.denovo.views.CustomTextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             android:paddingTop="8dp"
             android:textSize="18sp"/>
 
-        <com.denovo.denovo.CustomButton
+        <com.denovo.denovo.views.CustomButton
             android:id="@+id/btn_item_want"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -87,7 +87,7 @@
             android:textColor="@android:color/white"
             android:textSize="22sp"/>
 
-        <com.denovo.denovo.CustomButton
+        <com.denovo.denovo.views.CustomButton
             android:id="@+id/btn_item_offer"
             android:layout_width="wrap_content"
             android:layout_height="40dp"

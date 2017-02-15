@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:id="@+id/donate_item_info_fragment"
-              tools:context="com.denovo.denovo.DonateItemInfoFragment">
+              tools:context="com.denovo.denovo.fragments.DonateItemInfoFragment">
 
     <RelativeLayout
         android:id="@+id/item_thumbnail"
@@ -30,7 +30,7 @@
 
     </RelativeLayout>
 
-    <com.denovo.denovo.CustomEditText
+    <com.denovo.denovo.views.CustomEditText
         android:id="@+id/item_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -43,7 +43,7 @@
         android:inputType="textPersonName"
         android:background="@drawable/myedittextsmall_selector"/>
 
-    <com.denovo.denovo.CustomTextView
+    <com.denovo.denovo.views.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="16dp"
@@ -56,7 +56,7 @@
         android:background="@drawable/myedittextsmall_selector"
         android:id="@+id/item_yard_sale_edit_text"/>
 
-    <com.denovo.denovo.CustomEditText
+    <com.denovo.denovo.views.CustomEditText
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -72,7 +72,7 @@
         android:background="@drawable/myedittextsmall_selector"
         android:id="@+id/item_description_edit_text"/>
 
-    <com.denovo.denovo.CustomButton
+    <com.denovo.denovo.views.CustomButton
         android:id="@+id/btn_confirm_info"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
