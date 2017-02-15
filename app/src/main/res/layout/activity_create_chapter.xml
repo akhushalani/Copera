@@ -28,7 +28,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:hint="Ex. Dulaney FBLA"
+        android:hint="Ex. Dulaney High School"
         android:inputType="textCapWords"
         android:maxLines="1"/>
 
