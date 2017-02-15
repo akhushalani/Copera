@@ -74,17 +74,21 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //enable the button
+                signUpButton.setEnabled(true);
                 if (!validateForm()) {
                     //disable signUpButton if fields are empty
-                    signUpButton.setEnabled(false);
                     return;
                 }
                 //else create an account and sign in
                 createAccount(inputEmail.getText().toString(), inputPassword.getText().toString());
                 signIn(inputEmail.getText().toString(), inputPassword.getText().toString());
+                //after user clicks button disable the button to prevent spam and display of misleading toasts
+                signUpButton.setEnabled(false);
             }
         });
     }
@@ -140,24 +144,19 @@ public class SignUpActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(firstName)) {
             Toast.makeText(getApplicationContext(), "Enter first name!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (TextUtils.isEmpty(lastName)) {
+        } else if (TextUtils.isEmpty(lastName)) {
             Toast.makeText(getApplicationContext(), "Enter last name!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (TextUtils.isEmpty(email)) {
+        } else if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (!password.equals(confirm)) {
+        } else if (password.length() > 0 && password.length() < 6) {
+            Toast.makeText(getApplicationContext(), "Passwords must be longer than 6 characters and contain no special characters", Toast.LENGTH_SHORT).show();
+            valid = false;
+        } else if (!password.equals(confirm)) {
             Toast.makeText(getApplicationContext(), "Passwords don't match!", Toast.LENGTH_SHORT).show();
             valid = false;
         }

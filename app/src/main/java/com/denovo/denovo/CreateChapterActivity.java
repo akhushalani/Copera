@@ -86,7 +86,6 @@ public class CreateChapterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //disable button if a field is empty
                 if (!validateForm()) {
-                    createChapterButton.setEnabled(false);
                     return;
                 }
                 createChapter();
@@ -146,22 +145,21 @@ public class CreateChapterActivity extends AppCompatActivity {
     /**
      * Method to check if all fields are filled and valid
      *
-     * @return true if all fields are filled, or false if some fields are empty
+     * @return valid
      */
     private boolean validateForm() {
+        boolean valid = true;
 
-        //if the editName field is empty return false
+        //Check to see if field is filled, if not display a toast to the user and set valid to false
         if (TextUtils.isEmpty(editName.getText().toString())) {
             Toast.makeText(getApplicationContext(), "Enter Chapter Name!", Toast.LENGTH_SHORT).show();
-            return false;
+            valid = false;
+        } else if (chapterLatLng == null) {
+            Toast.makeText(getApplicationContext(), "Enter a location for your chapter!", Toast.LENGTH_SHORT).show();
+            valid = false;
         }
 
-        //if no place is selected from the PlaceAutCompleteFragment return false;
-        if (chapterLatLng == null) {
-            Toast.makeText(getApplicationContext(), "Enter a location for your chapter!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
+        return valid;
     }
 
     /**
