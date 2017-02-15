@@ -43,15 +43,16 @@
         android:inputType="textPersonName"
         android:background="@drawable/myedittextsmall_selector"/>
 
-    <com.denovo.denovo.CustomEditText
+    <com.denovo.denovo.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:textColorHint="@android:color/tab_indicator_text"
-        android:hint="Yard Sale"
-        android:inputType="textPersonName"
+        android:paddingEnd="16dp"
+        android:drawableEnd="@drawable/ic_search"
+        android:text="Chapter"
+        android:textSize="19sp"
+        android:gravity="center_vertical"
         android:background="@drawable/myedittextsmall_selector"
         android:id="@+id/item_yard_sale_edit_text"/>
 

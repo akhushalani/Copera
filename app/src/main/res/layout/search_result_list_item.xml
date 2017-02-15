@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:padding="8dp"
+        android:orientation="vertical">
+
+        <com.denovo.denovo.BoldTextView
+            android:id="@+id/search_result_chapter_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Dulaney High School"
+            android:textSize="26sp"/>
+
+        <com.denovo.denovo.CustomTextView
+            android:id="@+id/search_result_chapter_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Timonium, MD"
+            android:textSize="22sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

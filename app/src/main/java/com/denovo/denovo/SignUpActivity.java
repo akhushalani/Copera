@@ -140,24 +140,16 @@ public class SignUpActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(firstName)) {
             Toast.makeText(getApplicationContext(), "Enter first name!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (TextUtils.isEmpty(lastName)) {
+        } else if (TextUtils.isEmpty(lastName)) {
             Toast.makeText(getApplicationContext(), "Enter last name!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (TextUtils.isEmpty(email)) {
+        } else if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             valid = false;
-        }
-
-        if (!password.equals(confirm)) {
+        } else if (!password.equals(confirm)) {
             Toast.makeText(getApplicationContext(), "Passwords don't match!", Toast.LENGTH_SHORT).show();
             valid = false;
         }

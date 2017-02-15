@@ -42,6 +42,8 @@
         <activity
             android:name=".DonateActivity"
             android:screenOrientation="portrait">
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".SearchableActivity" />
         </activity>
         <activity
             android:name=".SplashActivity"
@@ -66,11 +68,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".SelectChapterActivity">
+        <activity android:name=".SearchableActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.Item"
+                  android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>

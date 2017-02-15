@@ -4,7 +4,7 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="wish_list">Wish List | %d</string>
-    <string name="search_hint_chapters">Search chapters</string>
+    <string name="search_hint_chapters">Search for chapters</string>
 
     <string name="google_maps_key">AIzaSyBXQTeC3gZkKU8MZvKuXTut7Am_mTTx7IY</string>
 </resources>

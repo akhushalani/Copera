@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -29,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
+import static com.denovo.denovo.R.id.search;
 
 public class DonateItemInfoFragment extends Fragment {
 
@@ -39,15 +40,14 @@ public class DonateItemInfoFragment extends Fragment {
     private ImageView mImageThumbnail;
     private ImageView mImageThumbnailFrame;
     private EditText itemNameEditText;
-    private EditText itemYardSaleEditText;
+    private TextView itemChapterTextView;
     private EditText itemDescriptionEditText;
     private String mCurrentPhotoPath;
     private String mItemName;
-    private String mItemYardSale;
+    private String mItemChapter;
     private String mItemDescription;
     private boolean mHasImage;
     private boolean mHasName;
-    private boolean mHasYardSale;
     private boolean mHasDescription;
     private Uri photoUri;
     private DonateActivity mActivity;
@@ -98,7 +98,7 @@ public class DonateItemInfoFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mHasName = s.toString().trim().length() != 0;
-                if (mHasImage && mHasName && mHasYardSale && mHasDescription) {
+                if (mHasImage && mHasName && mHasDescription) {
                     onFieldsFilled();
                 }
             }
@@ -109,26 +109,17 @@ public class DonateItemInfoFragment extends Fragment {
             }
         });
 
-        itemYardSaleEditText = (EditText) rootView.findViewById(R.id.item_yard_sale_edit_text);
-        itemYardSaleEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        itemChapterTextView = (TextView) rootView.findViewById(R.id.item_yard_sale_edit_text);
+        mItemChapter = itemChapterTextView.getText().toString();
 
-            }
-
+        itemChapterTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mHasYardSale = s.toString().trim().length() != 0;
-                if (mHasImage && mHasName && mHasYardSale && mHasDescription) {
-                    onFieldsFilled();
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mItemYardSale = s.toString();
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchableActivity.class);
+                startActivity(intent);
             }
         });
+
 
         itemDescriptionEditText = (EditText) rootView.findViewById(R.id.item_description_edit_text);
         itemDescriptionEditText.addTextChangedListener(new TextWatcher() {
@@ -140,7 +131,7 @@ public class DonateItemInfoFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mHasDescription = s.toString().trim().length() != 0;
-                if (mHasImage && mHasName && mHasYardSale && mHasDescription) {
+                if (mHasImage && mHasName && mHasDescription) {
                     onFieldsFilled();
                 }
             }
@@ -155,7 +146,7 @@ public class DonateItemInfoFragment extends Fragment {
         confirmInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onInfoSubmitted(mCurrentPhotoPath, mItemName, mItemYardSale, mItemDescription);
+                mCallback.onInfoSubmitted(mCurrentPhotoPath, mItemName, mItemChapter, mItemDescription);
             }
         });
 
@@ -186,7 +177,7 @@ public class DonateItemInfoFragment extends Fragment {
                 int dpAsPixels = (int) (sizeInDp * scale + 0.5f);
                 mImageThumbnail.setPadding(dpAsPixels, dpAsPixels, dpAsPixels, dpAsPixels);
                 mHasImage = true;
-                if (mHasImage && mHasName && mHasYardSale && mHasDescription) {
+                if (mHasImage && mHasName && mHasDescription) {
                     onFieldsFilled();
                 }
             }
@@ -276,9 +267,11 @@ public class DonateItemInfoFragment extends Fragment {
     public void getItemInfo() {
         mActivity.mItemPhotoPath = mCurrentPhotoPath;
         mActivity.mItemName = mItemName;
-        mActivity.mItemYardSale = mItemYardSale;
+        mActivity.mItemYardSale = mItemChapter;
         mActivity.mItemDescription = mItemDescription;
     }
+
+
 
     public interface OnInfoSubmittedListener {
         void onInfoSubmitted(String photoPath, String name, String yardSale, String

@@ -273,9 +273,9 @@ public class CommentActivity extends AppCompatActivity {
 
         //if the current user is the donor then display the donorTag
         if (userInfo.get(3).equals(donorId)) {
-            officerTag.setVisibility(View.VISIBLE);
-        } else if (userInfo.get(0).equals("Item Donor")) {
             donorTag.setVisibility(View.VISIBLE);
+        } else if (userInfo.get(0).equals("FBLA Officer")) {
+            officerTag.setVisibility(View.VISIBLE);
         }
     }
 
