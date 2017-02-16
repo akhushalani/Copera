@@ -3,13 +3,19 @@ package com.denovo.denovo.activities;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.denovo.denovo.adapters.RVAdapter;
+import com.denovo.denovo.interfaces.OnDataReceivedListener;
 import com.denovo.denovo.models.Chapter;
 import com.denovo.denovo.R;
+import com.denovo.denovo.models.Item;
 import com.denovo.denovo.models.User;
+import com.denovo.denovo.views.WrapContentLinearLayoutManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,6 +32,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import static com.denovo.denovo.R.id.map;
 
 
@@ -40,6 +48,13 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     private String uid;
     private String chapterKey;
     private DatabaseReference mDatabase;
+    private ArrayList<String> mItemListKeys;
+    private ArrayList<Item> mItemList;
+    private WrapContentLinearLayoutManager llm;
+    private RVAdapter mAdapter;
+    private TextView emptyItemList;
+    private int mItemsLeft;
+    private RecyclerView itemListRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +140,54 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
                 //in case of fail to access database do nothing
             }
         });
+        if (chapterKey != null && chapterKey != "") {
+            mDatabase.child("chapters").child(chapterKey).child("itemList").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mItemListKeys = new ArrayList<>();
+                    for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
+                        String key = keySnapshot.getValue(String.class);
+                        mItemListKeys.add(key);
+                    }
+                    checkItemListEmpty();
+                    getItemList(new OnDataReceivedListener() {
+                        @Override
+                        public void onStart(int listSize) {
+                            mItemsLeft = listSize;
+                        }
+
+                        @Override
+                        public void onNext() {
+                            mItemsLeft--;
+                            if (mItemsLeft == 0) {
+                                mAdapter.swapDataSet(mItemList, true);
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+        mItemList = new ArrayList<>();
+        mItemListKeys = new ArrayList<>();
+
+        emptyItemList = (TextView) findViewById(R.id.empty_item_list);
+
+        itemListRV = (RecyclerView) findViewById(R.id.chapter_items_rv);
+        llm = new WrapContentLinearLayoutManager(this);
+        itemListRV.setLayoutManager(llm);
+
+        mAdapter = new RVAdapter(mItemList);
+        itemListRV.setAdapter(mAdapter);
+
+        ((SimpleItemAnimator) itemListRV.getItemAnimator()).setSupportsChangeAnimations(false);
+
+        checkItemListEmpty();
+
     }
 
 
@@ -170,6 +233,39 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         });
 
 
+    }
+
+    private void checkItemListEmpty() {
+        if (mItemListKeys == null || mItemListKeys.isEmpty()) {
+            itemListRV.setVisibility(View.GONE);
+            emptyItemList.setVisibility(View.VISIBLE);
+        } else {
+            itemListRV.setVisibility(View.VISIBLE);
+            emptyItemList.setVisibility(View.GONE);
+        }
+    }
+
+    private void getItemList(final OnDataReceivedListener listener) {
+        mItemList = new ArrayList<>();
+        listener.onStart(mItemListKeys.size());
+        for (String key : mItemListKeys) {
+            mDatabase.child("items").orderByKey().equalTo(key)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                                Item item = itemSnapshot.getValue(Item.class);
+                                mItemList.add(item);
+                                listener.onNext();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }
     }
 
 

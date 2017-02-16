@@ -39,9 +39,10 @@
             android:layout_below="@id/map"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
+            android:text="Items For Sale"
             android:textAlignment="center"
-            android:textSize="36sp"
-            tools:text="Items"/>
+            android:textSize="24sp"
+            tools:text="Items For Sale"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/chapter_items_rv"
@@ -49,6 +50,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/chapter_items_title_txt">
         </android.support.v7.widget.RecyclerView>
+
+        <com.denovo.denovo.views.CustomTextView
+            android:id="@+id/empty_item_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chapter_items_title_txt"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Your chapter doesn't have any items for sale yet!"
+            android:textSize="16sp"/>
 
 
     </RelativeLayout>

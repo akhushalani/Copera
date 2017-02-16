@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -39,7 +40,6 @@ public class CreateChapterActivity extends AppCompatActivity {
     private EditText editName;
     private CustomButton createChapterButton;
     private LatLng chapterLatLng;
-    private Locale chapterLocale;
     private PlaceAutocompleteFragment mAutocompleteFragment;
     private DatabaseReference mDatabase;
     private String uid;
@@ -80,7 +80,7 @@ public class CreateChapterActivity extends AppCompatActivity {
         mAutocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
-        //get reference to db
+        //get reference to database
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         createChapterButton.setOnClickListener(new View.OnClickListener() {
@@ -100,8 +100,6 @@ public class CreateChapterActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 //get the latitude and longitude of the selected place
                 chapterLatLng = place.getLatLng();
-                //get the locale of the selected chapter
-                chapterLocale = place.getLocale();
             }
 
             @Override
@@ -127,8 +125,11 @@ public class CreateChapterActivity extends AppCompatActivity {
         //get reference to chapter branch of database and generate a unique key for the chapter
         DatabaseReference childRef = mDatabase.child("chapters").push();
 
+        //create empty itemList
+        ArrayList<String> itemList = new ArrayList<>();
+
         //create a new Chapter object with the inputted data and write to the db
-        Chapter chapter = new Chapter(name, reverseGeocode(chapterLatLng), chapterLatLng.latitude, chapterLatLng.longitude);
+        Chapter chapter = new Chapter(name, reverseGeocode(chapterLatLng), chapterLatLng.latitude, chapterLatLng.longitude, itemList);
         childRef.setValue(chapter);
 
         //get reference to the current user

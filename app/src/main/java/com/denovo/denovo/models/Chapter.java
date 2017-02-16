@@ -1,12 +1,15 @@
 package com.denovo.denovo.models;
 
 
+import java.util.ArrayList;
+
 public class Chapter {
 
     private String name;
     private String address;
     private double latitude;
     private double longitude;
+    private ArrayList<String> itemList;
 
     public Chapter() {
         //required default constructor
@@ -19,11 +22,12 @@ public class Chapter {
      * @param latitude  is the latitude coordinate of the chapter's location
      * @param longitude is the longitude coordinate of the chapter's location
      */
-    public Chapter(String name, String address, double latitude, double longitude) {
+    public Chapter(String name, String address, double latitude, double longitude, ArrayList<String> itemList) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.itemList = itemList;
     }
 
     //Setters and Getters
@@ -57,5 +61,13 @@ public class Chapter {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public ArrayList<String> getItemList() {
+        return itemList;
+    }
+
+    public void setItemList(ArrayList<String> itemList) {
+        this.itemList = itemList;
     }
 }

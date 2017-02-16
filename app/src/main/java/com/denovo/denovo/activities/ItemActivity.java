@@ -83,7 +83,7 @@ public class ItemActivity extends AppCompatActivity {
         findViewById(R.id.search).setVisibility(View.GONE);
         findViewById(R.id.next).setVisibility(View.GONE);
 
-        //get item id from MainActivity
+        //get item id from FeedFragment
         Bundle data = getIntent().getExtras();
         itemId = data.getString("item");
 
