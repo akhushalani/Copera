@@ -18,6 +18,7 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.denovo.denovo.adapters.OfficerListAdapter;
 import com.denovo.denovo.adapters.RVAdapter;
 import com.denovo.denovo.adapters.RVAdapter;
 import com.denovo.denovo.interfaces.OnDataReceivedListener;
