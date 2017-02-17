@@ -20,6 +20,7 @@ public class DonatePriceFragment extends Fragment {
     boolean mFieldsFilled;
     OnPriceSubmittedListener mCallback = (OnPriceSubmittedListener) getActivity();
     private EditText mItemPriceEditText;
+    private Button confirmPriceButton;
     private double mItemPrice;
     private DonateActivity mActivity;
 
@@ -59,7 +60,8 @@ public class DonatePriceFragment extends Fragment {
         });
 
         //find confirmPriceButton from xml
-        Button confirmPriceButton = (Button) rootView.findViewById(R.id.btn_confirm_price);
+        confirmPriceButton = (Button) rootView.findViewById(R.id.btn_confirm_price);
+        confirmPriceButton.setEnabled(false);
         confirmPriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,12 +92,7 @@ public class DonatePriceFragment extends Fragment {
      */
     public void onFieldsFilled() {
         mFieldsFilled = true;
-        DonateActivity activity = (DonateActivity) getActivity();
-        activity.enableButton();
-    }
-
-    public void getItemPrice() {
-        mActivity.mItemPrice = mItemPrice;
+        confirmPriceButton.setEnabled(true);
     }
 
     public interface OnPriceSubmittedListener {

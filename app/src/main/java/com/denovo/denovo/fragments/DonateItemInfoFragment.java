@@ -24,8 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.denovo.denovo.R;
+import com.denovo.denovo.activities.ChapterSearchableActivity;
 import com.denovo.denovo.activities.DonateActivity;
-import com.denovo.denovo.activities.SearchableActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +38,7 @@ public class DonateItemInfoFragment extends Fragment {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_CROP = 2;
+    private static final int REQUEST_ITEM_CHAPTER = 3;
     boolean mFieldsFilled = false;
     OnInfoSubmittedListener mCallback;
     private View mImageSelector;
@@ -49,12 +50,15 @@ public class DonateItemInfoFragment extends Fragment {
     private String mCurrentPhotoPath;
     private String mItemName;
     private String mItemChapter;
+    private String mItemChapterName;
     private String mItemDescription;
     private boolean mHasImage;
     private boolean mHasName;
+    private boolean mHasChapter;
     private boolean mHasDescription;
     private Uri photoUri;
     private DonateActivity mActivity;
+    private Button confirmInfoButton;
 
     public DonateItemInfoFragment() {
         // Required empty public constructor
@@ -101,7 +105,7 @@ public class DonateItemInfoFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //check if edit Text is filled
                 mHasName = s.toString().trim().length() != 0;
-                if (mHasImage && mHasName && mHasDescription) {
+                if (mHasImage && mHasName && mHasChapter && mHasDescription) {
                     //if all fields are filled enable the button
                     onFieldsFilled();
                 }
@@ -121,8 +125,8 @@ public class DonateItemInfoFragment extends Fragment {
         itemChapterTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SearchableActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), ChapterSearchableActivity.class);
+                startActivityForResult(intent, REQUEST_ITEM_CHAPTER);
             }
         });
 
@@ -138,7 +142,7 @@ public class DonateItemInfoFragment extends Fragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //if the descriptionEditText is not empty then enable the button
                 mHasDescription = s.toString().trim().length() != 0;
-                if (mHasImage && mHasName && mHasDescription) {
+                if (mHasImage && mHasName && mHasChapter && mHasDescription) {
                     onFieldsFilled();
                 }
             }
@@ -149,11 +153,13 @@ public class DonateItemInfoFragment extends Fragment {
             }
         });
 
-        Button confirmInfoButton = (Button) rootView.findViewById(R.id.btn_confirm_info);
+        confirmInfoButton = (Button) rootView.findViewById(R.id.btn_confirm_info);
+        confirmInfoButton.setEnabled(false);
         confirmInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onInfoSubmitted(mCurrentPhotoPath, mItemName, mItemChapter, mItemDescription);
+                mCallback.onInfoSubmitted(mCurrentPhotoPath, mItemName, mItemChapter,
+                        mItemChapterName, mItemDescription);
             }
         });
 
@@ -165,9 +171,7 @@ public class DonateItemInfoFragment extends Fragment {
      */
     public void onFieldsFilled() {
         mFieldsFilled = true;
-        Log.v("DonateItemInfoFragment", mItemName);
-        DonateActivity activity = (DonateActivity) getActivity();
-        activity.enableButton();
+        confirmInfoButton.setEnabled(true);
     }
 
     @Override
@@ -187,7 +191,16 @@ public class DonateItemInfoFragment extends Fragment {
                 int dpAsPixels = (int) (sizeInDp * scale + 0.5f);
                 mImageThumbnail.setPadding(dpAsPixels, dpAsPixels, dpAsPixels, dpAsPixels);
                 mHasImage = true;
-                if (mHasImage && mHasName && mHasDescription) {
+                if (mHasImage && mHasName && mHasChapter && mHasDescription) {
+                    onFieldsFilled();
+                }
+            } else if(requestCode == REQUEST_ITEM_CHAPTER) {
+                mItemChapter = data.getStringExtra("chapter_key");
+                mItemChapterName = data.getStringExtra("chapter_name");
+                itemChapterTextView.setText(mItemChapterName);
+
+                mHasChapter = true;
+                if (mHasImage && mHasName && mHasChapter && mHasDescription) {
                     onFieldsFilled();
                 }
             }
@@ -274,17 +287,10 @@ public class DonateItemInfoFragment extends Fragment {
         }
     }
 
-    public void getItemInfo() {
-        mActivity.mItemPhotoPath = mCurrentPhotoPath;
-        mActivity.mItemName = mItemName;
-        mActivity.mItemYardSale = mItemChapter;
-        mActivity.mItemDescription = mItemDescription;
-    }
-
 
 
     public interface OnInfoSubmittedListener {
-        void onInfoSubmitted(String photoPath, String name, String yardSale, String
-                description);
+        void onInfoSubmitted(String photoPath, String name, String chapter, String chapterName,
+                             String description);
     }
 }

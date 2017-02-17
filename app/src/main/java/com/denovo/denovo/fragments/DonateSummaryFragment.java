@@ -46,13 +46,13 @@ public class DonateSummaryFragment extends Fragment {
     private DatabaseReference mDatabase;
     private ImageView summaryItemPhoto;
     private TextView summaryItemName;
-    private TextView summaryItemYardSale;
+    private TextView summaryItemChapter;
     private TextView summaryItemDescription;
     private RatingBar summaryRatingBar;
     private TextView summaryItemPrice;
     private String mItemPhotoPath;
     private String mItemName;
-    private String mItemYardSale;
+    private String mItemChapter;
     private String mItemDescription;
     private int mItemRating;
     private double mItemPrice;
@@ -89,7 +89,7 @@ public class DonateSummaryFragment extends Fragment {
         //find views from xml
         summaryItemPhoto = (ImageView) rootView.findViewById(R.id.summary_item_photo);
         summaryItemName = (TextView) rootView.findViewById(R.id.summary_item_name);
-        summaryItemYardSale = (TextView) rootView.findViewById(R.id.summary_item_yard_sale);
+        summaryItemChapter = (TextView) rootView.findViewById(R.id.summary_item_yard_sale);
         summaryItemDescription = (TextView) rootView.findViewById(R.id.summary_description);
         summaryRatingBar = (RatingBar) rootView.findViewById(R.id.summary_item_rating);
         summaryItemPrice = (TextView) rootView.findViewById(R.id.summary_item_price);
@@ -105,7 +105,7 @@ public class DonateSummaryFragment extends Fragment {
                 //name the image using the unique key that was generated
                 String fileName = childRef.getKey() + ".jpg";
                 //create item from the inputted data
-                Item item = new Item(mItemName, fileName, mItemYardSale, uid,
+                Item item = new Item(mItemName, fileName, mItemChapter, uid,
                         mItemPrice, mItemRating, mItemDescription, new
                         ArrayList<String>());
                 //write the item to the database
@@ -179,23 +179,23 @@ public class DonateSummaryFragment extends Fragment {
      * @param targetW is the target width of the image
      * @param itemPhotoPath is the path to the photo
      * @param itemName is the name of the item
-     * @param itemYardSale is the yardsale the item is donated to
+     * @param itemChapter is the yardsale the item is donated to
      * @param itemDescription is a breif description of the item
      * @param itemRating is the condition of the item
      * @param itemPrice is the suggeested price of the item
      */
     public void populateView(int targetW, String itemPhotoPath, String itemName, String
-            itemYardSale, String itemDescription, int itemRating, double itemPrice) {
+            itemChapter, String itemDescription, int itemRating, double itemPrice) {
         mItemPhotoPath = itemPhotoPath;
         mItemName = itemName;
-        mItemYardSale = itemYardSale;
+        mItemChapter = itemChapter;
         mItemDescription = itemDescription;
         mItemRating = itemRating;
         mItemPrice = itemPrice;
 
         setPic(targetW, itemPhotoPath);
         summaryItemName.setText(itemName);
-        summaryItemYardSale.setText(itemYardSale);
+        summaryItemChapter.setText(itemChapter);
         summaryItemDescription.setText(itemDescription);
         summaryRatingBar.setRating(itemRating);
         summaryItemPrice.setText(formatPrice(itemPrice));

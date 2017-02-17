@@ -8,8 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/offWhite"
-        >
+        android:background="@color/offWhite">
 
         <FrameLayout
             android:id="@+id/prof_pic_cont"

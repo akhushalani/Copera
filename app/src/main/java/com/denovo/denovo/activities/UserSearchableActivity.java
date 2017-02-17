@@ -4,17 +4,18 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.denovo.denovo.models.Chapter;
 import com.denovo.denovo.R;
-import com.denovo.denovo.adapters.SearchResultAdapter;
+import com.denovo.denovo.adapters.ChapterSearchResultAdapter;
+import com.denovo.denovo.adapters.UserSearchResultAdapter;
+import com.denovo.denovo.models.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,24 +24,24 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class SearchableActivity extends AppCompatActivity {
+public class UserSearchableActivity extends AppCompatActivity {
 
-    private static final String TAG = "SearchableActivity";
+    private static final String TAG = "UserSearchableActivity";
 
     private ProgressBar loadingProgressBar;
-    private ArrayList<Chapter> chapterArray;
+    private ArrayList<User> userArray;
     private ArrayList<String> nameArray;
     private ArrayList<Integer> searchArray;
     private ArrayList<Integer> resultLocations;
-    private ArrayList<Chapter> searchResults;
+    private ArrayList<User> searchResults;
     private DatabaseReference mDatabase;
     private ListView mSearchResultListView;
-    private SearchResultAdapter mSearchResultAdapter;
+    private UserSearchResultAdapter mUserSearchResultAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_searchable);
+        setContentView(R.layout.activity_user_searchable);
 
         loadingProgressBar = (ProgressBar) findViewById(R.id.search_loading_progress_bar);
         loadingProgressBar.setIndeterminate(true);
@@ -50,20 +51,20 @@ public class SearchableActivity extends AppCompatActivity {
 
         final TextView noResults = (TextView) findViewById(R.id.no_results);
 
-        chapterArray = new ArrayList<>();
+        userArray = new ArrayList<>();
         nameArray = new ArrayList<>();
         searchArray = new ArrayList<>();
         resultLocations = new ArrayList<>();
         searchResults = new ArrayList<>();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("chapters").addChildEventListener(new ChildEventListener() {
+        mDatabase.child("users").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Chapter newChapter =  dataSnapshot.getValue(Chapter.class);
-                chapterArray.add(newChapter);
-                String chapterName = newChapter.getName().toLowerCase();
-                nameArray.add(chapterName);
+                User newUser =  dataSnapshot.getValue(User.class);
+                userArray.add(newUser);
+                String userName = newUser.getName().toLowerCase();
+                nameArray.add(userName);
             }
 
             @Override
@@ -88,7 +89,7 @@ public class SearchableActivity extends AppCompatActivity {
         });
 
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) findViewById(R.id.chapter_search_view);
+        SearchView searchView = (SearchView) findViewById(R.id.user_search_view);
 
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(false); // Do not iconify the widget; expand it by default
@@ -99,8 +100,8 @@ public class SearchableActivity extends AppCompatActivity {
                 Typeface.createFromAsset(getAssets(),"fonts/JosefinSlab-Regular.ttf");
         searchText.setTypeface(myCustomFont);
 
-        mSearchResultAdapter = new SearchResultAdapter(this);
-        mSearchResultListView.setAdapter(mSearchResultAdapter);
+        mUserSearchResultAdapter = new UserSearchResultAdapter(this);
+        mSearchResultListView.setAdapter(mUserSearchResultAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -114,7 +115,7 @@ public class SearchableActivity extends AppCompatActivity {
                 noResults.setVisibility(View.GONE);
 
                 if (newText.length() == 0) {
-                    mSearchResultAdapter.clearList();
+                    mUserSearchResultAdapter.clearList();
                     loadingProgressBar.setVisibility(View.GONE);
                     return true;
                 } else if (newText.length() < 2) {
@@ -127,7 +128,7 @@ public class SearchableActivity extends AppCompatActivity {
                 searchResults = new ArrayList<>();
                 doSearch(newText.toLowerCase());
 
-                if (mSearchResultAdapter.isEmpty()) {
+                if (mUserSearchResultAdapter.isEmpty()) {
                     noResults.setVisibility(View.VISIBLE);
                 } else {
                     noResults.setVisibility(View.GONE);
@@ -169,12 +170,12 @@ public class SearchableActivity extends AppCompatActivity {
         for (int i = 0; i < searchArray.size(); i++) {
             if (searchArray.get(i) >= 0) {
                 resultLocations.add(searchArray.get(i));
-                searchResults.add(chapterArray.get(i));
+                searchResults.add(userArray.get(i));
             }
         }
 
         loadingProgressBar.setVisibility(View.GONE);
-        mSearchResultAdapter.updateList(searchResults, query.length(), resultLocations);
+        mUserSearchResultAdapter.updateList(searchResults, query.length(), resultLocations);
     }
 
     private int kmpSearch(char[] s, char[] w) {

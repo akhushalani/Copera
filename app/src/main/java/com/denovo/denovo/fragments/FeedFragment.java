@@ -1,18 +1,30 @@
 package com.denovo.denovo.fragments;
 
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.denovo.denovo.helpers.MoneyValueFilter;
+import com.denovo.denovo.models.Comment;
 import com.denovo.denovo.models.Item;
 import com.denovo.denovo.R;
 import com.denovo.denovo.views.WrapContentLinearLayoutManager;
@@ -27,6 +39,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallback {
 
@@ -80,7 +93,7 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
         mFeedKeys = new ArrayList<>();
 
         //hook up RVAdapter to rv
-        mAdapter = new RVAdapter(mFeed);
+        mAdapter = new RVAdapter(mFeed, false);
         rv.setAdapter(mAdapter);
         mAdapter.setItemClickCallback(this);
 
@@ -201,7 +214,70 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
 
     @Override
     public void onOfferBtnClick(int p) {
+        final int position = p;
+        final Dialog dialog = new Dialog(getContext());
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_make_offer);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
 
+        Button cancelButton = (Button) dialog.findViewById(R.id.cancel_offer_btn);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        final TextView offerAmountEditText = (EditText) dialog.findViewById(R.id
+                .offer_amount_edit_text);
+        final Button submitButton = (Button) dialog.findViewById(R.id.submit_offer_btn);
+        submitButton.setEnabled(false);
+
+        offerAmountEditText.setFilters(new InputFilter[] {new MoneyValueFilter()});
+        offerAmountEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 0) {
+                    submitButton.setEnabled(true);
+                } else {
+                    submitButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //get current time
+                Date currentDate = new Date();
+                long currentTime = currentDate.getTime();
+
+                //create new comment variable from inputted text, the current user's uid, and the current time
+                Comment newComment = new Comment(offerAmountEditText.getText().toString(),
+                        uid, currentTime, "offer");
+
+                //get a reference to comment branch of the database
+                DatabaseReference commentRef = mDatabase.child("comments")
+                        .child(mFeed.get(position).getId()).push();
+
+                //write the new comment to the database
+                commentRef.setValue(newComment);
+
+                //dismiss the offer dialog
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override

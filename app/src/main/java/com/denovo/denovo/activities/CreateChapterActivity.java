@@ -125,6 +125,8 @@ public class CreateChapterActivity extends AppCompatActivity {
         //get reference to chapter branch of database and generate a unique key for the chapter
         DatabaseReference childRef = mDatabase.child("chapters").push();
 
+        String key = childRef.getKey();
+
         //create empty itemList
         ArrayList<String> itemList = new ArrayList<>();
 
@@ -134,8 +136,8 @@ public class CreateChapterActivity extends AppCompatActivity {
         officerList.add(uid);
 
         //create a new Chapter object with the inputted data and write to the db
-        Chapter chapter =
-                new Chapter(name, reverseGeocode(chapterLatLng), chapterLatLng.latitude, chapterLatLng.longitude, itemList, officerList);
+        Chapter chapter = new Chapter(name, reverseGeocode(chapterLatLng), chapterLatLng.latitude,
+                chapterLatLng.longitude, itemList, officerList, key);
         childRef.setValue(chapter);
 
         //get reference to the current user

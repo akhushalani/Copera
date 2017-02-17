@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:name="canvas_1"
+    android:propertyName="translateX"
+    android:duration="600"
+    android:valueFrom="36.25"
+    android:valueTo="0.08"
+    android:valueType="floatType"
+    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>

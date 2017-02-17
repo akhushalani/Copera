@@ -20,6 +20,7 @@ public class DonateConditionFragment extends Fragment {
     boolean mFieldsFilled;
     OnConditionSubmittedListener mCallback = (OnConditionSubmittedListener) getActivity();
     private RatingBar mRatingBar;
+    private Button confirmRatingButton;
     private int mRating;
     private DonateActivity mActivity;
 
@@ -48,7 +49,8 @@ public class DonateConditionFragment extends Fragment {
         });
 
         //find confirmRatingButton from xml
-        Button confirmRatingButton = (Button) rootView.findViewById(R.id.btn_confirm_rating);
+        confirmRatingButton = (Button) rootView.findViewById(R.id.btn_confirm_rating);
+        confirmRatingButton.setEnabled(false);
         confirmRatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,13 +81,7 @@ public class DonateConditionFragment extends Fragment {
      */
     public void onFieldsFilled() {
         mFieldsFilled = true;
-        DonateActivity activity = (DonateActivity) getActivity();
-        //enable the button
-        activity.enableButton();
-    }
-
-    public void getItemCondition() {
-        mActivity.mItemRating = mRating;
+        confirmRatingButton.setEnabled(true);
     }
 
     public interface OnConditionSubmittedListener {

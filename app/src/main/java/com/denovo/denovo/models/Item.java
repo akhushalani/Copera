@@ -69,8 +69,7 @@ public class Item implements Parcelable {
      * @param wishListUsers is an array of the unique user ids that have wishlisted the item
      */
     public Item(String name, String imageFileName, String yardSale, String donor, double price, int
-            rating, String description, ArrayList<String>
-            wishListUsers) {
+            rating, String description, ArrayList<String> wishListUsers) {
         mName = name;
         mImageFileName = imageFileName;
         mYardSale = yardSale;
@@ -80,8 +79,8 @@ public class Item implements Parcelable {
         mDescription = description;
         mWishListNum = 0;
         mWishListUsers = wishListUsers;
-        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e" +
-                ".appspot.com/images/" + imageFileName);
+        mStorageRef = mStorage.getReferenceFromUrl("gs://denovo-4024e.appspot.com/images/"
+                + imageFileName);
     }
 
     /**

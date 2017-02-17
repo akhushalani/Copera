@@ -23,6 +23,7 @@ public class Chapter {
     private double longitude;
     private ArrayList<String> itemList;
     private ArrayList<String> officerList;
+    private String key;
     private DatabaseReference mDatabase;
 
     public Chapter() {
@@ -36,13 +37,15 @@ public class Chapter {
      * @param latitude  is the latitude coordinate of the chapter's location
      * @param longitude is the longitude coordinate of the chapter's location
      */
-    public Chapter(String name, String address, double latitude, double longitude, ArrayList<String> itemList, ArrayList<String> officerList) {
+    public Chapter(String name, String address, double latitude, double longitude,
+                   ArrayList<String> itemList, ArrayList<String> officerList, String key) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.itemList = itemList;
         this.officerList = officerList;
+        this.key = key;
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -93,6 +96,14 @@ public class Chapter {
 
     public void setOfficerList(ArrayList<String> officerList) {
         this.officerList = officerList;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
 
