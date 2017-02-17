@@ -25,6 +25,7 @@ public class PreferencesActivity extends AppCompatActivity {
     private String email;
     private String uid;
     private boolean ownsChapter;
+    private boolean isOfficer;
 
     private View.OnClickListener createChapterClickListener = new View.OnClickListener() {
         @Override
@@ -105,9 +106,10 @@ public class PreferencesActivity extends AppCompatActivity {
                     //create new User from data read from the database
                     User user = userSnapshot.getValue(User.class);
                     ownsChapter = user.getOwnsChapter();
+                    isOfficer = user.getIsOfficer();
                 }
-                if (ownsChapter) {
-                    //if the user owns a chapter change the text and wire the button to the ManageChapterActivity
+                if (ownsChapter || isOfficer) {
+                    //if the user owns a chapter or is an officer change the text and wire the button to the ManageChapterActivity
                     chapterBtn.setText("Manage Your Chapter");
                     chapterBtn.setOnClickListener(manageChapterClickListener);
                 } else {

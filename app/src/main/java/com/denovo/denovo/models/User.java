@@ -11,7 +11,9 @@ public class User {
     private String color;
     private ArrayList<String> wishList;
     private boolean ownsChapter;
+    private boolean isOfficer;
     private String chapterKey;
+
 
     public User() {
         //required default constructor
@@ -34,6 +36,7 @@ public class User {
         this.color = color;
         this.wishList = wishList;
         ownsChapter = false;
+        isOfficer = false;
         chapterKey = null;
     }
 
@@ -86,6 +89,14 @@ public class User {
         this.ownsChapter = ownsChapter;
     }
 
+    public boolean getIsOfficer() {
+        return isOfficer;
+    }
+
+    public void setIsOffer(boolean isOfficer) {
+        this.isOfficer = isOfficer;
+    }
+
     public String getChapterKey() {
         return chapterKey;
     }
@@ -93,4 +104,5 @@ public class User {
     public void setChapterKey(String chapterKey) {
         this.chapterKey = chapterKey;
     }
+
 }

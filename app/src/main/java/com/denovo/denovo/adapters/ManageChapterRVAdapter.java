@@ -22,7 +22,7 @@ import java.util.List;
  * Created by abhinavkhushalani on 11/4/16.
  */
 
-public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
+public class ManageChapterRVAdapter extends RecyclerView.Adapter<ManageChapterRVAdapter.ItemViewHolder> {
 
     private static final String TAG = "RVAdapter";
 
@@ -30,7 +30,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
 
     private ItemClickCallback itemClickCallback;
 
-    public RVAdapter(List<Item> feed) {
+    public ManageChapterRVAdapter(List<Item> feed) {
         this.mFeed = feed;
     }
 
@@ -88,6 +88,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
         } else {
             itemViewHolder.wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
         }
+        itemViewHolder.offerBtn.setText("Delete");
 
     }
 

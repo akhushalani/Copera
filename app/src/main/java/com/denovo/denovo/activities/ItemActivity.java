@@ -83,7 +83,7 @@ public class ItemActivity extends AppCompatActivity {
         findViewById(R.id.search).setVisibility(View.GONE);
         findViewById(R.id.next).setVisibility(View.GONE);
 
-        //get item id from FeedFragment
+        //get item id from previous activity
         Bundle data = getIntent().getExtras();
         itemId = data.getString("item");
 
@@ -97,6 +97,7 @@ public class ItemActivity extends AppCompatActivity {
         final RatingBar itemRating = (RatingBar) findViewById(R.id.item_rating);
         final TextView description = (TextView) findViewById(R.id.description);
         final CustomButton wantItBtn = (CustomButton) findViewById(R.id.btn_item_want);
+
 
         final LinearLayout commentFeed = (LinearLayout) findViewById(R.id.comments_list);
         final TextView noComments = (TextView) findViewById(R.id.no_comments);

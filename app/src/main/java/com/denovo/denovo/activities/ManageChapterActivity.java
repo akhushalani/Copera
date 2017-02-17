@@ -8,10 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.denovo.denovo.adapters.ManageChapterRVAdapter;
 import com.denovo.denovo.adapters.RVAdapter;
 import com.denovo.denovo.interfaces.OnDataReceivedListener;
 import com.denovo.denovo.models.Chapter;
@@ -29,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +51,7 @@ import static android.R.attr.value;
 import static com.denovo.denovo.R.id.map;
 
 
-public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback, RVAdapter.ItemClickCallback {
+public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback, ManageChapterRVAdapter.ItemClickCallback {
 
     private static final String TAG = "ManageChapterActivity";
     String mChapterName;
@@ -58,11 +65,16 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     private DatabaseReference mDatabase;
     private ArrayList<String> mItemListKeys;
     private ArrayList<Item> mItemList;
+    private ArrayList<String> mOfficerList;
+    private ArrayList<String> mOfficerListKeys;
     private WrapContentLinearLayoutManager llm;
-    private RVAdapter mAdapter;
+    private ManageChapterRVAdapter mAdapter;
     private TextView emptyItemList;
+    private TextView emptyOfficerList;
     private int mItemsLeft;
     private RecyclerView itemListRV;
+    private ListView officerLV;
+    private ListAdapter mOfficerListAdapter;
     private Chapter chapter;
 
     @Override
@@ -194,8 +206,15 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         mItemList = new ArrayList<>();
         mItemListKeys = new ArrayList<>();
 
+        mOfficerList = new ArrayList<>();
+        mOfficerListKeys = new ArrayList<>();
+
         //find emptyItemList from xml
         emptyItemList = (TextView) findViewById(R.id.empty_item_list);
+        emptyOfficerList = (TextView) findViewById(R.id.empty_officer_list);
+
+        officerLV = (ListView) findViewById(R.id.officers_lv);
+
 
         //find itemListRV from xml
         itemListRV = (RecyclerView) findViewById(R.id.chapter_items_rv);
@@ -204,7 +223,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         itemListRV.setLayoutManager(llm);
 
         //hook up RVAdapter to itemListRV
-        mAdapter = new RVAdapter(mItemList);
+        mAdapter = new ManageChapterRVAdapter(mItemList);
         itemListRV.setAdapter(mAdapter);
         mAdapter.setItemClickCallback(this);
 
@@ -265,6 +284,22 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
      * if not hide the emptyItemList view, and display the itemListRV
      */
     private void checkItemListEmpty() {
+        if (mOfficerList == null || mOfficerListKeys.isEmpty()) {
+            //if the itemList is empty, hide ItemList recyclerView and display emptyItemList
+            itemListRV.setVisibility(View.GONE);
+            emptyItemList.setVisibility(View.VISIBLE);
+        } else {
+            //else display itemList recyclerView and hide emptyItemList
+            itemListRV.setVisibility(View.VISIBLE);
+            emptyItemList.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * If the itemList is empty hide the itemListRV and display the emptyItemList view
+     * if not hide the emptyItemList view, and display the itemListRV
+     */
+    private void checkOfficerListEmpty() {
         if (mItemListKeys == null || mItemListKeys.isEmpty()) {
             //if the itemList is empty, hide ItemList recyclerView and display emptyItemList
             itemListRV.setVisibility(View.GONE);
@@ -355,11 +390,21 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         mDatabase.child("comments").child(itemId).setValue(null);
         //remove the item from the chapter itemList
         chapter.onItemDeleted(chapterKey, itemId);
-        //remove the item from user's wishLists
-
         //update the view if the itemList is empty
         checkItemListEmpty();
     }
+
+    /**
+     * Add a user to the officerList
+     *
+     * @param officerId is the uid of the officer to be added
+     */
+    public void addOfficers(String officerId) {
+        //add the user to officerList
+        chapter.onOfficerAdded(officerId, chapterKey);
+        checkOfficerListEmpty();
+    }
+
 
 
 }
