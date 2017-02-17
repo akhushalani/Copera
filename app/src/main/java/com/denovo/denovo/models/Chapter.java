@@ -95,48 +95,6 @@ public class Chapter {
         this.officerList = officerList;
     }
 
-
-    /**
-     * Removes the item from the chapter's itemList
-     *
-     * @param chapterKey is the id of the chapter that the item belongs to
-     * @param itemId     is the id of the deleted item
-     */
-    public void onItemDeleted(final String chapterKey, final String itemId) {
-
-        DatabaseReference chapterRef = mDatabase.child("chapters").child(chapterKey);
-
-        chapterRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                //create an chapter from the data
-                final Chapter c = mutableData.getValue(Chapter.class);
-
-                if (c.getItemList() == null) {
-                    //if itemList is null, set itemList to an empty ArrayList
-                    c.setItemList(new ArrayList<String>());
-                }
-
-                if (c.getItemList().contains(itemId)) {
-                    //if the chapter contains the item, remove the item from the chapterItems arrayList
-                    ArrayList<String> tempList = c.getItemList();
-                    tempList.remove(itemId);
-                    c.setItemList(tempList);
-                    setItemList(tempList);
-                }
-
-                //update the chapter with the changes made
-                mutableData.setValue(c);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-            }
-        });
-    }
-
     /**
      * Add a user to the officerList of a chapter and write changes to the database
      *

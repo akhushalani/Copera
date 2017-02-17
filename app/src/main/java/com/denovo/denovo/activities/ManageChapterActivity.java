@@ -8,16 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.View;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.denovo.denovo.adapters.ManageChapterRVAdapter;
+import com.denovo.denovo.adapters.OfficerListAdapter;
 import com.denovo.denovo.adapters.RVAdapter;
 import com.denovo.denovo.interfaces.OnDataReceivedListener;
 import com.denovo.denovo.models.Chapter;
@@ -35,7 +30,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,12 +40,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static android.R.attr.path;
-import static android.R.attr.value;
 import static com.denovo.denovo.R.id.map;
 
 
-public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback, ManageChapterRVAdapter.ItemClickCallback {
+public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback, RVAdapter.ItemClickCallback {
 
     private static final String TAG = "ManageChapterActivity";
     String mChapterName;
@@ -68,13 +60,14 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     private ArrayList<String> mOfficerList;
     private ArrayList<String> mOfficerListKeys;
     private WrapContentLinearLayoutManager llm;
-    private ManageChapterRVAdapter mAdapter;
+    private RVAdapter mAdapter;
     private TextView emptyItemList;
     private TextView emptyOfficerList;
     private int mItemsLeft;
+    private int mOfficerItemsLeft;
     private RecyclerView itemListRV;
     private ListView officerLV;
-    private ListAdapter mOfficerListAdapter;
+    private OfficerListAdapter officerAdapter;
     private Chapter chapter;
 
     @Override
@@ -193,6 +186,32 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
 
                         }
                     });
+
+                    //add value event listener to listen for changes to the officerList of the current chapter
+                    mDatabase.child("chapters").child(chapterKey).child("officerList").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //create a new arrayList to store the keys of the officers that are in the chapter's officerList
+                            mOfficerListKeys = new ArrayList<>();
+                            for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
+                                //get each key from the database
+                                String key = keySnapshot.getValue(String.class);
+                                //add each key to the arrayList
+                                mOfficerListKeys.add(key);
+                            }
+
+                            officerAdapter.swapDataSet(mOfficerListKeys);
+                            //update the view to display the updated officerList;
+                            checkOfficerListEmpty();
+
+                            Log.e(TAG, "mOfficerListKeys size = " + mOfficerListKeys.size());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -206,15 +225,17 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         mItemList = new ArrayList<>();
         mItemListKeys = new ArrayList<>();
 
-        mOfficerList = new ArrayList<>();
         mOfficerListKeys = new ArrayList<>();
+        mOfficerList = new ArrayList<>();
 
         //find emptyItemList from xml
         emptyItemList = (TextView) findViewById(R.id.empty_item_list);
         emptyOfficerList = (TextView) findViewById(R.id.empty_officer_list);
 
+        //hook up officerLV to officer Adapter
         officerLV = (ListView) findViewById(R.id.officers_lv);
-
+        officerAdapter = new OfficerListAdapter(this, 0, mOfficerListKeys);
+        officerLV.setAdapter(officerAdapter);
 
         //find itemListRV from xml
         itemListRV = (RecyclerView) findViewById(R.id.chapter_items_rv);
@@ -223,7 +244,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         itemListRV.setLayoutManager(llm);
 
         //hook up RVAdapter to itemListRV
-        mAdapter = new ManageChapterRVAdapter(mItemList);
+        mAdapter = new RVAdapter(mItemList);
         itemListRV.setAdapter(mAdapter);
         mAdapter.setItemClickCallback(this);
 
@@ -231,7 +252,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
 
         //update the view to display the itemList or the emptyItemList screen if the itemList is empty
         checkItemListEmpty();
-
+        checkOfficerListEmpty();
     }
 
 
@@ -279,12 +300,13 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+
     /**
      * If the itemList is empty hide the itemListRV and display the emptyItemList view
      * if not hide the emptyItemList view, and display the itemListRV
      */
     private void checkItemListEmpty() {
-        if (mOfficerList == null || mOfficerListKeys.isEmpty()) {
+        if (mItemList == null || mItemListKeys.isEmpty()) {
             //if the itemList is empty, hide ItemList recyclerView and display emptyItemList
             itemListRV.setVisibility(View.GONE);
             emptyItemList.setVisibility(View.VISIBLE);
@@ -296,18 +318,18 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     }
 
     /**
-     * If the itemList is empty hide the itemListRV and display the emptyItemList view
-     * if not hide the emptyItemList view, and display the itemListRV
+     * If the officerList is empty hide the officerLV and display the emptyOfficerList view
+     * if not hide the emptyOfficerList view, and display officerLV
      */
     private void checkOfficerListEmpty() {
-        if (mItemListKeys == null || mItemListKeys.isEmpty()) {
-            //if the itemList is empty, hide ItemList recyclerView and display emptyItemList
-            itemListRV.setVisibility(View.GONE);
-            emptyItemList.setVisibility(View.VISIBLE);
+        if (mOfficerList == null || mOfficerListKeys.isEmpty()) {
+            //if the officerList is empty, hide officerLV and display emptyOfficerList
+            officerLV.setVisibility(View.GONE);
+            emptyOfficerList.setVisibility(View.VISIBLE);
         } else {
-            //else display itemList recyclerView and hide emptyItemList
-            itemListRV.setVisibility(View.VISIBLE);
-            emptyItemList.setVisibility(View.GONE);
+            //else display officerLV and hide emptyOfficerList
+            officerLV.setVisibility(View.VISIBLE);
+            emptyOfficerList.setVisibility(View.GONE);
         }
     }
 
@@ -333,6 +355,40 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
                                 //add the item to the itemList
                                 mItemList.add(item);
                                 //move on to the the next key in the itemListKeys arrayList
+                                listener.onNext();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+        }
+    }
+
+    /**
+     * Construct the officerList of names from officerListKeys
+     *
+     * @param listener is the dataReceivedListener
+     */
+    private void getOfficerList(final OnDataReceivedListener listener) {
+        //create new officerList
+        mOfficerList = new ArrayList<>();
+        //pass is the size of the officerListKeys array to the listener.onStart method
+        listener.onStart(mOfficerListKeys.size());
+        for (String key : mOfficerListKeys) {
+            //for every officer key, add an event listener on the user that it is referencing
+            mDatabase.child("users").orderByKey().equalTo(key)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                                //create user from data read from database
+                                User user = userSnapshot.getValue(User.class);
+                                //add the name of the user to the officerList
+                                mOfficerList.add(user.getName());
+                                //move on to the the next key in officerListKeys
                                 listener.onNext();
                             }
                         }
@@ -382,14 +438,10 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
      */
     @Override
     public void onOfferBtnClick(int p) {
-        //get the id of the item at the current position of the itemListRV
-        final String itemId = mItemList.get(p).getId();
+        //get item at the current position of the itemListRV
+        final Item item = mItemList.get(p);
         //delete the item from the database
-        mDatabase.child("items").child(itemId).setValue(null);
-        //remove comments on the deleted item
-        mDatabase.child("comments").child(itemId).setValue(null);
-        //remove the item from the chapter itemList
-        chapter.onItemDeleted(chapterKey, itemId);
+        deleteItem(item);
         //update the view if the itemList is empty
         checkItemListEmpty();
     }
@@ -405,6 +457,83 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
         checkOfficerListEmpty();
     }
 
+    public void deleteItem(Item item) {
+        final String itemId = item.getId();
+        final String chapterId = item.getYardSale();
+        ArrayList<String> wishListUsers = item.getWishListUsers();
+
+        //remove the item from the database
+        mDatabase.child("items").child(itemId).setValue(null);
+
+        //remove comments on the deleted item
+        mDatabase.child("comments").child(itemId).setValue(null);
+
+        //remove the item from the chapter itemList
+        DatabaseReference chapterRef = mDatabase.child("chapters").child(chapterId);
+        chapterRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                //create an chapter from the data
+                final Chapter c = mutableData.getValue(Chapter.class);
+
+                if (c.getItemList() == null) {
+                    //if itemList is null, set itemList to an empty ArrayList
+                    c.setItemList(new ArrayList<String>());
+                }
+
+                if (c.getItemList().contains(itemId)) {
+                    //if the chapter contains the item, remove the item from the chapterItems arrayList
+                    ArrayList<String> tempList = c.getItemList();
+                    tempList.remove(itemId);
+                    c.setItemList(tempList);
+                }
+
+                //update the chapter with the changes made
+                mutableData.setValue(c);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
+
+        //delete the item from each user's wishLists, by looping through each user in the chapter's wishListUsers array
+        for (int i = 0; i < wishListUsers.size(); i++) {
+            final String userId = wishListUsers.get(i);
+            DatabaseReference userRef = mDatabase.child("users").child(userId);
+
+            userRef.runTransaction(new Transaction.Handler() {
+                @Override
+                public Transaction.Result doTransaction(MutableData mutableData) {
+                    //create an chapter from the data
+                    final User u = mutableData.getValue(User.class);
+
+                    if (u.getWishList() == null) {
+                        //if itemList is null, set itemList to an empty ArrayList
+                        u.setWishList(new ArrayList<String>());
+                    }
+
+                    if (u.getWishList().contains(itemId)) {
+                        //if the user's wishList contains the item, remove the item from the user's wishList
+                        ArrayList<String> tempList = u.getWishList();
+                        tempList.remove(itemId);
+                        u.setWishList(tempList);
+                    }
+
+                    //update the user with the changes made
+                    mutableData.setValue(u);
+                    return Transaction.success(mutableData);
+                }
+
+                @Override
+                public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+                }
+            });
+        }
+    }
 
 
 }
