@@ -17,13 +17,11 @@ import com.denovo.denovo.activities.DonateActivity;
 
 public class DonateConditionFragment extends Fragment {
 
+    boolean mFieldsFilled;
+    OnConditionSubmittedListener mCallback = (OnConditionSubmittedListener) getActivity();
     private RatingBar mRatingBar;
     private int mRating;
     private DonateActivity mActivity;
-
-    boolean mFieldsFilled;
-
-    OnConditionSubmittedListener mCallback = (OnConditionSubmittedListener) getActivity();
 
     public DonateConditionFragment() {
         // Required empty public constructor
@@ -37,15 +35,19 @@ public class DonateConditionFragment extends Fragment {
 
         mActivity = (DonateActivity) getActivity();
 
+        //find ratingBar from xml
         mRatingBar = (RatingBar) rootView.findViewById(R.id.donate_ratingBar);
         mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                //get the rating
                 mRating = (int) rating;
+                //enable the button
                 onFieldsFilled();
             }
         });
 
+        //find confirmRatingButton from xml
         Button confirmRatingButton = (Button) rootView.findViewById(R.id.btn_confirm_rating);
         confirmRatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +74,13 @@ public class DonateConditionFragment extends Fragment {
         }
     }
 
+    /**
+     * Enable the button since all fields are filled
+     */
     public void onFieldsFilled() {
         mFieldsFilled = true;
         DonateActivity activity = (DonateActivity) getActivity();
+        //enable the button
         activity.enableButton();
     }
 

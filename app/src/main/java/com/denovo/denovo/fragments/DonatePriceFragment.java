@@ -17,13 +17,11 @@ import com.denovo.denovo.activities.DonateActivity;
 
 public class DonatePriceFragment extends Fragment {
 
+    boolean mFieldsFilled;
+    OnPriceSubmittedListener mCallback = (OnPriceSubmittedListener) getActivity();
     private EditText mItemPriceEditText;
     private double mItemPrice;
     private DonateActivity mActivity;
-
-    boolean mFieldsFilled;
-
-    OnPriceSubmittedListener mCallback = (OnPriceSubmittedListener) getActivity();
 
     public DonatePriceFragment() {
         // Required empty public constructor
@@ -37,6 +35,7 @@ public class DonatePriceFragment extends Fragment {
 
         mActivity = (DonateActivity) getActivity();
 
+        //find itemPriceEditText from xml
         mItemPriceEditText = (EditText) rootView.findViewById(R.id.item_price_edit_text);
         mItemPriceEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -46,6 +45,7 @@ public class DonatePriceFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //if the price field is filled enable the button
                 if (s.toString().trim().replaceAll("[.]","").length() != 0) {
                     mItemPrice = Double.parseDouble(s.toString());
                     onFieldsFilled();
@@ -58,6 +58,7 @@ public class DonatePriceFragment extends Fragment {
             }
         });
 
+        //find confirmPriceButton from xml
         Button confirmPriceButton = (Button) rootView.findViewById(R.id.btn_confirm_price);
         confirmPriceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +85,9 @@ public class DonatePriceFragment extends Fragment {
         }
     }
 
+    /**
+     * Enable the button since all fields are filled
+     */
     public void onFieldsFilled() {
         mFieldsFilled = true;
         DonateActivity activity = (DonateActivity) getActivity();

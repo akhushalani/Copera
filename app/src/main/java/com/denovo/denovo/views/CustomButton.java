@@ -10,6 +10,9 @@ import android.widget.TextView;
  * Created by abhinavkhushalani on 11/4/16.
  */
 
+/**
+ * CustomButton extends Button but uses the JoesfinSans-Bold font
+ */
 public class CustomButton extends Button {
 
     public CustomButton(Context context, AttributeSet attrs, int defStyle) {

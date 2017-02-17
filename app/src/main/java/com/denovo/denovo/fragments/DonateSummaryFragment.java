@@ -74,15 +74,19 @@ public class DonateSummaryFragment extends Fragment {
         Point size = new Point();
         display.getSize(size);
 
+        //get unique id of the current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             uid = user.getUid();
         }
 
+        //instantiate the database
         mDatabase = FirebaseDatabase.getInstance().getReference();
         storage = FirebaseStorage.getInstance();
+        //get reference to image storage
         storageRef = storage.getReferenceFromUrl("gs://denovo-4024e.appspot.com");
 
+        //find views from xml
         summaryItemPhoto = (ImageView) rootView.findViewById(R.id.summary_item_photo);
         summaryItemName = (TextView) rootView.findViewById(R.id.summary_item_name);
         summaryItemYardSale = (TextView) rootView.findViewById(R.id.summary_item_yard_sale);
@@ -94,13 +98,20 @@ public class DonateSummaryFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //disable the button to prevent more than one attempts to submit
                 submitButton.setEnabled(false);
+                //create reference at a unique key under items branch
                 DatabaseReference childRef = mDatabase.child("items").push();
+                //name the image using the unique key that was generated
                 String fileName = childRef.getKey() + ".jpg";
+                //create item from the inputted data
                 Item item = new Item(mItemName, fileName, mItemYardSale, uid,
                         mItemPrice, mItemRating, mItemDescription, new
                         ArrayList<String>());
+                //write the item to the database
                 childRef.setValue(item);
+
+                //upload the image to the storage
                 final File file = new File(mItemPhotoPath);
                 Uri fileUri = Uri.fromFile(file);
                 StorageReference imageRef = storageRef.child("images/" + fileName);
@@ -123,11 +134,23 @@ public class DonateSummaryFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Convert the price double into currency format
+     *
+     * @param price is a double that represents the item's price
+     * @return
+     */
     public String formatPrice(double price) {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         return format.format(price);
     }
 
+    /**
+     * Transform and display the item photo
+     *
+     * @param targetW is the target width of the photo
+     * @param photoPath is the path to the image
+     */
     private void setPic(int targetW, String photoPath) {
         int targetH = targetW;
 
@@ -150,6 +173,17 @@ public class DonateSummaryFragment extends Fragment {
         summaryItemPhoto.setImageBitmap(bitmap);
     }
 
+    /**
+     * Populate the views with the information
+     *
+     * @param targetW is the target width of the image
+     * @param itemPhotoPath is the path to the photo
+     * @param itemName is the name of the item
+     * @param itemYardSale is the yardsale the item is donated to
+     * @param itemDescription is a breif description of the item
+     * @param itemRating is the condition of the item
+     * @param itemPrice is the suggeested price of the item
+     */
     public void populateView(int targetW, String itemPhotoPath, String itemName, String
             itemYardSale, String itemDescription, int itemRating, double itemPrice) {
         mItemPhotoPath = itemPhotoPath;

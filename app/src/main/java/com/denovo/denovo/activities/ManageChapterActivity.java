@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.denovo.denovo.adapters.RVAdapter;
 import com.denovo.denovo.interfaces.OnDataReceivedListener;
@@ -62,6 +63,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     private TextView emptyItemList;
     private int mItemsLeft;
     private RecyclerView itemListRV;
+    private Chapter chapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +117,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot chapterSnapshot : dataSnapshot.getChildren()) {
                                 //create Chapter from data read from the database
-                                Chapter chapter = chapterSnapshot.getValue(Chapter.class);
+                                chapter = chapterSnapshot.getValue(Chapter.class);
 
                                 //get the name of the chapter
                                 mChapterName = chapter.getName();
@@ -346,11 +348,17 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
     @Override
     public void onOfferBtnClick(int p) {
         //get the id of the item at the current position of the itemListRV
-        String itemId = mItemList.get(p).getId();
-        //delete the item from the chapter
-        mDatabase.child("chapters").child(chapterKey).child("itemList").child(itemId).setValue(null);
+        final String itemId = mItemList.get(p).getId();
         //delete the item from the database
         mDatabase.child("items").child(itemId).setValue(null);
+        //remove comments on the deleted item
+        mDatabase.child("comments").child(itemId).setValue(null);
+        //remove the item from the chapter itemList
+        chapter.onItemDeleted(chapterKey, itemId);
+        //remove the item from user's wishLists
+
+        //update the view if the itemList is empty
+        checkItemListEmpty();
     }
 
 

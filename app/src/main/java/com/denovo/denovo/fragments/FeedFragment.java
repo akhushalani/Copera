@@ -50,6 +50,7 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
 
+        //find swipeRefreshLayout from xml
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipeRefreshLayout);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -59,46 +60,64 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
             }
         });
 
+        //set layout to refresh when swiped up
         mSwipeRefreshLayout.setRefreshing(true);
 
+        //get unique id of current user
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             uid = user.getUid();
         }
 
+        //find rv from xml
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv);
+        //set wrapContentLinearLayoutManager on rv
         llm = new WrapContentLinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
 
+        //create new arrayLists
         mFeed = new ArrayList<>();
         mFeedKeys = new ArrayList<>();
 
+        //hook up RVAdapter to rv
         mAdapter = new RVAdapter(mFeed);
         rv.setAdapter(mAdapter);
         mAdapter.setItemClickCallback(this);
 
         ((SimpleItemAnimator) rv.getItemAnimator()).setSupportsChangeAnimations(false);
 
+        //add child event listener to listen for changes to the items
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("items").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //enable refreshing
                 mSwipeRefreshLayout.setRefreshing(true);
+                //create item from data read from database
                 Item newItem = dataSnapshot.getValue(Item.class);
+                //add item key to feedKeys
                 mFeedKeys.add(0, dataSnapshot.getKey());
+                //add item to feed
                 mFeed.add(0, newItem);
+                //update the feed
                 mAdapter.swapDataSet(mFeed);
+                //disable refreshing
                 mSwipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                //create item from data read from database
                 Item newItem = dataSnapshot.getValue(Item.class);
+                //get the key of the item
                 String itemKey = dataSnapshot.getKey();
 
+                //get the index of the item
                 int itemIndex = mFeedKeys.indexOf(itemKey);
                 if (itemIndex > -1) {
+                    //swap the new item with the old item
                     mFeed.set(itemIndex, newItem);
+                    //update the feed
                     mAdapter.swapDataSet(mFeed, itemIndex);
                 } else {
                     Log.w(TAG, "onChildChanged:unknown_child:" + itemKey);
@@ -108,8 +127,10 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                //get the key of the item
                 String itemKey = dataSnapshot.getKey();
 
+                //get the index of the item
                 int itemIndex = mFeedKeys.indexOf(itemKey);
                 if (itemIndex > -1) {
                     // Remove data from the list
@@ -134,39 +155,6 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
             }
         });
 
-        /* ArrayList<Question> questionList = new ArrayList<>();
-        Question a = new Question("I am a huge fan of the Lord of the Ring series; however, i am " +
-                "not sure I'm into the whole magic thing. Would you recommend this book for a " +
-                "reader like me?");
-        a.setAnswer("This book is great for all fiction fans! As long as you have an imagination " +
-                "and an open-mind you will adore this modern age classic!");
-        for (int i = 0; i < 7; i++) {
-            questionList.add(a);
-        }
-
-
-        mFeed = new ArrayList<>();
-        mFeed.add(new Item("Book", "book.png", "Dulaney FBLA", "Abhinav Khushalani", 1.5, 4,
-                "What " +
-                "did Harry" +
-                " Potter know about magic? He was stuck with the decidedly un-magical Dursleys, " +
-                "who hated him. He slept in a closet and ate their leftovers. But an owl " +
-                "messenger changes all that, with an invitation to attend the Hogwarts School for" +
-                " Wizards and Witches, where it turns out Harry is already famous.", questionList));
-        mFeed.add(new Item("Shoes", "shoes.png", "Dulaney FBLA", "Nick Owens", 3.0, 5, "Worn " +
-                "once, soles are" +
-                " a bit stepped on, mid soles are a bit dirty.", questionList));
-        mFeed.add(new Item("Shirt", "shirt.png", "Dulaney FBLA", "Kevin Zorbach", 0.25, 3,
-                "Printed on " +
-                "Gildan shirts just like the original. We also matched the ink for an almost " +
-                "identical match. If you're not happy with your purchase for any reason, simply " +
-                "let us know and we'll be sure to do whatever it takes to make sure the issue is " +
-                "taken care of!", questionList));
-
-        for (Item item : mFeed) {
-            writeNewItem(item);
-        } */
-
         return rootView;
     }
 
@@ -179,32 +167,18 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void getAllItems(DataSnapshot dataSnapshot) {
-        for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
-            Item item  = singleSnapshot.getValue(Item.class);
-            mFeed.add(0, item);
-            mAdapter.swapDataSet(mFeed);
-            mAdapter.notifyItemInserted(0);
-        }
-    }
 
-    private void writeNewItem(String name, String yardSale, String donor, double price, int
-            rating, String description) {
-        Item item = new Item(name, "shoes.png", yardSale, donor, price, rating, description,
-                new ArrayList<String>());
-        DatabaseReference childRef = mDatabase.child("items").push();
-        childRef.setValue(item);
-    }
-
-    private void writeNewItem(Item item) {
-        DatabaseReference childRef = mDatabase.child("items").push();
-        childRef.setValue(item);
-    }
-
+    /**
+     * when an item card is clicked, start itemActivity for the item
+     *
+     * @param p is the position of the recyclerView
+     */
     @Override
     public void onItemClick(int p) {
+        //get the item at the current position
         Item item = mFeed.get(p);
 
+        //start itemActivity for the current item
         Intent i = new Intent(getActivity(), ItemActivity.class);
         i.putExtra("item", item.getId());
         Log.v(TAG, item.getId());
@@ -212,9 +186,16 @@ public class FeedFragment extends Fragment implements RVAdapter.ItemClickCallbac
         startActivityForResult(i, 1);
     }
 
+    /**
+     * When the want it button is clicked, add the item to the current user's wishList
+     *
+     * @param p is the position of the recyclerView
+     */
     @Override
     public void onWantItBtnClick(int p) {
+        //get the id of the item at the current position
         String itemId = mFeed.get(p).getId();
+        //add the item to the user's wishList
         mFeed.get(p).onAddedToWishList(uid, itemId);
     }
 

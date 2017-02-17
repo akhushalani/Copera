@@ -13,6 +13,9 @@ import java.lang.reflect.Field;
  * Created by abhinavkhushalani on 12/1/16.
  */
 
+/**
+ * NonSwipableViewPager extends the ViewPager class but disables the ability to swipe to change tabs
+ */
 public class NonSwipeableViewPager extends ViewPager {
 
     public NonSwipeableViewPager(Context context) {

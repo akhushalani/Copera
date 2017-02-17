@@ -9,6 +9,9 @@ import android.widget.TextView;
  * Created by abhinavkhushalani on 11/4/16.
  */
 
+/**
+ * BoldTextView extends TextView but uses the JosefinSans-Bold font
+ */
 public class BoldTextView extends TextView {
 
     public BoldTextView(Context context, AttributeSet attrs, int defStyle) {

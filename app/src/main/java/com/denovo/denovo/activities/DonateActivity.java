@@ -41,12 +41,15 @@ public class DonateActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
 
+        //set the action bar
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.action_bar);
 
+        //find action bar views from xml
         mBtnBack = (ImageView) findViewById(R.id.back);
         mBtnNext = (ImageView) findViewById(R.id.next);
 
+        //hide unused action bar icons
         findViewById(R.id.settings).setVisibility(View.GONE);
         findViewById(R.id.search).setVisibility(View.GONE);
         findViewById(R.id.next).setVisibility(View.GONE);
@@ -55,13 +58,16 @@ public class DonateActivity extends AppCompatActivity
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         final int targetW = metrics.widthPixels;
 
+        //attach viewpager
         final ViewPager viewPager = (ViewPager) findViewById(R.id.donate_viewpager);
         mAdapter = new DonateAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(mAdapter);
 
+        //create tabs
         mTabLayout = (TabLayout) findViewById(R.id.donate_steps);
         mTabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(0);
+        //set icons for tabs
         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_one_active);
         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_two_incomplete);
         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_three_incomplete);
@@ -91,6 +97,7 @@ public class DonateActivity extends AppCompatActivity
                 switch (tab.getPosition()) {
                     case 0:
                         viewPager.setCurrentItem(0);
+                        //set tab 0's icon to active and tabs' 1-3 icons to incomplete
                         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_one_active);
                         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_two_incomplete);
                         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_three_incomplete);
@@ -105,6 +112,7 @@ public class DonateActivity extends AppCompatActivity
                         });
                         break;
                     case 1:
+                        //set tab 0's icon to complete and tab's 1 icon to active and tabs' 2-3 icons to incomplete
                         viewPager.setCurrentItem(1);
                         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_one_complete);
                         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_two_active);
@@ -118,6 +126,7 @@ public class DonateActivity extends AppCompatActivity
                         });
                         break;
                     case 2:
+                        //set tab 0's icon to complete and tab's 1 icon to active and tabs' 2-3 icons to incomplete
                         viewPager.setCurrentItem(2);
                         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_one_complete);
                         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_two_complete);
@@ -131,6 +140,7 @@ public class DonateActivity extends AppCompatActivity
                         });
                         break;
                     case 3:
+                        //set tab 0-1's icon to complete and tab's 1 icon to active and tabs' 2-3 icons to incomplete
                         viewPager.setCurrentItem(3);
                         mTabLayout.getTabAt(0).setIcon(R.drawable.ic_one_complete);
                         mTabLayout.getTabAt(1).setIcon(R.drawable.ic_two_complete);

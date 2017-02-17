@@ -65,13 +65,13 @@ public class LoginActivity extends AppCompatActivity {
                 String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
-                //if email field is empty do not sign in
+
                 if (TextUtils.isEmpty(email)) {
+                    //if email field is empty do not sign in
                     Toast.makeText(getApplicationContext(), "Enter email address!", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                //if password field is empty do not sign in
-                if (TextUtils.isEmpty(password)) {
+                } else if (TextUtils.isEmpty(password)) {
+                    //if password field is empty do not sign in
                     Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
                     return;
                 }

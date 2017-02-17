@@ -169,6 +169,7 @@ public class ItemActivity extends AppCompatActivity {
         wantItBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //add the item to the current user's wishList
                 item.onAddedToWishList(uid, itemId);
                 Bundle b = new Bundle();
                 b.putInt("position", feedPosition);
@@ -182,26 +183,33 @@ public class ItemActivity extends AppCompatActivity {
         bargainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //create new dialog
                 final Dialog dialog = new Dialog(ItemActivity.this);
                 dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.dialog_make_offer);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
+                //find views from xml
                 Button cancelButton = (Button) dialog.findViewById(R.id.cancel_offer_btn);
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //when the cancel button is clicked, dismiss the dialog
                         dialog.dismiss();
                     }
                 });
 
+                //find views from xml
                 final TextView offerAmountEditText = (EditText) dialog.findViewById(R.id
                         .offer_amount_edit_text);
                 final Button submitButton = (Button) dialog.findViewById(R.id.submit_offer_btn);
+                //disable the submit button
                 submitButton.setEnabled(false);
 
+                //set filter on the editText so that the entered value is formatted like money
                 offerAmountEditText.setFilters(new InputFilter[] {new MoneyValueFilter()});
+
                 offerAmountEditText.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -211,8 +219,10 @@ public class ItemActivity extends AppCompatActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.length() > 0) {
+                            //if offerAmountEditText is not empty enable the submit button
                             submitButton.setEnabled(true);
                         } else {
+                            //else disable the button
                             submitButton.setEnabled(false);
                         }
                     }
@@ -300,7 +310,9 @@ public class ItemActivity extends AppCompatActivity {
                         TextView offerAmountTextView = (TextView) view.findViewById(R.id.offer_amount);
                         offerAmountTextView.setText("$" + currentComment.getComment());
 
-                        //create userInfo arrayList and pass it along with the users uid to retrieveUserInfo.
+                        //create userInfo arrayList and pass it along with the user's uid to retrieveUserInfo,
+                        //which will add the user's name, uid, color, and initials to userInfo, and then call
+                        //populateUserFields, to populate the view with the retrieved information
                         ArrayList<String> userInfo = new ArrayList<>();
                         retrieveUserInfo(view, userInfo, currentComment.getUid(), "offer");
                     }
@@ -340,6 +352,7 @@ public class ItemActivity extends AppCompatActivity {
         allCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //start the comment activity for this item
                 Intent i = new Intent(ItemActivity.this, CommentActivity.class);
                 i.putExtra("item", itemId);
                 i.putExtra("donor_id", item.getDonor());

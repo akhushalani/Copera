@@ -10,6 +10,9 @@ import android.widget.TextView;
  * Created by abhinavkhushalani on 11/4/16.
  */
 
+/**
+ * CustomEditText extends EditText but uses the JosefinSlab-Regular font
+ */
 public class CustomEditText extends EditText {
 
     public CustomEditText(Context context, AttributeSet attrs, int defStyle) {

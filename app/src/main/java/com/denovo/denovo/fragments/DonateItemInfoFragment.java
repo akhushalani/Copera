@@ -38,7 +38,8 @@ public class DonateItemInfoFragment extends Fragment {
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_IMAGE_CROP = 2;
-
+    boolean mFieldsFilled = false;
+    OnInfoSubmittedListener mCallback;
     private View mImageSelector;
     private ImageView mImageThumbnail;
     private ImageView mImageThumbnailFrame;
@@ -55,10 +56,6 @@ public class DonateItemInfoFragment extends Fragment {
     private Uri photoUri;
     private DonateActivity mActivity;
 
-    boolean mFieldsFilled = false;
-
-    OnInfoSubmittedListener mCallback;
-
     public DonateItemInfoFragment() {
         // Required empty public constructor
     }
@@ -71,6 +68,7 @@ public class DonateItemInfoFragment extends Fragment {
 
         mActivity = (DonateActivity) getActivity();
 
+        //find views from xml
         mImageSelector = rootView.findViewById(R.id.item_thumbnail);
         mImageThumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
         mImageThumbnailFrame = (ImageView) rootView.findViewById(R.id.thumbnail_frame);
@@ -91,6 +89,7 @@ public class DonateItemInfoFragment extends Fragment {
             }
         });
 
+        //get ItemNameEditText
         itemNameEditText = (EditText) rootView.findViewById(R.id.item_name_edit_text);
         itemNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,8 +99,10 @@ public class DonateItemInfoFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //check if edit Text is filled
                 mHasName = s.toString().trim().length() != 0;
                 if (mHasImage && mHasName && mHasDescription) {
+                    //if all fields are filled enable the button
                     onFieldsFilled();
                 }
             }
@@ -112,8 +113,10 @@ public class DonateItemInfoFragment extends Fragment {
             }
         });
 
+
         itemChapterTextView = (TextView) rootView.findViewById(R.id.item_yard_sale_edit_text);
         mItemChapter = itemChapterTextView.getText().toString();
+
 
         itemChapterTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +126,7 @@ public class DonateItemInfoFragment extends Fragment {
             }
         });
 
-
+        //find itemDescriptionEditText from xml
         itemDescriptionEditText = (EditText) rootView.findViewById(R.id.item_description_edit_text);
         itemDescriptionEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -133,6 +136,7 @@ public class DonateItemInfoFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //if the descriptionEditText is not empty then enable the button
                 mHasDescription = s.toString().trim().length() != 0;
                 if (mHasImage && mHasName && mHasDescription) {
                     onFieldsFilled();
@@ -156,6 +160,9 @@ public class DonateItemInfoFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Enable the button since all fields are filled
+     */
     public void onFieldsFilled() {
         mFieldsFilled = true;
         Log.v("DonateItemInfoFragment", mItemName);

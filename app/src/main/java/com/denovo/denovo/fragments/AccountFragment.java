@@ -414,11 +414,7 @@ public class AccountFragment extends Fragment implements RVAdapter.ItemClickCall
         mWishList.get(p).onAddedToWishList(uid, itemId);
     }
 
-    /**
-     * Ignore the offer button in the AccountFragment
-     *
-     * @param p is the position of the wishListRV
-     */
+
     @Override
     public void onOfferBtnClick(int p) {
 

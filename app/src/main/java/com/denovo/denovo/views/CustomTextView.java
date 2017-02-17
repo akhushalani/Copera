@@ -9,6 +9,9 @@ import android.widget.TextView;
  * Created by abhinavkhushalani on 11/4/16.
  */
 
+/**
+ * CustomTextView extends TxtView but uses the JosefinSlab-Regular font
+ */
 public class CustomTextView extends TextView {
 
     public CustomTextView(Context context, AttributeSet attrs, int defStyle) {
