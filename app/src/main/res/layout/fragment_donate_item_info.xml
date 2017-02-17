@@ -78,7 +78,7 @@
         android:layout_height="40dp"
         android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/mybuttonsmall"
+        android:background="@drawable/mybuttonsmall_selector"
         android:elevation="4dp"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"

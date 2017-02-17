@@ -26,7 +26,8 @@ public class DonateActivity extends AppCompatActivity
     private static final String TAG = "DonateActivity";
     public String mItemPhotoPath;
     public String mItemName;
-    public String mItemYardSale;
+    public String mItemChapter;
+    public String mItemChapterName;
     public String mItemDescription;
     public int mItemRating;
     public double mItemPrice;
@@ -149,8 +150,7 @@ public class DonateActivity extends AppCompatActivity
                         final DonateSummaryFragment donateSummaryFragment =
                                 (DonateSummaryFragment) mAdapter.getItem(3);
                         donateSummaryFragment.populateView(targetW, mItemPhotoPath, mItemName,
-                                mItemYardSale,
-                                mItemDescription, mItemRating, mItemPrice);
+                                mItemChapterName, mItemDescription, mItemRating, mItemPrice);
                         mBtnBack.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -179,14 +179,15 @@ public class DonateActivity extends AppCompatActivity
      *
      * @param photoPath   is the path to the item photo
      * @param name        is the name of the item
-     * @param yardSale    is the yard sale that the item is donated to
+     * @param chapter    is the yard sale that the item is donated to
      * @param description is a description of the item
      */
-    public void onInfoSubmitted(String photoPath, String name, String yardSale, String
-            description) {
+    public void onInfoSubmitted(String photoPath, String name, String chapter, String chapterName,
+                                String description) {
         mItemPhotoPath = photoPath;
         mItemName = name;
-        mItemYardSale = yardSale;
+        mItemChapter = chapter;
+        mItemChapterName = chapterName;
         mItemDescription = description;
         mTabLayout.getTabAt(1).select();
     }
@@ -211,10 +212,5 @@ public class DonateActivity extends AppCompatActivity
         mTabLayout.getTabAt(3).select();
     }
 
-    /**
-     * Enable the next button
-     */
-    public void enableButton() {
-        mBtnNext.setEnabled(true);
-    }
+
 }

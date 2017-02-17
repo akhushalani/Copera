@@ -32,18 +32,46 @@
                   android:layout_below="@id/chapter_name_txt"
                   tools:layout="@layout/activity_manage_chapter"/>
 
-        <com.denovo.denovo.views.BoldTextView
+        <LinearLayout
             android:id="@+id/officers_title_txt"
+            android:layout_below="@id/map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/map"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:text="Officers"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            tools:text="Officers"/>
+            android:padding="8dp"
+            android:gravity="center_vertical">
+            <com.denovo.denovo.views.BoldTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="8dp"
+                android:text="Officers"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                tools:text="Officers"/>
 
+            <com.denovo.denovo.views.CustomButton
+                android:id="@+id/add_officers_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/mybuttonsmall_circle"
+                android:elevation="2dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="+"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"/>
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/officers_lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/officers_title_txt"
+            android:layout_centerHorizontal="true"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="0.5dp"
+            android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft">
+        </ListView>
         <RelativeLayout
             android:id="@+id/lv_cont"
             android:layout_width="match_parent"

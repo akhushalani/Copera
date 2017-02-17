@@ -23,6 +23,7 @@ public class Chapter {
     private double longitude;
     private ArrayList<String> itemList;
     private ArrayList<String> officerList;
+    private String key;
     private DatabaseReference mDatabase;
 
     public Chapter() {
@@ -36,13 +37,15 @@ public class Chapter {
      * @param latitude  is the latitude coordinate of the chapter's location
      * @param longitude is the longitude coordinate of the chapter's location
      */
-    public Chapter(String name, String address, double latitude, double longitude, ArrayList<String> itemList, ArrayList<String> officerList) {
+    public Chapter(String name, String address, double latitude, double longitude,
+                   ArrayList<String> itemList, ArrayList<String> officerList, String key) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.itemList = itemList;
         this.officerList = officerList;
+        this.key = key;
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -93,6 +96,56 @@ public class Chapter {
 
     public void setOfficerList(ArrayList<String> officerList) {
         this.officerList = officerList;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+
+    /**
+     * Removes the item from the chapter's itemList
+     *
+     * @param chapterKey is the id of the chapter that the item belongs to
+     * @param itemId     is the id of the deleted item
+     */
+    public void onItemDeleted(final String chapterKey, final String itemId) {
+
+        DatabaseReference chapterRef = mDatabase.child("chapters").child(chapterKey);
+
+        chapterRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                //create an chapter from the data
+                final Chapter c = mutableData.getValue(Chapter.class);
+
+                if (c.getItemList() == null) {
+                    //if itemList is null, set itemList to an empty ArrayList
+                    c.setItemList(new ArrayList<String>());
+                }
+
+                if (c.getItemList().contains(itemId)) {
+                    //if the chapter contains the item, remove the item from the chapterItems arrayList
+                    ArrayList<String> tempList = c.getItemList();
+                    tempList.remove(itemId);
+                    c.setItemList(tempList);
+                    setItemList(tempList);
+                }
+
+                //update the chapter with the changes made
+                mutableData.setValue(c);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+
+            }
+        });
     }
 
     /**

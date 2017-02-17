@@ -22,14 +22,14 @@ import java.util.ArrayList;
  * Created by abhinavkhushalani on 2/12/17.
  */
 
-public class SearchResultAdapter extends BaseAdapter {
+public class ChapterSearchResultAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private ArrayList<Chapter> mSearchResults;
     private int mQueryLength;
     private ArrayList<Integer> mResultLocations;
 
-    public SearchResultAdapter(Activity context) {
+    public ChapterSearchResultAdapter(Activity context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mSearchResults = new ArrayList<>();
@@ -56,7 +56,7 @@ public class SearchResultAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View listItemView = convertView;
         if(listItemView == null) {
-            listItemView = mInflater.inflate(R.layout.search_result_list_item, parent, false);
+            listItemView = mInflater.inflate(R.layout.chapter_search_result_list_item, parent, false);
         }
 
         Chapter currentChapter = mSearchResults.get(position);

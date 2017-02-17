@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <objectAnimator
+        android:name="line"
+        android:propertyName="pathData"
+        android:duration="600"
+        android:valueFrom="M 0 0 L 89.863 0 L 89.863 2.124 L 0 2.124 Z"
+        android:valueTo="M 0 0 L 8.75 6.25 L 17.5 0 L 0 0 Z"
+        android:valueType="pathType"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+    <objectAnimator
+        android:name="line"
+        android:propertyName="fillColor"
+        android:duration="600"
+        android:valueFrom="#1a8af1"
+        android:valueTo="#6c6d6d"
+        android:valueType="colorType"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+</set>

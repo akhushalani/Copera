@@ -27,11 +27,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
     private static final String TAG = "RVAdapter";
 
     private List<Item> mFeed;
+    private boolean mIsChapterItemList;
 
     private ItemClickCallback itemClickCallback;
 
-    public RVAdapter(List<Item> feed) {
+    public RVAdapter(List<Item> feed, boolean isChapterItemList) {
         this.mFeed = feed;
+        this.mIsChapterItemList = isChapterItemList;
     }
 
     public void setItemClickCallback(final ItemClickCallback itemClickCallback) {
@@ -43,17 +45,18 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
     }
 
     public void swapDataSet(List<Item> newFeed) {
-        mFeed = newFeed;
+        this.mFeed = newFeed;
         notifyItemInserted(0);
     }
 
     public void swapDataSet(List<Item> newFeed, int index) {
-        mFeed = newFeed;
+        this.mFeed = newFeed;
         notifyItemChanged(index);
     }
 
     public void swapDataSet(List<Item> newFeed, boolean notify) {
-        mFeed = newFeed;
+        this.mFeed.clear();
+        this.mFeed.addAll(newFeed);
         notifyDataSetChanged();
     }
 
@@ -87,6 +90,10 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.ItemViewHolder> {
             itemViewHolder.wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall);
         } else {
             itemViewHolder.wantItBtn.setBackgroundResource(R.drawable.mybuttonsmall_inactive);
+        }
+        if (mIsChapterItemList) {
+            itemViewHolder.offerBtn.setText("Delete");
+            itemViewHolder.offerBtn.setBackgroundResource(R.drawable.mybuttonsmall_delete);
         }
 
     }
