@@ -1,10 +1,12 @@
 package com.denovo.denovo.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,15 +32,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static android.R.attr.path;
+import static android.R.attr.value;
 import static com.denovo.denovo.R.id.map;
 
 
-public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ManageChapterActivity extends AppCompatActivity implements OnMapReadyCallback, RVAdapter.ItemClickCallback {
 
+    private static final String TAG = "ManageChapterActivity";
     String mChapterName;
     private GoogleMap mMap;
     private TextView mChapterNameView;
@@ -97,7 +104,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    //create User object from the information read from the db
+                    //create User object from the information read from the database
                     User user = userSnapshot.getValue(User.class);
                     //get the chapterKey of the user
                     chapterKey = user.getChapterKey();
@@ -107,7 +114,7 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot chapterSnapshot : dataSnapshot.getChildren()) {
-                                //create Chapter object from the information read from the db
+                                //create Chapter from data read from the database
                                 Chapter chapter = chapterSnapshot.getValue(Chapter.class);
 
                                 //get the name of the chapter
@@ -132,6 +139,46 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
                             //in case of fail to access database do nothing
                         }
                     });
+
+                    //add value event listener to listen for changes to the itemList of the current chapter
+                    mDatabase.child("chapters").child(chapterKey).child("itemList").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //create a new arrayList to store the keys of the items that are in the chapter's itemList
+                            mItemListKeys = new ArrayList<>();
+                            for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
+                                //get each key from the database
+                                String key = keySnapshot.getValue(String.class);
+                                //add each key to the arrayList
+                                mItemListKeys.add(key);
+                            }
+
+                            //update the view to display the updated itemList
+                            checkItemListEmpty();
+
+                            //create the itemList from the arrayList of itemListKeys
+                            getItemList(new OnDataReceivedListener() {
+                                @Override
+                                public void onStart(int listSize) {
+                                    mItemsLeft = listSize;
+                                }
+
+                                @Override
+                                public void onNext() {
+                                    //iterate through itemListKeys and update the adapter when finished
+                                    mItemsLeft--;
+                                    if (mItemsLeft == 0) {
+                                        mAdapter.swapDataSet(mItemList, true);
+                                    }
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -140,52 +187,28 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
                 //in case of fail to access database do nothing
             }
         });
-        if (chapterKey != null && chapterKey != "") {
-            mDatabase.child("chapters").child(chapterKey).child("itemList").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    mItemListKeys = new ArrayList<>();
-                    for (DataSnapshot keySnapshot : dataSnapshot.getChildren()) {
-                        String key = keySnapshot.getValue(String.class);
-                        mItemListKeys.add(key);
-                    }
-                    checkItemListEmpty();
-                    getItemList(new OnDataReceivedListener() {
-                        @Override
-                        public void onStart(int listSize) {
-                            mItemsLeft = listSize;
-                        }
 
-                        @Override
-                        public void onNext() {
-                            mItemsLeft--;
-                            if (mItemsLeft == 0) {
-                                mAdapter.swapDataSet(mItemList, true);
-                            }
-                        }
-                    });
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
+        //create new arrayLists
         mItemList = new ArrayList<>();
         mItemListKeys = new ArrayList<>();
 
+        //find emptyItemList from xml
         emptyItemList = (TextView) findViewById(R.id.empty_item_list);
 
+        //find itemListRV from xml
         itemListRV = (RecyclerView) findViewById(R.id.chapter_items_rv);
+        //attach a WrapContentLinearLayoutManager to the itemListRV
         llm = new WrapContentLinearLayoutManager(this);
         itemListRV.setLayoutManager(llm);
 
+        //hook up RVAdapter to itemListRV
         mAdapter = new RVAdapter(mItemList);
         itemListRV.setAdapter(mAdapter);
+        mAdapter.setItemClickCallback(this);
 
         ((SimpleItemAnimator) itemListRV.getItemAnimator()).setSupportsChangeAnimations(false);
 
+        //update the view to display the itemList or the emptyItemList screen if the itemList is empty
         checkItemListEmpty();
 
     }
@@ -235,27 +258,44 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
 
     }
 
+    /**
+     * If the itemList is empty hide the itemListRV and display the emptyItemList view
+     * if not hide the emptyItemList view, and display the itemListRV
+     */
     private void checkItemListEmpty() {
         if (mItemListKeys == null || mItemListKeys.isEmpty()) {
+            //if the itemList is empty, hide ItemList recyclerView and display emptyItemList
             itemListRV.setVisibility(View.GONE);
             emptyItemList.setVisibility(View.VISIBLE);
         } else {
+            //else display itemList recyclerView and hide emptyItemList
             itemListRV.setVisibility(View.VISIBLE);
             emptyItemList.setVisibility(View.GONE);
         }
     }
 
+    /**
+     * Construct the itemList of items from the itemListKeys arrayList
+     *
+     * @param listener is the dataReceivedListener
+     */
     private void getItemList(final OnDataReceivedListener listener) {
+        //create new itemList
         mItemList = new ArrayList<>();
+        //pass is the size of the itemListKeys array to the listener.onStart method
         listener.onStart(mItemListKeys.size());
         for (String key : mItemListKeys) {
+            //for every item key, add an event listener on the item that it is referencing
             mDatabase.child("items").orderByKey().equalTo(key)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot itemSnapshot : dataSnapshot.getChildren()) {
+                                //create item from data from the database
                                 Item item = itemSnapshot.getValue(Item.class);
+                                //add the item to the itemList
                                 mItemList.add(item);
+                                //move on to the the next key in the itemListKeys arrayList
                                 listener.onNext();
                             }
                         }
@@ -266,6 +306,51 @@ public class ManageChapterActivity extends AppCompatActivity implements OnMapRea
                         }
                     });
         }
+    }
+
+    /**
+     * When an item card is clicked, launch ItemActivity
+     *
+     * @param p is the position of the wishListRV
+     */
+    @Override
+    public void onItemClick(int p) {
+        //get the item at the current position of the wishListRV
+        Item item = mItemList.get(p);
+
+        //launch ItemActivity and pass in the item id
+        Intent i = new Intent(ManageChapterActivity.this, ItemActivity.class);
+        i.putExtra("item", item.getId());
+
+        startActivityForResult(i, 1);
+    }
+
+    /**
+     * When the wantItBtn is clicked, add the item to the user's wishList
+     *
+     * @param p is the position of the wishListRV
+     */
+    @Override
+    public void onWantItBtnClick(int p) {
+        //get the id of the item at the current position of the itemListRV
+        String itemId = mItemList.get(p).getId();
+        //add or remove the item from the user's wishList
+        mItemList.get(p).onAddedToWishList(uid, itemId);
+    }
+
+    /**
+     * When the offer button is clicked, delete the item
+     *
+     * @param p is the position of the wishListRV
+     */
+    @Override
+    public void onOfferBtnClick(int p) {
+        //get the id of the item at the current position of the itemListRV
+        String itemId = mItemList.get(p).getId();
+        //delete the item from the chapter
+        mDatabase.child("chapters").child(chapterKey).child("itemList").child(itemId).setValue(null);
+        //delete the item from the database
+        mDatabase.child("items").child(itemId).setValue(null);
     }
 
 

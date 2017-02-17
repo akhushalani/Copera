@@ -10,6 +10,7 @@ public class Chapter {
     private double latitude;
     private double longitude;
     private ArrayList<String> itemList;
+    private ArrayList<String> officerList;
 
     public Chapter() {
         //required default constructor
@@ -22,12 +23,13 @@ public class Chapter {
      * @param latitude  is the latitude coordinate of the chapter's location
      * @param longitude is the longitude coordinate of the chapter's location
      */
-    public Chapter(String name, String address, double latitude, double longitude, ArrayList<String> itemList) {
+    public Chapter(String name, String address, double latitude, double longitude, ArrayList<String> itemList, ArrayList<String> officerList) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
         this.longitude = longitude;
         this.itemList = itemList;
+        this.officerList = officerList;
     }
 
     //Setters and Getters
@@ -69,5 +71,13 @@ public class Chapter {
 
     public void setItemList(ArrayList<String> itemList) {
         this.itemList = itemList;
+    }
+
+    public ArrayList<String> getOfficerList() {
+        return officerList;
+    }
+
+    public void setOfficerList(ArrayList<String> officerList) {
+        this.officerList = officerList;
     }
 }

@@ -58,7 +58,7 @@
             android:layout_below="@id/chapter_items_title_txt"
             android:gravity="center"
             android:padding="8dp"
-            android:text="Your chapter doesn't have any items for sale yet!"
+            android:text="No items for sale yet!"
             android:textSize="16sp"/>
 
 

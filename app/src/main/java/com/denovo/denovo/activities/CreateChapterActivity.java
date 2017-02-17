@@ -128,8 +128,14 @@ public class CreateChapterActivity extends AppCompatActivity {
         //create empty itemList
         ArrayList<String> itemList = new ArrayList<>();
 
+        //create empty officerList
+        ArrayList<String> officerList = new ArrayList<>();
+        //add chapter owner to officerList
+        officerList.add(uid);
+
         //create a new Chapter object with the inputted data and write to the db
-        Chapter chapter = new Chapter(name, reverseGeocode(chapterLatLng), chapterLatLng.latitude, chapterLatLng.longitude, itemList);
+        Chapter chapter =
+                new Chapter(name, reverseGeocode(chapterLatLng), chapterLatLng.latitude, chapterLatLng.longitude, itemList, officerList);
         childRef.setValue(chapter);
 
         //get reference to the current user

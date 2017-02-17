@@ -176,6 +176,10 @@ public class Item implements Parcelable {
         return mWishListNum;
     }
 
+    public void setWishListNum(int wishList) {
+        mWishListNum = wishList;
+    }
+
     @Exclude
     public void setWishListNum(boolean value) {
         if (value) {
@@ -183,10 +187,6 @@ public class Item implements Parcelable {
         } else {
             mWishListNum--;
         }
-    }
-
-    public void setWishListNum(int wishList) {
-        mWishListNum = wishList;
     }
 
     public ArrayList<String> getWishListUsers() {
@@ -207,26 +207,37 @@ public class Item implements Parcelable {
     }
 
 
+    /**
+     * When an item is wishListed or de-wishListed, add or remove the user from the wishListUsers array,
+     * increment/decrement the item's wishListNum, and add or remove the item from the user's wishList
+     *
+     * @param uid    is the unique id of the current user
+     * @param itemId is the unique id of the item
+     */
     public void onAddedToWishList(final String uid, final String itemId) {
         //instantiate the database
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
 
-        //get a reference to the database
+        //get a reference to the item in the database
         DatabaseReference itemRef = databaseRef.child("items").child(itemId);
 
         itemRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
+                //create an item from the data
                 final Item i = mutableData.getValue(Item.class);
                 if (i == null) {
+                    //if there is no item, return
                     return Transaction.success(mutableData);
                 }
 
                 if (i.getWishListUsers() == null) {
+                    //if wishListUsers is null, set wishListUsers to an empty ArrayList
                     i.setWishListUsers(new ArrayList<String>());
                 }
 
                 if (i.getWishListUsers().contains(uid)) {
+                    //if the user has the item wishListed, remove the user from the wishListUsers arrayList, and decrement the wishListNum
                     i.setWishListNum(false);
                     ArrayList<String> tempList = i.getWishListUsers();
                     tempList.remove(uid);
@@ -234,6 +245,7 @@ public class Item implements Parcelable {
                     setWishListNum(false);
                     setWishListUsers(tempList);
                 } else {
+                    //else add the user to the wishListUsers arrayList and increment the wishListNum
                     i.setWishListNum(true);
                     ArrayList<String> tempList = i.getWishListUsers();
                     tempList.add(uid);
@@ -242,6 +254,7 @@ public class Item implements Parcelable {
                     setWishListUsers(tempList);
                 }
 
+                //update the item with the changes made
                 mutableData.setValue(i);
                 return Transaction.success(mutableData);
             }
@@ -252,29 +265,36 @@ public class Item implements Parcelable {
             }
         });
 
+        //get a reference to the user in the database
         DatabaseReference userRef = databaseRef.child("users").child(uid);
         Log.v(TAG, uid);
         userRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData mutableData) {
+                //create user from the data
                 User u = mutableData.getValue(User.class);
                 if (u == null) {
+                    //if there is no user, return
                     return Transaction.success(mutableData);
                 }
 
                 if (u.getWishList() == null) {
+                    //if the user's wishList is null, set wishList to an empty ArrayList
                     u.setWishList (new ArrayList<String>());
                 }
                 if (u.getWishList().contains(itemId)) {
+                    //if the item is in the user's wishList, remove it
                     ArrayList<String> tempList = u.getWishList();
                     tempList.remove(itemId);
                     u.setWishList(tempList);
                 } else {
+                    //else add the item to the user's wishList
                     ArrayList<String> tempList = u.getWishList();
                     tempList.add(itemId);
                     u.setWishList(tempList);
                 }
 
+                //update the user with the changes made
                 mutableData.setValue(u);
                 return Transaction.success(mutableData);
             }
